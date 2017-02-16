@@ -22,7 +22,17 @@ public class Game {
                                     {'X','.','I','.','I','.','X','k','.','X'},
                                     {'X','X','X','X','X','X','X','X','X','X'}
                                 },
-                                    {/* Second level map */}    
+                                {
+                                    {'X','X','X','X','X','X','X','X','X'},
+                                    {'I','.','.','.','O','.','.','k','X'},
+                                    {'X','.','.','.','.','.','.','.','X'},
+                                    {'X','.','.','.','.','.','.','.','X'},
+                                    {'X','.','.','.','.','.','.','.','X'},
+                                    {'X','.','.','.','.','.','.','.','X'},
+                                    {'X','.','.','.','.','.','.','.','X'},
+                                    {'X','H','.','.','.','.','.','.','X'},
+                                    {'X','X','X','X','X','X','X','X','X'}
+                                }    
     						};
 	public int guardMovIndex;
     public int[][] guardMovements = {  
@@ -62,23 +72,36 @@ public class Game {
     }
     
     public void openDoors(int level){
-    	if(level == 0){
+    	if(level == 0) {
     		maps[0][5][0] = 'S';
     		maps[0][6][0] = 'S';
     	}
+        else if(level == 1)
+            maps[1][1][0] = 'S';
     }
     
     public void playerHasLost(int level){
-    	if(level == 0){
-    		int playerX = playerPosition[1];
-    		int playerY = playerPosition[0];
-    		if(maps[0][playerY][playerX] == 'G' ||
-    		   maps[0][playerY-1][playerX] == 'G' ||
-    		   maps[0][playerY+1][playerX] == 'G' ||	
-    		   maps[0][playerY][playerX-1] == 'G' ||
-    		   maps[0][playerY][playerX+1] == 'G')
-    			gameStatus = GameState.LOST;
-    	}
+        if(level == 0) {
+            int playerX = playerPosition[1];
+            int playerY = playerPosition[0];
+            if(maps[0][playerY][playerX] == 'G' ||
+                    maps[0][playerY-1][playerX] == 'G' ||
+                    maps[0][playerY+1][playerX] == 'G' ||	
+                    maps[0][playerY][playerX-1] == 'G' ||
+                    maps[0][playerY][playerX+1] == 'G')
+                gameStatus = GameState.LOST;
+        }
+        else if(level == 1) {
+            //TO DO: If Ogre is on the key its representation is $ but it can still capture the player. Check position
+            int playerX = playerPosition[1];
+            int playerY = playerPosition[0]
+                if(maps[1][playerY][playerX] == '0' ||
+                        maps[1][playerY-1][playerX] == '0' ||
+                        maps[1][playerY+1][playerX] == '0' ||	
+                        maps[1][playerY][playerX-1] == '0' ||
+                        maps[1][playerY][playerX+1] == '0')
+                    gameStatus = GameState.LOST;
+        }
     }
     
     //Convert user input to vector corresponding to desired player movement
@@ -106,9 +129,11 @@ public class Game {
 	public void moveGuard(){
 		int nextGuardMovement[] = guardMovements[guardMovIndex];
 		maps[0][guardPosition[0]][guardPosition[1]] = '.';
+
 		guardPosition[0] += nextGuardMovement[0];
 		guardPosition[1] += nextGuardMovement[1];
 		maps[0][guardPosition[0]][guardPosition[1]] = 'G';
+
 		if(++guardMovIndex == guardMovements.length) //Restart movement pattern
 			guardMovIndex = 0;
 	}
@@ -144,7 +169,11 @@ public class Game {
 		//Update player's position based on movement vector ([0,0] if invalid key pressed)
 		playerPosition[0] += dy;
 		playerPosition[1] += dx;
-		moveGuard();
+        if(level == 0)
+            moveGuard();
+        else if(level == 1)
+            moveOgre();
+
 		playerHasLost(level); //Checks if guard is in player's surroundings, updating gameStatus attribute if necessary
 	}
 	
