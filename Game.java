@@ -20,14 +20,41 @@ public class Game {
                                     {'X','.','I','.','I','.','X','k','.','X'},
                                     {'X','X','X','X','X','X','X','X','X','X'}
                                 },
-                                    {}    
-    };
-    public int[] playerPosition = {1,1};
-    public int[] guardPosition = {8,1};
+                                    {/* Second level map */}    
+    						};
+	public int guardMovIndex;
+	public int[][] guardMovements = {  {-1,0},
+	                                   {0,1},
+	                                   {0,1},
+	                                   {0,1},
+	                                   {0,1},
+	                                   {-1,0},
+	                                   {-1,0},
+	                                   {-1,0},
+	                                   {-1,0},
+	                                   {-1,0},
+	                                   {-1,0},
+	                                   {0,1},
+	                                   {1,0},
+	                                   {1,0},
+	                                   {1,0},
+	                                   {1,0},
+	                                   {1,0},
+	                                   {1,0},
+	                                   {1,0},
+	                                   {0,-1},
+	                                   {0,-1},
+	                                   {0,-1},
+	                                   {0,-1},
+	                                   {0,-1}
+									};
+    public int[] playerPosition = {1,1}; //Initial position
+    public int[] guardPosition = {8,1}; //Initial position
 
     public Game() {
     	gameStatus = GameState.RUNNING;
     	level = 0;
+    	guardMovIndex = 0;
     }
     
     public void openDoors(int level){
@@ -72,6 +99,16 @@ public class Game {
 		return result;
 	}
 	
+	public void moveGuard(){
+		int nextGuardMovement[] = guardMovements[guardMovIndex];
+		maps[0][guardPosition[1]][guardPosition[0]] = '.';
+		guardPosition[0] += nextGuardMovement[0];
+		guardPosition[1] += nextGuardMovement[1];
+		maps[0][guardPosition[1]][guardPosition[0]] = 'G';
+		if(++guardMovIndex == guardMovements.length) //Restart movement pattern
+			guardMovIndex = 0;
+	}
+	
 	public void updatePosition(int[] movement, int level){
 		int dx = movement[0];
 		int dy = movement[1];
@@ -102,7 +139,8 @@ public class Game {
 		//Update player's position based on movement vector ([0,0] if invalid key pressed)
 		playerPosition[0] += dx;
 		playerPosition[1] += dy;
-		playerHasLost(level); //Checks if guard is in player's surroundings
+		moveGuard();
+		playerHasLost(level); //Checks if guard is in player's surroundings, updating gameStatus attribute if necessary
 	}
 	
     public void showMap(int mapIndex) {
