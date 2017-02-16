@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+// NOTE: Coordinates are always in the order [y,x], where top left corner is the system's origin
+
 public class Game {
 	public enum GameState {
 		RUNNING, LOST, WON
@@ -23,33 +25,35 @@ public class Game {
                                     {/* Second level map */}    
     						};
 	public int guardMovIndex;
-	public int[][] guardMovements = {  {-1,0},
-	                                   {0,1},
-	                                   {0,1},
-	                                   {0,1},
-	                                   {0,1},
-	                                   {-1,0},
-	                                   {-1,0},
-	                                   {-1,0},
-	                                   {-1,0},
-	                                   {-1,0},
-	                                   {-1,0},
-	                                   {0,1},
-	                                   {1,0},
-	                                   {1,0},
-	                                   {1,0},
-	                                   {1,0},
-	                                   {1,0},
-	                                   {1,0},
-	                                   {1,0},
-	                                   {0,-1},
-	                                   {0,-1},
-	                                   {0,-1},
-	                                   {0,-1},
-	                                   {0,-1}
-									};
+    public int[][] guardMovements = {  
+        {0,-1},
+        {1,0},
+        {1,0},
+        {1,0},
+        {1,0},
+        {0,-1},
+        {0,-1},
+        {0,-1},
+        {0,-1},
+        {0,-1},
+        {0,-1},
+        {1,0},
+        {0,1},
+        {0,1},
+        {0,1},
+        {0,1},
+        {0,1},
+        {0,1},
+        {0,1},
+        {-1,0},
+        {-1,0},
+        {-1,0},
+        {-1,0},
+        {-1,0}
+    };
+
     public int[] playerPosition = {1,1}; //Initial position
-    public int[] guardPosition = {8,1}; //Initial position
+    public int[] guardPosition = {1,8}; //Initial position
 
     public Game() {
     	gameStatus = GameState.RUNNING;
@@ -66,8 +70,8 @@ public class Game {
     
     public void playerHasLost(int level){
     	if(level == 0){
-    		int playerX = playerPosition[0];
-    		int playerY = playerPosition[1];
+    		int playerX = playerPosition[1];
+    		int playerY = playerPosition[0];
     		if(maps[0][playerY][playerX] == 'G' ||
     		   maps[0][playerY-1][playerX] == 'G' ||
     		   maps[0][playerY+1][playerX] == 'G' ||	
@@ -82,16 +86,16 @@ public class Game {
 		int[] result = new int[2];
 		switch(input){
 			case 'a':
-				result[0]--; //[-1,0] - left
+				result[1]--; //[0,-1] - left
 				break;
 			case 'w':
-				result[1]--; //[0,-1] - up
+				result[0]--; //[-1,0] - up
 				break;
 			case 's':
-				result[1]++; //[0,1] - down
+				result[0]++; //[1,0] - down
 				break;
 			case 'd':
-				result[0]++; //[1,0] - right
+				result[1]++; //[0,1] - right
 				break;
 			default: //[0,0] - invalid movement key
 				break;
@@ -101,19 +105,20 @@ public class Game {
 	
 	public void moveGuard(){
 		int nextGuardMovement[] = guardMovements[guardMovIndex];
-		maps[0][guardPosition[1]][guardPosition[0]] = '.';
+		maps[0][guardPosition[0]][guardPosition[1]] = '.';
 		guardPosition[0] += nextGuardMovement[0];
 		guardPosition[1] += nextGuardMovement[1];
-		maps[0][guardPosition[1]][guardPosition[0]] = 'G';
+		maps[0][guardPosition[0]][guardPosition[1]] = 'G';
 		if(++guardMovIndex == guardMovements.length) //Restart movement pattern
 			guardMovIndex = 0;
 	}
 	
 	public void updatePosition(int[] movement, int level){
-		int dx = movement[0];
-		int dy = movement[1];
-		int playerY = playerPosition[1];
-		int playerX = playerPosition[0];
+		int dy = movement[0];
+		int dx = movement[1];
+
+		int playerY = playerPosition[0];
+		int playerX = playerPosition[1];
 		char currentChar = maps[level][playerY+dy][playerX+dx];
 		switch(currentChar){
 			case '.':
@@ -131,14 +136,14 @@ public class Game {
 				}
 				break;
 			default:
-				dx = 0;
 				dy = 0;
+				dx = 0;
 				break;
 		}
 		
 		//Update player's position based on movement vector ([0,0] if invalid key pressed)
-		playerPosition[0] += dx;
-		playerPosition[1] += dy;
+		playerPosition[0] += dy;
+		playerPosition[1] += dx;
 		moveGuard();
 		playerHasLost(level); //Checks if guard is in player's surroundings, updating gameStatus attribute if necessary
 	}
