@@ -10,6 +10,7 @@ public class Game {
 
     public GameState gameStatus;
     public int level;
+    public boolean hasKey; //Used in level 1 to control level exit and player char
     public char[][][] maps = {
         {
             {'X','X','X','X','X','X','X','X','X','X'},
@@ -33,10 +34,10 @@ public class Game {
             {'X','.','.','.','.','.','.','.','X'},
             {'X','H','.','.','.','.','.','.','X'},
             {'X','X','X','X','X','X','X','X','X'}
-        }    
+        }
     };
     public int guardMovIndex;
-    public int[][] guardMovements = {  
+    public int[][] guardMovements = {
         {0,-1},
         {1,0},
         {1,0},
@@ -71,9 +72,10 @@ public class Game {
     public Game() {
         gameStatus = GameState.RUNNING;
         level = 0;
+        hasKey = false;
         guardMovIndex = 0;
 
-        generator = new Random(); 
+        generator = new Random();
     }
 
     public void openDoors(int level){
@@ -91,7 +93,7 @@ public class Game {
             int playerY = playerPosition[0];
             if(maps[0][playerY][playerX] == 'G' ||
                     maps[0][playerY-1][playerX] == 'G' ||
-                    maps[0][playerY+1][playerX] == 'G' ||	
+                    maps[0][playerY+1][playerX] == 'G' ||
                     maps[0][playerY][playerX-1] == 'G' ||
                     maps[0][playerY][playerX+1] == 'G')
                 gameStatus = GameState.LOST;
@@ -102,7 +104,7 @@ public class Game {
             int playerY = playerPosition[0];
             if(maps[1][playerY][playerX] == '0' ||
                     maps[1][playerY-1][playerX] == '0' ||
-                    maps[1][playerY+1][playerX] == '0' ||	
+                    maps[1][playerY+1][playerX] == '0' ||
                     maps[1][playerY][playerX-1] == '0' ||
                     maps[1][playerY][playerX+1] == '0')
                 gameStatus = GameState.LOST;
@@ -144,8 +146,21 @@ public class Game {
     }
 
     public int[] randomMovement() {
-        int randomY = generator.nextInt(3) - 1;
-        int randomX = generator.nextInt(3) - 1;
+        int movementType = generator.nextInt(2);
+        int randomY;
+        int randomX;
+        if(movementType == 0){ //Horizontal movement
+          randomY = 0;
+          do{
+            randomX = generator.nextInt(3) - 1;
+          }while(randomX == 0); //Just to make sure he does indeed move every time
+        }
+        else{ //movementType == 1 ; Vertical movement
+          do{
+            randomY = generator.nextInt(3) - 1;
+          }while(randomY == 0); //Just to make sure he does indeed move every time
+          randomX = 0;
+        }
 
         int[] result = {randomY, randomX};
         return result;
@@ -169,9 +184,11 @@ public class Game {
             currentRandom = randomMovement();
             randomY = currentRandom[0];
             randomX = currentRandom[1];
-        } while(maps[1][ogrePosition[0]+randomY][ogrePosition[1]+randomX] == 'X');
+        } while(maps[1][ogrePosition[0]+randomY][ogrePosition[1]+randomX] == 'X' ||
+                maps[1][ogrePosition[0]+randomY][ogrePosition[1]+randomX] == 'I' ||
+                maps[1][ogrePosition[0]+randomY][ogrePosition[1]+randomX] == 'S'); /*About these last two: can't have him go to the door, that's our only way out! :[ */
 
-        ogrePosition[0] += randomY; 
+        ogrePosition[0] += randomY;
         ogrePosition[1] += randomX;
 
         if(ogrePosition[0] == 1 && ogrePosition[1] == 7) //Checking if ogre's new position is on top of key
@@ -192,18 +209,18 @@ public class Game {
             case 'k':
             case 'S':
                 maps[level][playerY][playerX] = '.';
-                maps[level][playerY+dy][playerX+dx] = 'H';
-                if(currentChar == 'k')
-                    openDoors(level);
+                if(currentChar == 'k'){
+                    if(level == 1)
+                      hasKey = true;
+                    else
+                      openDoors(level); //Could just use openDoors(0) but whatever
+                }
                 else if(currentChar == 'S') {
                     if(level == 0) {
                         this.level = 1;
-
-                        //Level 1 initial position
+                        //Set Level 1 initial position
                         playerPosition[0] = 7;
                         playerPosition[1] = 1;
-                        showMap(1);
-                        System.out.print("\n\n");
                     }
                     else //level 1
                         gameStatus = GameState.WON;
@@ -212,11 +229,21 @@ public class Game {
                              */
                 }
                 break;
+            case 'I':
+                if(level == 1)
+                  openDoors(level); //Could just use openDoors(1) but whatever
+                  //No break statement because player shouldn't move yet:
+                  // -This is the move he spends opening the door if he's on level1
+                  // -Can't move through a closed door if he's on level0 or level1
+                  //The lack of break statement causes the code below to be executed, which prevents player movement
             default:
                 dy = 0;
                 dx = 0;
                 break;
         }
+
+        //Draw hero
+        maps[level][playerY+dy][playerX+dx] = (hasKey && level == 1) ? 'K' : 'H';
 
         //Update player's position based on movement vector ([0,0] if invalid key pressed)
         playerPosition[0] += dy;
