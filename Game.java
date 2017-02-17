@@ -68,6 +68,7 @@ public class Game {
     public int[] playerPosition = {1,1}; //Initial position (level 1)
     public int[] guardPosition = {1,8}; //Initial position
     public int[] ogrePosition = {1,4};
+    public int[] ogreClubOffset = {0,0}; //Offset relating to ogre's position (ex: if it is [-1,0], then it is below the ogre)
 
     public Game() {
         gameStatus = GameState.RUNNING;
@@ -87,27 +88,25 @@ public class Game {
             maps[1][1][0] = 'S';
     }
 
+    //Detect if an enemy element is in the hero's surroundings (to use in next function)
+    public boolean enemyInSurroundings(int level, char enemy){
+      int playerX = playerPosition[1];
+      int playerY = playerPosition[0];
+      return  maps[level][playerY][playerX] == enemy ||
+              maps[level][playerY-1][playerX] == enemy ||
+              maps[level][playerY+1][playerX] == enemy ||
+              maps[level][playerY][playerX-1] == enemy ||
+              maps[level][playerY][playerX+1] == enemy;
+    }
+
     public void playerHasLost(int level){
         if(level == 0) {
-            int playerX = playerPosition[1];
-            int playerY = playerPosition[0];
-            if(maps[0][playerY][playerX] == 'G' ||
-                    maps[0][playerY-1][playerX] == 'G' ||
-                    maps[0][playerY+1][playerX] == 'G' ||
-                    maps[0][playerY][playerX-1] == 'G' ||
-                    maps[0][playerY][playerX+1] == 'G')
+            if(enemyInSurroundings(0,'G'))
                 gameStatus = GameState.LOST;
         }
         else if(level == 1) {
-            //TO DO: If Ogre is on the key its representation is $ but it can still capture the player. Check position
-            int playerX = playerPosition[1];
-            int playerY = playerPosition[0];
-            if(maps[1][playerY][playerX] == '0' ||
-                    maps[1][playerY-1][playerX] == '0' ||
-                    maps[1][playerY+1][playerX] == '0' ||
-                    maps[1][playerY][playerX-1] == '0' ||
-                    maps[1][playerY][playerX+1] == '0')
-                gameStatus = GameState.LOST;
+            if(enemyInSurroundings(1,'0') || enemyInSurroundings(1,'$') || enemyInSurroundings(1,'*')) //Respectively: ogre, ogre while in key position, ogre's club
+            gameStatus = GameState.LOST;
         }
     }
 
@@ -167,8 +166,9 @@ public class Game {
     }
 
     public void moveOgre() {
+        /* First, calculate the ogre's new position (but not updating it yet) */
         boolean isLeavingKey = false;
-        if(ogrePosition[0] == 1 && ogrePosition[1] == 7)
+        if(maps[1][ogrePosition[0]][ogrePosition[1]] == '$')
             isLeavingKey = true;
 
         if(isLeavingKey)
@@ -186,15 +186,47 @@ public class Game {
             randomX = currentRandom[1];
         } while(maps[1][ogrePosition[0]+randomY][ogrePosition[1]+randomX] == 'X' ||
                 maps[1][ogrePosition[0]+randomY][ogrePosition[1]+randomX] == 'I' ||
-                maps[1][ogrePosition[0]+randomY][ogrePosition[1]+randomX] == 'S'); /*About these last two: can't have him go to the door, that's our only way out! :[ */
+                maps[1][ogrePosition[0]+randomY][ogrePosition[1]+randomX] == 'S'); /* About these last two: can't have him go to the door, that's our only way out! :[ */
 
+        /* Now, swing his club of doom! */
+        isLeavingKey = false;
+        int clubY = ogrePosition[0] + ogreClubOffset[0];
+        int clubX = ogrePosition[1] + ogreClubOffset[1];
+        if(maps[1][clubY][clubX] == '$')
+            isLeavingKey = true;
+
+        if(isLeavingKey)
+          maps[1][clubY][clubX] = 'k';
+        else
+          maps[1][clubY][clubX] = '.';
+
+        //Now that we've removed the club from its old position, update the ogre's position and swing it to a new one based on the updated coordinates
         ogrePosition[0] += randomY;
         ogrePosition[1] += randomX;
 
-        if(ogrePosition[0] == 1 && ogrePosition[1] == 7) //Checking if ogre's new position is on top of key
-            maps[1][ogrePosition[0]][ogrePosition[1]] = '$';
+        if(maps[1][ogrePosition[0]][ogrePosition[1]] == 'k') //Checking if ogre's new position is on top of key
+            maps[1][1][7] = '$';
         else
             maps[1][ogrePosition[0]][ogrePosition[1]] = '0'; //Default case
+
+        //Generate random integers between -1 and 1;
+        int offsetY;
+        int offsetX;
+        int[] currentOffset;
+        do {
+            currentOffset = randomMovement();
+            offsetY = currentOffset[0];
+            offsetX = currentOffset[1];
+        } while(maps[1][ogrePosition[0]+offsetY][ogrePosition[1]+offsetX] == 'X' ||
+                maps[1][ogrePosition[0]+offsetY][ogrePosition[1]+offsetX] == 'I' ||
+                maps[1][ogrePosition[0]+offsetY][ogrePosition[1]+offsetX] == 'S'); //Could let him swing at the door and open it by force... Maybe later
+
+        ogreClubOffset[0] = offsetY;
+        ogreClubOffset[1] = offsetX;
+        if(maps[1][ogrePosition[0]+ogreClubOffset[0]][ogrePosition[1]+ogreClubOffset[1]] == 'k') //Checking if club's new position is on top of key
+            maps[1][1][7] = '$';
+        else
+            maps[1][ogrePosition[0]+ogreClubOffset[0]][ogrePosition[1]+ogreClubOffset[1]] = '*'; //Default case
     }
 
     public void updatePosition(int[] movement, int level) {
@@ -253,7 +285,7 @@ public class Game {
         else if(level == 1)
             moveOgre();
 
-        playerHasLost(level); //Checks if guard is in player's surroundings, updating gameStatus attribute if necessary
+        playerHasLost(level); //Checks if enemy is in player's surroundings, updating gameStatus attribute if necessary
     }
 
     public void showMap(int level) {
