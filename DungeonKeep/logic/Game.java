@@ -4,43 +4,44 @@ public class Game {
 	protected enum GameState {
         RUNNING, LOST, WON
     }
-	
+
 	protected GameState gameStatus;
 	protected int level;
 	protected Map map;
 	protected Hero hero;
-	protected Guard guard; //Saving it as a guard because of possible change of guard type throughout the game? According to the guide
-	protected Ogre ogre; //Initialize only when player gets to level1
-	
+	protected Guard guard;
+	protected Ogre[] ogres;
+
 	public Game() {
 		gameStatus = GameState.RUNNING;
 		level = 0;
-		map = new Map();
+		map = new DungeonMap();
 		hero = new Hero(1,1);
 		guard = new Rookie(8,1);
+		ogres = null;
 	}
-	
+
 	private int[] charToMovement(char input){
         int[] result = new int[2];
         switch(input){
             case 'a':
-                result[1]--; //[0,-1] - left
+                result[0]--; //[-1,0] - left
                 break;
             case 'w':
-                result[0]--; //[-1,0] - up
+                result[1]--; //[0,-1] - up
                 break;
             case 's':
-                result[0]++; //[1,0] - down
+                result[1]++; //[0,1] - down
                 break;
             case 'd':
-                result[1]++; //[0,1] - right
+                result[0]++; //[1,0] - right
                 break;
             default: //[0,0] - invalid movement key
                 break;
         }
         return result;
     }
-	
+
 	public void finalMessage(){
         switch(gameStatus){
         case LOST:
@@ -54,18 +55,21 @@ public class Game {
             break;
         }
 	}
-	
-	public void printMap(){
-		map.print();
+
+	public String sendMap(){
 	}
-	
+
 	private void advanceLevel(){
-		level = 1;
-		hero.setCoordinates(1, 7);
-		ogre = new Ogre(4,1);
-		map.setNextLevel();
+		if((map = map.getNextLevel()) == null)
+			gameStatus = GameState.WON;
+		else{
+			level++;
+			hero.setCoordinates(1, 7);
+			ogres = new Ogre[1];
+			ogres[0] = new Ogre(4,1);
+		}
 	}
-	
+
 	public void updateGame(char userInput){
 		/* Updating hero's position (TODO: Change this to hero class) */
 		int[] nextHeroMovement = charToMovement(userInput);
@@ -87,10 +91,7 @@ public class Game {
 					map.openDoors(level); //Could just use openDoors(0) but whatever
 			}
 			else if(currentChar == 'S') {
-				if(level == 0)
-					advanceLevel();
-				else //level 1
-					gameStatus = GameState.WON;
+				advanceLevel();
 				return; /*No need to update anything else.
 				 		*Also, avoids 'playerHasLot' checking on negative indexes (no elements to the left)
 				 		*/
@@ -98,7 +99,7 @@ public class Game {
 			break;
 		case 'I':
 			if(level == 1)
-				map.openDoors(level); //Could just use openDoors(1) but whatever
+				map.openDoors(); //Could just use openDoors(1) but whatever
 			//No break statement because player shouldn't move yet:
 			// -This is the move he spends opening the door if he's on level1
 			// -Can't move through a closed door if he's on level0 or level1
@@ -121,7 +122,7 @@ public class Game {
 
 		playerHasLost(); //Checks if enemy is in player's surroundings, updating gameStatus attribute if necessary
 	}
-	
+
     public void playerHasLost(){
     	int[] heroCoordinates = hero.getCoordinates();
         if(level == 0) {
@@ -135,7 +136,7 @@ public class Game {
             gameStatus = GameState.LOST;
         }
     }
-	
+
 	public boolean isRunning(){
 		return gameStatus == GameState.RUNNING;
 	}
