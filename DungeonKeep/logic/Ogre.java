@@ -1,6 +1,6 @@
 package logic;
 
-public class Ogre extends Character{
+public class Ogre extends Character {
 	protected int clubOffsetX;
 	protected int clubOffsetY;
 	
@@ -16,19 +16,33 @@ public class Ogre extends Character{
         int randomX;
         if(movementType == 0){ //Horizontal movement
           randomY = 0;
-          do{
+          do {
             randomX = generator.nextInt(3) - 1;
-          }while(randomX == 0); //Just to make sure he does indeed move every time
+          } while(randomX == 0); //Just to make sure he does indeed move every time
         }
-        else{ //movementType == 1 ; Vertical movement
-          do{
+        else { //movementType == 1 ; Vertical movement
+          do {
             randomY = generator.nextInt(3) - 1;
-          }while(randomY == 0); //Just to make sure he does indeed move every time
+          } while(randomY == 0); //Just to make sure he does indeed move every time
           randomX = 0;
         }
 
         int[] result = {randomY, randomX};
         return result;
+    }
+
+    public void nextPosition() {
+        int[] ogreCoordinates = getCoordinates();
+
+        //Generate random integers between -1 and 1;
+        int[] nextMovement;
+        do {
+            nextMovement = randomMovement();    
+            } while(map.elementAt(ogreCoordinates[1]+nextMovement[1], ogreCoordinates[0]+nextMovement[0]) == 'X' ||
+                map.elementAt(ogreCoordinates[1]+nextMovement[1], ogreCoordinates[0]+nextMovement[0]) == 'I' ||
+                map.elementAt(ogreCoordinates[1]+nextMovement[1], ogreCoordinates[0]+nextMovement[0]) == 'S');
+        /* About these last two: can't have him go to the door, that's our only way out! */
+
     }
 	
 	public void updatePosition(Map map) {
@@ -82,5 +96,4 @@ public class Ogre extends Character{
         else
             map.setElementAt(posX+clubOffsetX, posY+clubOffsetY, '*'); //Default case
     }
-
 }
