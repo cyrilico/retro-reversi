@@ -1,7 +1,11 @@
 package logic;
 
+import java.util.Random;
+
 public class DungeonLevel extends Level {
 
+    /* To randomly choose a type of guard for the level */
+    Random guardGenerator;
     /* The villains for the level */
     Guard guard;
 
@@ -9,13 +13,31 @@ public class DungeonLevel extends Level {
 
         super();
 
+        guardGenerator = new Random();
         map = new DungeonMap();
 
         /*Create level's characters*/
         //The hero
         hero = new Hero(1,1);
-        //The guards
-        guard = new Rookie(8,1);
+        //The guard
+        System.out.println("Checking which guard is patroling in this session...");
+        int whichGuard = guardGenerator.nextInt(9);
+        /* 0,1,2 -> Rookie
+         * 3,4,5 -> Drunken
+         * 6,7,8 -> Suspicious
+         */
+        if(whichGuard < 3){
+          System.out.println("It's the Rookie!");
+          guard = new Rookie(8,1);
+        }
+        else if(whichGuard < 6){
+          System.out.println("It's the Drunken!");
+          guard = new Drunken(8,1);
+        }
+        else{
+          System.out.println("It's the Suspicious!");
+          guard = new Suspicious(8,1);
+        }
     }
 
     public void checkIfHeroCaptured(){
