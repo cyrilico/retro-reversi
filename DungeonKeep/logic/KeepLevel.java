@@ -1,9 +1,14 @@
 package logic;
 
+import java.util.Random;
+import java.util.ArrayList;
+
 public class KeepLevel extends Level {
 
+    /* Calculate how many ogres will be generated */
+    Random ogreGenerator;
     /* The villains for the level */
-    Ogre ogre;
+    ArrayList<Ogre> ogres;
 
     public KeepLevel() {
 
@@ -14,14 +19,21 @@ public class KeepLevel extends Level {
         /*Create level's characters*/
         //The hero
         hero = new Hero(1,7);
+        hero.setRepresentation('A');
         //The ogres
-        ogre = new Ogre(4,1);
+        ogreGenerator = new Random();
+        int numberOfOgres = ogreGenerator.nextInt(2)+1; //1 or 2 ogres, starting in the same position (tried with 3 and 4, nearly impossible to escape)
+        ogres = new ArrayList<Ogre>();
+        for(int i = 0; i < numberOfOgres; i++)
+          ogres.add(new Ogre(4,1));
     }
 
     public void checkIfHeroCaptured(){
       int[] heroCoordinates = hero.getCoordinates();
-       if(ogre.hasCaughtHero(heroCoordinates[0],heroCoordinates[1]))
-        levelStatus = LevelState.LOST;
+      for(Ogre ogre : ogres){
+        if(ogre.hasCaughtHero(heroCoordinates[0],heroCoordinates[1]))
+          levelStatus = LevelState.LOST;
+      }
     }
 
     public void updatePositions(int[] input) {
@@ -54,6 +66,7 @@ public class KeepLevel extends Level {
         hero.setCoordinates(heroX+dx, heroY+dy);
 
         //Update the villains' position
+        for(Ogre ogre : ogres){
         //Update the ogre's position
         int ogreX = ogre.getCoordinates()[0];
         int ogreY = ogre.getCoordinates()[1];
@@ -97,6 +110,7 @@ public class KeepLevel extends Level {
         }while(true); //Risky...
 
         ogre.setClubOffset(nextMovement[0],nextMovement[1]);
+      }
 
         checkIfHeroCaptured();
     }
@@ -110,15 +124,17 @@ public class KeepLevel extends Level {
         int heroY = heroCoordinates[1];
         matrix[heroY][heroX] = hero.getRepresentation();
 
-        //Draw ogre
-        int[] ogreCoordinates = ogre.getCoordinates();
-        int[] ogreClubOffsetCoordinates = ogre.getClubOffset();
-        int ogreX = ogreCoordinates[0];
-        int ogreClubX = ogreX + ogreClubOffsetCoordinates[0];
-        int ogreY = ogreCoordinates[1];
-        int ogreClubY = ogreY + ogreClubOffsetCoordinates[1];
-        matrix[ogreY][ogreX] = ogre.getRepresentation();
-        matrix[ogreClubY][ogreClubX] = (ogre.clubIsOnKey() ? '$' : '*');
+        //Draw ogres
+        for(Ogre ogre : ogres){
+          int[] ogreCoordinates = ogre.getCoordinates();
+          int[] ogreClubOffsetCoordinates = ogre.getClubOffset();
+          int ogreX = ogreCoordinates[0];
+          int ogreClubX = ogreX + ogreClubOffsetCoordinates[0];
+          int ogreY = ogreCoordinates[1];
+          int ogreClubY = ogreY + ogreClubOffsetCoordinates[1];
+          matrix[ogreY][ogreX] = ogre.getRepresentation();
+          matrix[ogreClubY][ogreClubX] = (ogre.clubIsOnKey() ? '$' : '*');
+        }
 
         return matrix;
     }
