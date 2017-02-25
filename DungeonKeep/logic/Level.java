@@ -5,35 +5,34 @@ public abstract class Level {
         RUNNING, LOST, WON
     }
 
+    protected boolean heroHasKey;
     protected LevelState levelStatus;
-    public Level() {}
+    public Level() {
+      heroHasKey = false;
+      levelStatus = LevelState.RUNNING;
+    }
 
     protected Map map;
-    protected Hero hero; //There's always a hero
+    protected Hero hero; /* There's always this hero... */
 
-    //For now, this works, maybe later add a superclass Villain to store all villains inside the same structure
-    protected Guard[] guards;
-    protected Ogre[] ogres;
+    /* ... but villains come in all shapes and sizes depending on the level, so we'll only declare them in their respective level */
 
+    //Game class transforms key received into movement vector and sends that information to the function
+    //Updates every dynamic element's position
     public abstract void updatePositions(int[] input);
-    public abstract void updateCollisions();
-    //With proper modulation, can getLevelMatrix be the same for all levels?
-    public abstract char[][] getLevelMatrix();    
+
+    //Checks if any enemy is in the hero's surroundings and changes level state accordingly if so
+    public abstract void checkIfHeroCaptured();
+
+    /* Returns a copy of the game map with all the characters placed */
+    public abstract char[][] getLevelMatrix();
+
     public abstract Level getNextLevel();
-
-    public boolean enemyInSurroundings(int x, int y, char rep) {
-        if(map.elementAt(x+1,y) == rep ||
-                map.elementAt(x-1,y) == rep || 
-                map.elementAt(x,y+1) == rep || 
-                map.elementAt(x,y-1) == rep)
-            return true;
-
-        return false;
-    }
 
     public boolean hasWon() {
         return levelStatus == LevelState.WON;
     }
+
     public boolean hasLost() {
         return levelStatus == LevelState.LOST;
     }

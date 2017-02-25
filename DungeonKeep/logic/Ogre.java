@@ -3,13 +3,55 @@ package logic;
 public class Ogre extends Character {
 	protected int clubOffsetX;
 	protected int clubOffsetY;
-	
+	protected boolean clubOnKey; //To know when to draw the club as * or $ (note that the ogre itself has 'char representation' from Character)
+
 	public Ogre(int startX, int startY) {
 		super(startX, startY, '0');
 		clubOffsetX = 0;
 		clubOffsetY = 0;
+		clubOnKey = false;
 	}
-	
+
+	public int[] getClubOffset(){
+		int[] result = {clubOffsetX, clubOffsetY};
+		return result;
+	}
+
+	public void setClubOffset(int newOffsetX, int newOffsetY){
+		clubOffsetX = newOffsetX;
+		clubOffsetY = newOffsetY;
+	}
+
+	public void putClubOnKey(){
+		clubOnKey = true;
+	}
+
+	public void removeClubFromKey(){
+		clubOnKey = false;
+	}
+
+	public boolean clubIsOnKey(){
+		return clubOnKey;
+	}
+
+	public boolean hasCaughtHero(int heroX, int heroY){
+		boolean ogreNearHero = (posX == heroX && posY == heroY) || //They're on the same cell
+		 											 (posX == heroX-1 && posY == heroY) || //The ogre is on the cell to the left of the hero
+		 											 (posX == heroX+1 && posY == heroY) || //The ogre is on the cell to the right of the hero
+		 										 	 (posX == heroX && posY == heroY-1) || //The ogre is on the cell above the hero
+		 										 	 (posX == heroX && posY == heroY+1); //The ogre is on the cell below the hero
+
+		int clubX = posX+clubOffsetX;
+		int clubY = posY+clubOffsetY;
+		boolean clubNearHero = (clubX == heroX && clubY == heroY) || //They're on the same cell
+		 											 (clubX == heroX-1 && clubY == heroY) || //The club is on the cell to the left of the hero
+		 											 (clubX == heroX+1 && clubY == heroY) || //The club is on the cell to the right of the hero
+		 										 	 (clubX == heroX && clubY == heroY-1) || //The club is on the cell above the hero
+		 										 	 (clubX == heroX && clubY == heroY+1); //The club is on the cell below the hero
+
+		return ogreNearHero || clubNearHero;
+	}
+
 	private int[] randomMovement() {
         int movementType = generator.nextInt(2);
         int randomY;
@@ -31,67 +73,8 @@ public class Ogre extends Character {
         return result;
     }
 
-    public int[] nextPosition() {
-        int[] ogreCoordinates = getCoordinates();
-        int[] nextMovement = randomMovement();    
-
-        nextMovement[0] += ogreCoordinates[0];
-        nextMovement[1] += ogreCoordinates[1];
-
-        return nextMovement;
-    }
-	
-    /*
-    public void updatePosition(Map map) {
-        // First, calculate the ogre's new position (but not updating it yet) 
-        boolean isLeavingKey = false;
-        int[] ogreCoordinates = getCoordinates();
-        if(map.elementAt(ogreCoordinates[1], ogreCoordinates[0]) == '$')
-            isLeavingKey = true;
-
-        map.setElementAt(ogreCoordinates[1], ogreCoordinates[0], (isLeavingKey ? 'k' : '.'));
-
+    public int[] getNextMovement() { //Will be used for both ogre and its club's movements
         //Generate random integers between -1 and 1;
-        int[] nextRandomMovement;
-        do {
-            nextRandomMovement = randomMovement();    
-        } while(map.elementAt(ogreCoordinates[1]+nextRandomMovement[1], ogreCoordinates[0]+nextRandomMovement[0]) == 'X' ||
-                map.elementAt(ogreCoordinates[1]+nextRandomMovement[1], ogreCoordinates[0]+nextRandomMovement[0]) == 'I' ||
-                map.elementAt(ogreCoordinates[1]+nextRandomMovement[1], ogreCoordinates[0]+nextRandomMovement[0]) == 'S');
-        // About these last two: can't have him go to the door, that's our only way out! 
-
-        // Now, swing his club of doom! 
-        isLeavingKey = false;
-        int clubY = posY + clubOffsetY;
-        int clubX = posX + clubOffsetX;
-        if(map.elementAt(clubX, clubY) == '$')
-            isLeavingKey = true;
-
-        map.setElementAt(clubX, clubY, (isLeavingKey ? 'k' : '.'));
-
-        //Now that we've removed the club from its old position, update the ogre's position and swing it to a new one based on the updated coordinates
-        posY += nextRandomMovement[0];
-        posX += nextRandomMovement[1];
-
-        if(map.elementAt(posX, posY) == 'k') //Checking if ogre's new position is on top of key
-            map.setElementAt(7, 1, '$'); //key on level1 is at (x,y) = (7,1)
-        else
-            map.setElementAt(posX,posY,'0'); //Default case
-
-        //Generate random integers between -1 and 1;
-        int[] nextRandomSwing;
-        do {
-            nextRandomSwing = randomMovement();
-        } while(map.elementAt(posX+nextRandomSwing[1], posY+nextRandomSwing[0]) == 'X' ||
-                map.elementAt(posX+nextRandomSwing[1], posY+nextRandomSwing[0]) == 'I' ||
-                map.elementAt(posX+nextRandomSwing[1], posY+nextRandomSwing[0]) == 'S'); //Could let him swing at the door and open it by force... Maybe later
-
-        clubOffsetY = nextRandomSwing[0];
-        clubOffsetX = nextRandomSwing[1];
-        if(map.elementAt(posX+clubOffsetX, posY+clubOffsetY) == 'k') //Checking if club's new position is on top of key
-            map.setElementAt(7, 1, '$');
-        else
-            map.setElementAt(posX+clubOffsetX, posY+clubOffsetY, '*'); //Default case
+        return randomMovement();
     }
-    */
 }

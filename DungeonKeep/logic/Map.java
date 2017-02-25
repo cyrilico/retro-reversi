@@ -16,5 +16,5 @@ public abstract class Map {
 	}
 
 	public abstract void openDoors();
-    public abstract char[][] getCurrentPlan();
+	public abstract char[][] getCurrentPlan();
 }

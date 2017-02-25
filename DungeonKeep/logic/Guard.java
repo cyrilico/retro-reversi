@@ -35,6 +35,16 @@ public abstract class Guard extends Character{
 		movementIndex = 0;
 	}
 
-	public abstract void updateGuardPosition(); //Different update for each kind of guard. Also, assures this class will never be used by itself, like desired
-
+	public boolean hasCaughtHero(int heroX, int heroY){
+		return representation == 'G' && //Can't catch him if you're asleep (looking at you, Drunken)!
+					 (
+					 	(posX == heroX && posY == heroY) || //They're on the same cell
+						(posX == heroX-1 && posY == heroY) || //The guard is on the cell to the left of the hero
+						(posX == heroX+1 && posY == heroY) || //The guard is on the cell to the right of the hero
+						(posX == heroX && posY == heroY-1) || //The guard is on the cell above the hero
+						(posX == heroX && posY == heroY+1) //The guard is on the cell below the hero
+					 );
+	}
+	
+	public abstract void updatePosition(); //Different kinds of update for different kinds of guards
 }

@@ -1,21 +1,29 @@
 package logic;
 
 public class DungeonLevel extends Level {
+
+    /* The villains for the level */
+    Guard guard;
+
     public DungeonLevel() {
-        //Set initial map
+
+        super();
+
         map = new DungeonMap();
 
-        //Set initial status
-        levelStatus = LevelState.RUNNING;
-
-        //Set characters
+        /*Create level's characters*/
+        //The hero
         hero = new Hero(1,1);
-        guards = new Guard[1];
-        guards[0] = new Rookie(8,1);
-        ogres = null;
+        //The guards
+        guard = new Rookie(8,1);
     }
 
-    //Input is already processed by charToMovement
+    public void checkIfHeroCaptured(){
+      int[] heroCoordinates = hero.getCoordinates();
+       if(guard.hasCaughtHero(heroCoordinates[0],heroCoordinates[1]))
+        levelStatus = LevelState.LOST;
+    }
+
     public void updatePositions(int[] input) {
         int dx = input[0];
         int dy = input[1];
@@ -25,19 +33,15 @@ public class DungeonLevel extends Level {
 
         char currentChar = map.elementAt(heroX+dx, heroY+dy);
 
-        switch(currentChar) {
-            case '.':
-            case 'k':
+        switch(currentChar) { //Checking what is present in the cell the hero wants to move to
             case 'S':
-                //Check if hero is on top of key
-                if(currentChar == 'k')
-                    map.openDoors();
-                //Check if hero is on top of open door
-                if(currentChar == 'S') {
-                    levelStatus = LevelState.WON;
-                    return;
-                }
-            default:
+              levelStatus = LevelState.WON;
+              return; /* Avoids checking for enemies on negative indexes */
+            case 'k':
+              map.openDoors(); /* No need to use the heroHasKey attribute on this level since the hero doesn't change his representation and doors are open right away */
+            case '.':
+              break;
+            default: /* currentChar == 'X' || currentChar = 'I' so we can't move through */
                 dy = 0;
                 dx = 0;
         }
@@ -46,38 +50,9 @@ public class DungeonLevel extends Level {
         hero.setCoordinates(heroX+dx, heroY+dy);
 
         //Update the villains' position
-        for(Guard elem : guards) 
-            elem.updateGuardPosition();
-        for(Ogre elem : ogres) {
-            boolean validMovement = false;
-            int[] nextPosition = new int[2];
-            do {
-                nextPosition = elem.nextPosition();
-                if(map.elementAt(nextPosition[0], nextPosition[1]) == '.')
-                    validMovement = true;
-            } while(!validMovement);
+        guard.updatePosition();
 
-            elem.setCoordinates(nextPosition[0], nextPosition[1]); 
-        }
-    }
-
-    public void updateCollisions() {
-        boolean hasCollision = false;
-
-        int heroX = hero.getCoordinates()[0];
-        int heroY = hero.getCoordinates()[1];
-
-        for(Guard elem : guards) { 
-            if(enemyInSurroundings(heroX, heroY, elem.getRepresentation()))
-                    hasCollision = true;
-        }
-        for(Ogre elem: ogres) {
-            if(enemyInSurroundings(heroX, heroY, elem.getRepresentation()))
-                    hasCollision = true;
-        }
-
-        if(hasCollision)
-        levelStatus = LevelState.LOST;
+        checkIfHeroCaptured();
     }
 
     public char[][] getLevelMatrix() {
@@ -87,20 +62,17 @@ public class DungeonLevel extends Level {
         int[] heroCoordinates = hero.getCoordinates();
         int heroX = heroCoordinates[0];
         int heroY = heroCoordinates[1];
-        matrix[heroX][heroY] = hero.getRepresentation();
+        matrix[heroY][heroX] = hero.getRepresentation();
 
         //Draw villains
-        for(Guard elem : guards) 
-            matrix[elem.getCoordinateX()][elem.getCoordinateY()] = elem.getRepresentation();
-        for(Ogre elem : ogres) 
-            matrix[elem.getCoordinateX()][elem.getCoordinateY()] = elem.getRepresentation();
-
+        int[] guardCoordinates = guard.getCoordinates();
+        int guardX = guardCoordinates[0];
+        int guardY = guardCoordinates[1];
+        matrix[guardY][guardX] = guard.getRepresentation();
         return matrix;
     }
 
     public Level getNextLevel() {
-        return null;
+        return new KeepLevel();
     }
 }
-
-

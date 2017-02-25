@@ -7,36 +7,28 @@ public abstract class Character {
 	protected int posX;
 	protected int posY;
 	protected Random generator;
-	
+
 	public Character(int x, int y, char rep) {
 		posX = x;
 		posY = y;
 		representation = rep;
 		generator = new Random();
 	}
-	
+
 	public int[] getCoordinates(){
 		int[] result = {posX, posY};
 		return result;
 	}
-    
-    public int getCoordinateX() {
-        return posX;
-    }
-
-    public int getCoordinateY() {
-        return posY;
-    }
 
 	public void setCoordinates(int x, int y){
 		posX = x;
 		posY = y;
 	}
-	
+
 	public char getRepresentation(){
 		return representation;
 	}
-	
+
 	public void setRepresentation(char newRep){
 		representation = newRep;
 	}

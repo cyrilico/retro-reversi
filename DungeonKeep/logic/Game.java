@@ -5,7 +5,7 @@ public class Game {
         RUNNING, LOST, WON
     }
 
-	protected GameState gameStatus;
+		protected GameState gameStatus;
     protected Level level;
 
 	public Game() {
@@ -49,30 +49,35 @@ public class Game {
 	}
 
 	public String getCurrentMatrix() {
+				System.out.println("Before getting string map");
         String result = "\n";
-        char[][] matrix = level.getLevelMatrix(); 
+        char[][] matrix = level.getLevelMatrix();
 
-        for(char[] elem : matrix) { 
-            result += new String(elem);
+        for(char[] line : matrix) {
+					for(char element : line)
+            	result += element;
             result += '\n';
         }
+				System.out.println("Before returning string map");
         return result;
     }
 
 	private void advanceLevel() {
-		if(level.getNextLevel() == null)
+		Level newLevel = level.getNextLevel();
+		if(newLevel == null) //No more levels
 			gameStatus = GameState.WON;
 		else
-            level = level.getNextLevel();
+      level = newLevel;
 	}
 
     public void updateGame(char userInput) {
         int[] nextHeroMovement = charToMovement(userInput);
 
         level.updatePositions(nextHeroMovement);
-        level.updateCollisions();
         if(level.hasWon())
             advanceLevel();
+				else if(level.hasLost())
+						gameStatus = GameState.LOST;
     }
 
 	public boolean isRunning() {
