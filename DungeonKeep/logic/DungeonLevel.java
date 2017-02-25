@@ -25,6 +25,7 @@ public class DungeonLevel extends Level {
     }
 
     public void updatePositions(int[] input) {
+        //Update the hero's position
         int dx = input[0];
         int dy = input[1];
 
@@ -46,7 +47,6 @@ public class DungeonLevel extends Level {
                 dx = 0;
         }
 
-        //Update the hero's position
         hero.setCoordinates(heroX+dx, heroY+dy);
 
         //Update the villains' position

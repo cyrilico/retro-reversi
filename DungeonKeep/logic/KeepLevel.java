@@ -13,7 +13,7 @@ public class KeepLevel extends Level {
 
         /*Create level's characters*/
         //The hero
-        hero = new Hero(7,1);
+        hero = new Hero(1,7);
         //The ogres
         ogre = new Ogre(4,1);
     }
@@ -25,6 +25,7 @@ public class KeepLevel extends Level {
     }
 
     public void updatePositions(int[] input) {
+        //Update the hero's position
         int dx = input[0];
         int dy = input[1];
 
@@ -50,7 +51,6 @@ public class KeepLevel extends Level {
                 dx = 0;
         }
 
-        //Update the hero's position
         hero.setCoordinates(heroX+dx, heroY+dy);
 
         //Update the villains' position
@@ -75,6 +75,9 @@ public class KeepLevel extends Level {
         }while(true); //Risky...
 
         ogre.setCoordinates(ogreX+nextMovement[0],ogreY+nextMovement[1]);
+        //Re-get coordinates so club isn't looking for a new position based on old ones
+        ogreX = ogre.getCoordinates()[0];
+        ogreY = ogre.getCoordinates()[1];
 
         //Update the ogre's club's position
         generateClubMovement:

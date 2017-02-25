@@ -69,7 +69,7 @@ public class Ogre extends Character {
           randomX = 0;
         }
 
-        int[] result = {randomY, randomX};
+        int[] result = {randomX, randomY};
         return result;
     }
 

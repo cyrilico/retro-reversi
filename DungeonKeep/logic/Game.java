@@ -37,10 +37,10 @@ public class Game {
 	public void finalMessage() {
         switch(gameStatus){
         case LOST:
-            System.out.println("Captured!");
+            System.out.println("You've been captured!");
             break;
         case WON:
-            System.out.println("Escaped!");
+            System.out.println("You've escaped from all levels!");
             break;
         default:
             System.out.println("How did you end up here?!"); //If it reaches this case... screw this, I'm out!
@@ -49,7 +49,6 @@ public class Game {
 	}
 
 	public String getCurrentMatrix() {
-				System.out.println("Before getting string map");
         String result = "\n";
         char[][] matrix = level.getLevelMatrix();
 
@@ -58,11 +57,12 @@ public class Game {
             	result += element;
             result += '\n';
         }
-				System.out.println("Before returning string map");
-        return result;
+
+				return result;
     }
 
 	private void advanceLevel() {
+		System.out.println("You escaped this level. Let's see what awaits you next...");
 		Level newLevel = level.getNextLevel();
 		if(newLevel == null) //No more levels
 			gameStatus = GameState.WON;
