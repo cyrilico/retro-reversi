@@ -2,12 +2,10 @@ package logic;
 
 public class Drunken extends Guard{
 	protected boolean invertedDirection; //To see if he's following the path in the normal or inverse direction
-	protected boolean hasJustInverted; //To see if he just inverted his path's direction
 
 	public Drunken(int startX, int startY) {
 		super(startX, startY);
 		invertedDirection = false;
-		hasJustInverted = false;
 	}
 
 	public void updatePosition(){
