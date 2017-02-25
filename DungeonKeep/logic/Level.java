@@ -21,7 +21,6 @@ public abstract class Level {
     public abstract char[][] getLevelMatrix();    
     public abstract Level getNextLevel();
 
-
     public boolean enemyInSurroundings(int x, int y, char rep) {
         if(map.elementAt(x+1,y) == rep ||
                 map.elementAt(x-1,y) == rep || 

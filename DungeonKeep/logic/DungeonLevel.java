@@ -46,16 +46,18 @@ public class DungeonLevel extends Level {
         hero.setCoordinates(heroX+dx, heroY+dy);
 
         //Update the villains' position
-        for (Guard elem : guards) 
+        for(Guard elem : guards) 
             elem.updateGuardPosition();
         for(Ogre elem : ogres) {
             boolean validMovement = false;
+            int[] nextPosition = new int[2];
             do {
-                int[] nextPosition = elem.nextPosition();
-                if(map.elementAt(nextPosition[0],nextPosition[1]) == '.')
+                nextPosition = elem.nextPosition();
+                if(map.elementAt(nextPosition[0], nextPosition[1]) == '.')
                     validMovement = true;
             } while(!validMovement);
-           elem.setCoordinates(nextPosition[0], nextPosition[1]); 
+
+            elem.setCoordinates(nextPosition[0], nextPosition[1]); 
         }
     }
 

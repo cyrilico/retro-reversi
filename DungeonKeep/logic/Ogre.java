@@ -31,39 +31,36 @@ public class Ogre extends Character {
         return result;
     }
 
-    public void nextPosition() {
+    public int[] nextPosition() {
         int[] ogreCoordinates = getCoordinates();
+        int[] nextMovement = randomMovement();    
 
-        //Generate random integers between -1 and 1;
-        int[] nextMovement;
-        do {
-            nextMovement = randomMovement();    
-            } while(map.elementAt(ogreCoordinates[1]+nextMovement[1], ogreCoordinates[0]+nextMovement[0]) == 'X' ||
-                map.elementAt(ogreCoordinates[1]+nextMovement[1], ogreCoordinates[0]+nextMovement[0]) == 'I' ||
-                map.elementAt(ogreCoordinates[1]+nextMovement[1], ogreCoordinates[0]+nextMovement[0]) == 'S');
-        /* About these last two: can't have him go to the door, that's our only way out! */
+        nextMovement[0] += ogreCoordinates[0];
+        nextMovement[1] += ogreCoordinates[1];
 
+        return nextMovement;
     }
 	
-	public void updatePosition(Map map) {
-        /* First, calculate the ogre's new position (but not updating it yet) */
+    /*
+    public void updatePosition(Map map) {
+        // First, calculate the ogre's new position (but not updating it yet) 
         boolean isLeavingKey = false;
         int[] ogreCoordinates = getCoordinates();
         if(map.elementAt(ogreCoordinates[1], ogreCoordinates[0]) == '$')
             isLeavingKey = true;
 
         map.setElementAt(ogreCoordinates[1], ogreCoordinates[0], (isLeavingKey ? 'k' : '.'));
-        
+
         //Generate random integers between -1 and 1;
         int[] nextRandomMovement;
         do {
             nextRandomMovement = randomMovement();    
         } while(map.elementAt(ogreCoordinates[1]+nextRandomMovement[1], ogreCoordinates[0]+nextRandomMovement[0]) == 'X' ||
-        		map.elementAt(ogreCoordinates[1]+nextRandomMovement[1], ogreCoordinates[0]+nextRandomMovement[0]) == 'I' ||
-        		map.elementAt(ogreCoordinates[1]+nextRandomMovement[1], ogreCoordinates[0]+nextRandomMovement[0]) == 'S');
-        /* About these last two: can't have him go to the door, that's our only way out! */
+                map.elementAt(ogreCoordinates[1]+nextRandomMovement[1], ogreCoordinates[0]+nextRandomMovement[0]) == 'I' ||
+                map.elementAt(ogreCoordinates[1]+nextRandomMovement[1], ogreCoordinates[0]+nextRandomMovement[0]) == 'S');
+        // About these last two: can't have him go to the door, that's our only way out! 
 
-        /* Now, swing his club of doom! */
+        // Now, swing his club of doom! 
         isLeavingKey = false;
         int clubY = posY + clubOffsetY;
         int clubX = posX + clubOffsetX;
@@ -86,8 +83,8 @@ public class Ogre extends Character {
         do {
             nextRandomSwing = randomMovement();
         } while(map.elementAt(posX+nextRandomSwing[1], posY+nextRandomSwing[0]) == 'X' ||
-        		map.elementAt(posX+nextRandomSwing[1], posY+nextRandomSwing[0]) == 'I' ||
-        		map.elementAt(posX+nextRandomSwing[1], posY+nextRandomSwing[0]) == 'S'); //Could let him swing at the door and open it by force... Maybe later
+                map.elementAt(posX+nextRandomSwing[1], posY+nextRandomSwing[0]) == 'I' ||
+                map.elementAt(posX+nextRandomSwing[1], posY+nextRandomSwing[0]) == 'S'); //Could let him swing at the door and open it by force... Maybe later
 
         clubOffsetY = nextRandomSwing[0];
         clubOffsetX = nextRandomSwing[1];
@@ -96,4 +93,5 @@ public class Ogre extends Character {
         else
             map.setElementAt(posX+clubOffsetX, posY+clubOffsetY, '*'); //Default case
     }
+    */
 }

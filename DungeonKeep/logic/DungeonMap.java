@@ -18,19 +18,17 @@ public class DungeonMap extends Map{
    setMap(tempMatrix);
   }
 
-  public abstract Map getNextLevel(){
-    return new KeepMap();
-  }
-
-  public abstract void openDoors(){
+  public void openDoors() {
     mapMatrix[5][0] = 'S';
     mapMatrix[6][0] = 'S';
   }
 
-  public abstract char[][] getCurrentPlan(){
+  public char[][] getCurrentPlan() {
     char[][] plant = new char[10][10];
     int index = 0;
     for(char[] line : mapMatrix)
       plant[index++] = (char[])line.clone();
+
+    return plant;
   }
 }

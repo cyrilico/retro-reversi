@@ -15,7 +15,6 @@ public abstract class Map {
 		return mapMatrix[y][x];
 	}
 
-	public abstract Map getNextLevel();
 	public abstract void openDoors();
-	public abstract char[][] getCurrentPlan();
+    public abstract char[][] getCurrentPlan();
 }
