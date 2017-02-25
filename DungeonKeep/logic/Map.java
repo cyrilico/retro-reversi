@@ -3,7 +3,7 @@ package logic;
 public abstract class Map {
 	protected char[][] mapMatrix;
 
-	protected void setMap(char[][] newMap){
+	protected void setMap(char[][] newMap) {
 		int index = 0;
 		for(char[] line : newMap)
 			mapMatrix[index++] = (char[])line.clone();
@@ -11,7 +11,7 @@ public abstract class Map {
 
 	public Map() {}
 
-	public char elementAt(int x, int y){
+	public char elementAt(int x, int y) {
 		return mapMatrix[y][x];
 	}
 

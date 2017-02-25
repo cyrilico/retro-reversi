@@ -3,7 +3,7 @@ package logic;
 public class DungeonLevel extends Level {
     public DungeonLevel() {
         //Set initial map
-        map = new DungeonLevel();
+        map = new DungeonMap();
 
         //Set initial status
         levelStatus = LevelState.RUNNING;
@@ -16,7 +16,7 @@ public class DungeonLevel extends Level {
     }
 
     //Input is already processed by charToMovement
-    public void updateLevel(int[] input) {
+    public void updatePositions(int[] input) {
         int dx = input[0];
         int dy = input[1];
 
@@ -31,7 +31,7 @@ public class DungeonLevel extends Level {
             case 'S':
                 //Check if hero is on top of key
                 if(currentChar == 'k')
-                    openDoors();
+                    map.openDoors();
                 //Check if hero is on top of open door
                 if(currentChar == 'S') {
                     levelStatus = LevelState.WON;
@@ -59,22 +59,46 @@ public class DungeonLevel extends Level {
         }
     }
 
+    public void updateCollisions() {
+        boolean hasCollision = false;
+
+        int heroX = hero.getCoordinates()[0];
+        int heroY = hero.getCoordinates()[1];
+
+        for(Guard elem : guards) { 
+            if(enemyInSurroundings(heroX, heroY, elem.getRepresentation()))
+                    hasCollision = true;
+        }
+        for(Ogre elem: ogres) {
+            if(enemyInSurroundings(heroX, heroY, elem.getRepresentation()))
+                    hasCollision = true;
+        }
+
+        if(hasCollision)
+        levelStatus = LevelState.LOST;
+    }
+
     public char[][] getLevelMatrix() {
         char[][] matrix = map.getCurrentPlan();
 
         //Draw hero
-        matrix[hero.getCoordinates()[1], hero.getCoordinates()[0]] = hero.getRepresentation();
+        int[] heroCoordinates = hero.getCoordinates();
+        int heroX = heroCoordinates[0];
+        int heroY = heroCoordinates[1];
+        matrix[heroX][heroY] = hero.getRepresentation();
 
         //Draw villains
         for(Guard elem : guards) 
-            matrix[elem.getCoordinates()[1], elem.getCoordinates()[0]] = elem.getRepresentation();
+            matrix[elem.getCoordinateX()][elem.getCoordinateY()] = elem.getRepresentation();
         for(Ogre elem : ogres) 
-            matrix[elem.getCoordinates()[1], elem.getCoordinates()[0]] = elem.getRepresentation();
-        //Missing club drawing in ogre's case
-    
-        return matrix;
-}
+            matrix[elem.getCoordinateX()][elem.getCoordinateY()] = elem.getRepresentation();
 
+        return matrix;
+    }
+
+    public Level getNextLevel() {
+        return null;
+    }
 }
 
 

@@ -16,10 +16,18 @@ public abstract class Character {
 	}
 	
 	public int[] getCoordinates(){
-		int[] result = {posY, posX};
+		int[] result = {posX, posY};
 		return result;
 	}
-	
+    
+    public int getCoordinateX() {
+        return posX;
+    }
+
+    public int getCoordinateY() {
+        return posY;
+    }
+
 	public void setCoordinates(int x, int y){
 		posX = x;
 		posY = y;

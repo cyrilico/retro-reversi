@@ -11,7 +11,6 @@ public class Game {
 	public Game() {
 		gameStatus = GameState.RUNNING;
 		level = new DungeonLevel();
-
 	}
 
 	private int[] charToMovement(char input){
@@ -35,7 +34,7 @@ public class Game {
         return result;
     }
 
-	public void finalMessage(){
+	public void finalMessage() {
         switch(gameStatus){
         case LOST:
             System.out.println("Captured!");
@@ -49,38 +48,34 @@ public class Game {
         }
 	}
 
-	public String sendMap(){}
+	public String getCurrentMatrix() {
+        String result = "\n";
+        char[][] matrix = level.getLevelMatrix(); 
 
-	private void advanceLevel(){
-		if((map = map.getNextLevel()) == null)
+        for(char[] elem : matrix) { 
+            result += new String(elem);
+            result += '\n';
+        }
+        return result;
+    }
+
+	private void advanceLevel() {
+		if(level.getNextLevel() == null)
 			gameStatus = GameState.WON;
 		else
-            level = leve.getNextLevel();
+            level = level.getNextLevel();
 	}
 
     public void updateGame(char userInput) {
         int[] nextHeroMovement = charToMovement(userInput);
 
-        level.updateLevel(nextHeroMovement);
+        level.updatePositions(nextHeroMovement);
+        level.updateCollisions();
         if(level.hasWon())
             advanceLevel();
     }
 
-    public void playerHasLost(){
-    	int[] heroCoordinates = hero.getCoordinates();
-        if(level == 0) {
-            if(map.enemyInSurroundings(heroCoordinates[1],heroCoordinates[0],'G'))
-                gameStatus = GameState.LOST;
-        }
-        else if(level == 1) {
-            if(map.enemyInSurroundings(heroCoordinates[1],heroCoordinates[0],'0') ||
-            	map.enemyInSurroundings(heroCoordinates[1],heroCoordinates[0],'$') ||
-            	map.enemyInSurroundings(heroCoordinates[1],heroCoordinates[0],'*')) //Respectively: ogre, ogre while in key position, ogre's club
-            gameStatus = GameState.LOST;
-        }
-    }
-
-	public boolean isRunning(){
+	public boolean isRunning() {
 		return gameStatus == GameState.RUNNING;
 	}
 }
