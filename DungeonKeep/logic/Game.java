@@ -8,9 +8,9 @@ public class Game {
 		protected GameState gameStatus;
     protected Level level;
 
-	public Game() {
+	public Game(Level level) {
 		gameStatus = GameState.RUNNING;
-		level = new DungeonLevel();
+		this.level = level;
 	}
 
 	private int[] charToMovement(char input){

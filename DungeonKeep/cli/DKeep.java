@@ -7,7 +7,7 @@ public class DKeep {
 	public Game game;
 
 	public DKeep() {
-		game = new Game();
+		game = new Game(new DungeonLevel());
 	}
 
 	public static void main(String[] args) {
