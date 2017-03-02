@@ -38,17 +38,14 @@ public class Game {
         return result;
     }
 
-	public void finalMessage() {
+	public String finalMessage() {
         switch(gameStatus){
         case LOST:
-            System.out.println("You've been captured!");
-            break;
+            return "You've been captured!";
         case WON:
-            System.out.println("You've escaped from all levels!");
-            break;
+            return "You've escaped from all levels!";
         default:
-            System.out.println("How did you end up here?!"); //If it reaches this case... screw this, I'm out!
-            break;
+            return "How did you end up here?!";
         }
 	}
 

@@ -25,6 +25,6 @@ public class DKeep {
 
 	        buffer.close();
 
-	        session.game.finalMessage(); /*Instead of that switch, which will be in the Game class*/
+	        System.out.println(session.game.finalMessage()); /*Instead of that switch, which will be in the Game class*/
 	}
 }
