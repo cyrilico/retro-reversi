@@ -12,7 +12,8 @@ public class DungeonLevel extends Level {
     public DungeonLevel() {
 
         super();
-
+        
+        levelIndex = 0;
         guardGenerator = new Random();
         map = new DungeonMap();
 

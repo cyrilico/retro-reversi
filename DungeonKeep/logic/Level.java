@@ -7,6 +7,8 @@ public abstract class Level {
 
     protected boolean heroHasKey;
     protected LevelState levelStatus;
+    protected int levelIndex;
+    
     public Level() {
       heroHasKey = false;
       levelStatus = LevelState.RUNNING;
@@ -28,6 +30,10 @@ public abstract class Level {
     public abstract char[][] getLevelMatrix();
 
     public abstract Level getNextLevel();
+    
+    public int getIndex(){
+    	return levelIndex;
+    }
 
     public boolean hasWon() {
         return levelStatus == LevelState.WON;

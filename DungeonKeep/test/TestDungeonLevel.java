@@ -1,5 +1,6 @@
-package logic;
+package test;
 
+import logic.*;
 import java.util.Random;
 
 public class TestDungeonLevel extends Level {
@@ -11,8 +12,9 @@ public class TestDungeonLevel extends Level {
     public TestDungeonLevel() {
 
         super();
-
-        map = new DungeonMap();
+        
+        levelIndex = 2;
+        map = new TestDungeonMap();
 
         /*Create level's characters*/
         //The hero
@@ -83,6 +85,6 @@ public class TestDungeonLevel extends Level {
     }
 
     public Level getNextLevel() {
-        return null;
+        return new KeepLevel();
     }
 }

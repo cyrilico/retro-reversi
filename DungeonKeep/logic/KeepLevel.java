@@ -13,7 +13,8 @@ public class KeepLevel extends Level {
     public KeepLevel() {
 
         super();
-
+        
+        levelIndex = 1;
         map = new KeepMap();
 
         /*Create level's characters*/

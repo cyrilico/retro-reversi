@@ -1,8 +1,10 @@
-package logic;
+package test;
+
+import logic.Map;
 
 public class TestDungeonMap extends Map {
     public TestDungeonMap(){
-        mapMatrix = new char[10][10];
+        mapMatrix = new char[5][5];
         char[][] tempMatrix = {
                 {'X','X','X','X','X'},
                 {'X','.','.','.','X'},

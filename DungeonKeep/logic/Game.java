@@ -12,6 +12,10 @@ public class Game {
 		gameStatus = GameState.RUNNING;
 		this.level = level;
 	}
+	
+	public int getCurrentLevelIndex(){
+		return level.getIndex();
+	}
 
 	private int[] charToMovement(char input){
         int[] result = new int[2];
