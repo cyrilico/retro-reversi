@@ -1,7 +1,5 @@
-package test;
+package logic;
 
-import logic.*;
-import java.util.Random;
 
 /* NOTE: Although this is an independent level, it is highly based on the 'real' DungeonLevel, with the only changes being:
  * - The map (it is a smaller one, defined in TestDungeonMap.java)

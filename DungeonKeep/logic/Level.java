@@ -42,4 +42,8 @@ public abstract class Level {
     public boolean hasLost() {
         return levelStatus == LevelState.LOST;
     }
+    
+    public int[] getHeroCoordinates(){
+    	return hero.getCoordinates();
+    }
 }

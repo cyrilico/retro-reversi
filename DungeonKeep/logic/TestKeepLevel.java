@@ -1,6 +1,4 @@
-package test;
-
-import logic.*;
+package logic;
 
 /* NOTE: Although this is an independent level, it is highly based on the 'real' KeepLevel, with the only changes being:
  * - The map (it is a smaller one, defined in TestKeepMap.java)

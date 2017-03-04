@@ -1,6 +1,4 @@
-package test;
-
-import logic.Map;
+package logic;
 
 public class TestDungeonMap extends Map {
     public TestDungeonMap(){
