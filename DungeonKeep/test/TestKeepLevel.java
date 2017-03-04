@@ -2,16 +2,25 @@ package test;
 
 import logic.*;
 
+/* NOTE: Although this is an independent level, it is highly based on the 'real' KeepLevel, with the only changes being:
+ * - The map (it is a smaller one, defined in TestKeepMap.java)
+ * - The ogre, which movement is based on a boolean flag (which can be easily added to the 'real' level altering very few lines of code)
+ * - The characters' starting positions
+ * 
+ * In order not to modify the original content these levels were created. Due to their similarity in the game functionalities, it
+ * is expected that these are a good telling if the game logic is working well or not
+ */
+
 public class TestKeepLevel extends Level {
 	
-	boolean ogreMoves;
-    /* The villains for the level */
+	/* The villains for the level */
     Ogre ogre;
+    boolean ogreMoves;
 
-    public TestKeepLevel() {
+    public TestKeepLevel(boolean ogreMoves) {
 
         super();
-        ogreMoves = false;
+        this.ogreMoves = ogreMoves;
         levelIndex = 1;
         map = new TestKeepMap();
 
@@ -118,7 +127,7 @@ generateClubMovement:
             ogre.setClubOffset(nextMovement[0],nextMovement[1]);
         }
 
-        checkIfHeroStuns();
+        //checkIfHeroStuns();
         checkIfHeroCaptured();
     }
 
@@ -147,6 +156,18 @@ generateClubMovement:
     public int[] getHeroCoordinates() {
         int[] result = hero.getCoordinates();
         return result;
+    }
+    
+    public int[] getOgreCoordinates(){
+    	return ogre.getCoordinates();
+    }
+    
+    public int[] getOgreClubCoordinates(){
+    	int[] ogreCoo = getOgreCoordinates();
+    	int[] offset = ogre.getClubOffset();
+    	ogreCoo[0] += offset[0];
+    	ogreCoo[1] += offset[1];
+    	return ogreCoo;
     }
     
     public char getHeroRep(){

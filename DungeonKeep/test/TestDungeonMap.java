@@ -20,7 +20,6 @@ public class TestDungeonMap extends Map {
         mapMatrix[3][0] = 'S';
     }
 
-    //MODULE THIS SHIT LATER
     public char[][] getCurrentPlan(){
         char[][] plant = new char[5][5];
         int index = 0;

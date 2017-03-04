@@ -3,9 +3,16 @@ package test;
 import logic.*;
 import java.util.Random;
 
+/* NOTE: Although this is an independent level, it is highly based on the 'real' DungeonLevel, with the only changes being:
+ * - The map (it is a smaller one, defined in TestDungeonMap.java)
+ * - The guard, which does not move
+ * - The characters' starting positions
+ * 
+ * In order not to modify the original content these levels were created. Due to their similarity in the game functionalities, it
+ * is expected that these are a good telling if the game logic is working well or not
+ */
+
 public class TestDungeonLevel extends Level {
-    /* To randomly choose a type of guard for the level */
-    Random guardGenerator;
     /* The villains for the level */
     Guard guard;
 
