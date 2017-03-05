@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.ArrayList;
+
 /* NOTE: Although this is an independent level, it is highly based on the 'real' KeepLevel, with the only changes being:
  * - The map (it is a smaller one, defined in TestKeepMap.java)
  * - The ogre, which movement is based on a boolean flag (which can be easily added to the 'real' level altering very few lines of code)
@@ -151,6 +153,7 @@ generateClubMovement:
         return matrix;
     }
     
+    
     public int[] getHeroCoordinates() {
         int[] result = hero.getCoordinates();
         return result;
@@ -166,6 +169,10 @@ generateClubMovement:
     	ogreCoo[0] += offset[0];
     	ogreCoo[1] += offset[1];
     	return ogreCoo;
+    }
+    
+    public Ogre getOgre() {
+    	return ogre;
     }
     
     public char getHeroRep(){

@@ -77,6 +77,14 @@ public class DungeonLevel extends Level {
 
         checkIfHeroCaptured();
     }
+    
+    public int[] getGuardCoordinates() {
+    	return guard.getCoordinates();
+    }
+    
+    public Guard getGuard() {
+    	return guard;
+    }
 
     public char[][] getLevelMatrix() {
         char[][] matrix = map.getCurrentPlan();

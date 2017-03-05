@@ -83,6 +83,10 @@ public class TestDungeonLevel extends Level {
         matrix[guardY][guardX] = guard.getRepresentation();
         return matrix;
     }
+    
+    public Guard getGuard() {
+    	return guard;
+    }
 
     public int[] getHeroCoordinates() {
         int[] result = hero.getCoordinates();

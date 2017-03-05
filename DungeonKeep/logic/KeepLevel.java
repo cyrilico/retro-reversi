@@ -131,7 +131,12 @@ generateClubMovement:
         checkIfHeroStuns();
         checkIfHeroCaptured();
     }
-
+    
+    public ArrayList<Ogre> getOgres() {
+    	ArrayList<Ogre> clone = (ArrayList<Ogre>)ogres.clone();
+		return clone;
+    }
+    
     public char[][] getLevelMatrix() {
         char[][] matrix = map.getCurrentPlan();
 

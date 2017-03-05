@@ -43,7 +43,11 @@ public abstract class Level {
         return levelStatus == LevelState.LOST;
     }
     
-    public int[] getHeroCoordinates(){
+    public int[] getHeroCoordinates() {
     	return hero.getCoordinates();
+    }
+    
+    public char getHeroRep() {
+    	return hero.getRepresentation();
     }
 }

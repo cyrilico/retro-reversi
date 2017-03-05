@@ -1,9 +1,13 @@
 package test;
 
 import static org.junit.Assert.*;
+
+import java.util.ArrayList;
 import java.util.Random;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import logic.*;
 
@@ -11,6 +15,21 @@ public class TestLogic {
 	
 	/* TESTDUNGEON LEVEL TESTING */
 	
+	@Test
+	public void TestGuardInitialValues() {
+		Level testLevel = new TestDungeonLevel();
+        Game game = new Game(testLevel);
+        
+        Guard guard = ((TestDungeonLevel) testLevel).getGuard();
+        if(guard == null)
+        	fail("Guard is null");
+       
+        assertFalse(guard.hasCaughtHero(1, 1)); //Hero's initial position
+        assertEquals('G', guard.getRepresentation());
+        int startingPosition[] = {3, 1}; 
+        assertArrayEquals(startingPosition, guard.getCoordinates());  
+	}
+
 	@Test
     public void testMoveHeroIntoFreeCell() {
         Level testLevel = new TestDungeonLevel();
@@ -24,7 +43,7 @@ public class TestLogic {
     }
 	
 	@Test
-	public void testMoveHeroIntoWall(){
+	public void testMoveHeroIntoWall() {
         Level testLevel = new TestDungeonLevel();
         Game game = new Game(testLevel);
         int[] startingPosition = {1,1};
@@ -38,7 +57,7 @@ public class TestLogic {
 	}
 	
 	@Test
-	public void testMoveHeroIntoGuard(){
+	public void testMoveHeroIntoGuard() {
         Level testLevel = new TestDungeonLevel();
         Game game = new Game(testLevel);
         int[] startingPosition = {1,1};
@@ -76,12 +95,15 @@ public class TestLogic {
         assertArrayEquals(endingPosition, ((TestDungeonLevel) testLevel).getHeroCoordinates());
         assertEquals(game.isRunning(), true);
         char[][] currentPlan = testLevel.getLevelMatrix();
+        if(currentPlan == null)
+        	fail("currentPlan is null");
+        
         assertEquals('S', currentPlan[2][0]);
         assertEquals('S', currentPlan[3][0]);
 	}
 	
 	@Test
-	public void testHeroProgresses(){
+	public void testHeroProgresses() {
         Game game = new Game(new TestDungeonLevel());
         //Remember: Each level has an unique index: 2 is for TestDungeonLevel
         assertEquals(2, game.getCurrentLevelIndex());
@@ -90,11 +112,28 @@ public class TestLogic {
         game.updateGame('a');
 
         assertEquals(game.isRunning(), true);
+        
         //1 is the KeepLevel's unique index
         assertEquals(1, game.getCurrentLevelIndex());
 	}
 	
 	/* TESTKEEP LEVEL TESTING */
+	
+	@Test
+	public void TestOgreInitialValues() {
+		Level testLevel = new TestKeepLevel(false);
+        Game game = new Game(testLevel);
+        
+        Ogre ogre = ((TestKeepLevel) testLevel).getOgre();
+       
+        assertFalse(ogre.clubIsOnKey());
+        assertFalse(ogre.isNearHero(1, 7)); //Hero's initial position
+        assertFalse(ogre.hasCaughtHero(1, 7)); //Hero's initial position
+        assertEquals(0, ogre.isStunned());
+
+        int clubOffset[] = ogre.getClubOffset();
+        assertTrue(clubOffset[0] == 0 && clubOffset[1] == 0);
+	}
 	
 	@Test
 	public void TestHeroMovesIntoOgre() {
@@ -105,6 +144,10 @@ public class TestLogic {
         game.updateGame('s');
 
         assertFalse(game.isRunning());
+        String finalMessage = game.finalMessage();
+        if(finalMessage == null)
+        	fail("finalMessage is null");
+
         assertEquals(game.finalMessage(),"You've been captured!");
 	}
 	
@@ -117,6 +160,7 @@ public class TestLogic {
         game.updateGame('d');
         
         assertEquals('K', ((TestKeepLevel) testLevel).getHeroRep());
+        assertEquals(game.isRunning(), true);
 	}
 	
 	@Test
@@ -128,6 +172,9 @@ public class TestLogic {
         int[] expectedPosition = {1,1};
         assertArrayEquals(expectedPosition, ((TestKeepLevel) testLevel).getHeroCoordinates());
         char[][] currentPlan = testLevel.getLevelMatrix();
+        if(currentPlan == null)
+        	fail("currentPlan is null");
+
         assertEquals(currentPlan[1][0], 'I');
         assertTrue(game.isRunning());
 	}
@@ -150,12 +197,15 @@ public class TestLogic {
         int[] expectedPosition = {1,1};
         assertArrayEquals(expectedPosition, ((TestKeepLevel) testLevel).getHeroCoordinates());
         char[][] currentPlan = testLevel.getLevelMatrix();
+        if(currentPlan == null)
+        	fail("currentPlan is null");
+
         assertEquals(currentPlan[1][0], 'S');
         assertTrue(game.isRunning());
 	}
 	
 	@Test
-	public void TestHeroEscapes(){
+	public void TestHeroEscapes() {
 		Level testLevel = new TestKeepLevel(false);
         Game game = new Game(testLevel);
         game.updateGame('d');
@@ -172,16 +222,18 @@ public class TestLogic {
         int[] expectedPosition = {1,1};
         assertArrayEquals(expectedPosition, ((TestKeepLevel) testLevel).getHeroCoordinates());
         char[][] currentPlan = testLevel.getLevelMatrix();
+        if(currentPlan == null)
+        	fail("currentPlan is null");
+
         assertEquals(currentPlan[1][0], 'S');
         assertTrue(game.isRunning());
         game.updateGame('a');
         assertFalse(game.isRunning());
         assertEquals("You've escaped from all levels!", game.finalMessage());
-        
 	}
 	
 	@Test(timeout = 1000)
-	public void TestOgreRandomMovement(){
+	public void TestOgreRandomMovement() {
 		Level testLevel = new TestKeepLevel(true);
         Game game = new Game(testLevel);
         
@@ -245,7 +297,7 @@ public class TestLogic {
 	/* 'NORMAL' DUNGEON LEVEL TESTING */
 	
 	@Test
-	public void TestDungeonHeroMovement(){
+	public void TestDungeonHeroMovement() {
 		Level testLevel = new DungeonLevel();
         Game game = new Game(testLevel);
         
@@ -260,10 +312,59 @@ public class TestLogic {
         assertArrayEquals(endingPosition, testLevel.getHeroCoordinates());
 	}
 	
+	@Test
+	public void TestDungeonHeroInitialValues() {
+		Level testLevel = new DungeonLevel();
+        Game game = new Game(testLevel);
+        
+        Guard guard = ((DungeonLevel)testLevel).getGuard();
+        if(guard == null)
+        	fail("Guard is null");
+        
+        assertFalse(guard.hasCaughtHero(1, 1)); //Hero's initial position
+        assertEquals('G', guard.getRepresentation());
+	}
+	
+	@Test
+	public void TestDungeonGuardMovement() {
+		Level testLevel = new DungeonLevel();
+        Game game = new Game(testLevel);
+        
+        int[] startingPosition = {8,1};
+        assertArrayEquals(startingPosition, ((DungeonLevel)testLevel).getGuardCoordinates());
+        
+        game.updateGame('d');
+        game.updateGame('s'); //This one isn't valid
+        game.updateGame('d');
+        
+        int[] endingPosition = ((DungeonLevel)testLevel).getGuardCoordinates();
+
+        assertFalse((startingPosition[0] == endingPosition[0]) && (startingPosition[1] == endingPosition[1]));
+	}
+	
+	@Test
+	public void TestDungeonGetMatrix() {
+		Level testLevel = new DungeonLevel();
+        Game game = new Game(testLevel);
+		
+        char[][] currentPlan = testLevel.getLevelMatrix();
+        if(currentPlan == null)
+        	fail("currentPlan is null");	
+	}
+
+	@Test
+	public void TestDungeonNextLevel() {
+		Level testLevel = new DungeonLevel();
+		Game game = new Game(testLevel);
+
+		if(testLevel.getNextLevel() == null)
+			fail("Next level is null");
+	}
+	
 	/* 'NORMAL' KEEP LEVEL TESTING */
 	
 	@Test(timeout = 1000)
-	public void TestKeepHeroMovement(){
+	public void TestKeepHeroMovement() {
 		Level testLevel = new KeepLevel();
         Game game = new Game(testLevel);
         
@@ -278,5 +379,51 @@ public class TestLogic {
 
         int[] endingPosition = {4,7};
         assertArrayEquals(endingPosition, testLevel.getHeroCoordinates());
+	}
+	
+	@Test
+	public void TestKeepHeroRepresentation() {
+		Level testLevel = new KeepLevel();
+        Game game = new Game(testLevel);	
+        
+        assertEquals('A', testLevel.getHeroRep());
+	}
+	
+	@Test
+	public void TestKeepOgreInitialValues() {
+		Level testLevel = new KeepLevel();
+		Game game = new Game(testLevel);
+
+		ArrayList<Ogre> ogres = ((KeepLevel) testLevel).getOgres();
+
+		for(Ogre elem : ogres) {
+			assertFalse(elem.clubIsOnKey());
+			assertFalse(elem.isNearHero(1, 7)); //Hero's initial position
+			assertFalse(elem.hasCaughtHero(1, 7)); //Hero's initial position
+			assertEquals(0, elem.isStunned());
+			assertEquals('0', elem.getRepresentation());
+
+			int clubOffset[] = elem.getClubOffset();
+			assertTrue(clubOffset[0] == 0 && clubOffset[1] == 0);
+		}
+	}
+	
+	@Test
+	public void TestKeepGetMatrix() {
+		Level testLevel = new KeepLevel();
+        Game game = new Game(testLevel);
+		
+        char[][] currentPlan = testLevel.getLevelMatrix();
+        if(currentPlan == null)
+        	fail("currentPlan is null");	
+	}
+
+	@Test
+	public void TestKeepNextLevel() {
+		Level testLevel = new KeepLevel();
+		Game game = new Game(testLevel);
+
+		if(testLevel.getNextLevel() != null)
+			fail("Next level is not null");
 	}
 }
