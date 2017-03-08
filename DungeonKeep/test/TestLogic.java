@@ -426,4 +426,42 @@ public class TestLogic {
 		if(testLevel.getNextLevel() != null)
 			fail("Next level is not null");
 	}
-}
+	
+	@Test
+	public void TestOgreRepresentation() {
+		Level testLevel = new KeepLevel();
+		Game game = new Game(testLevel);
+		
+		int counter = 1000; //Number of movements
+		
+		while(counter-- > 0 && game.isRunning()) {
+			game.updateGame('x'); //Hero doesn't move but ogres do
+			ArrayList<Ogre> ogres = ((KeepLevel) testLevel).getOgres();
+			
+			for(Ogre elem : ogres) {
+				if(elem.isStunned() != 0)
+					assertEquals('8', elem.getRepresentation());
+				
+				int coordinates[] = elem.getCoordinates();
+				if(coordinates[0] == 1 && coordinates[1] == 7) //Ogre is on key
+					assertEquals('$', elem.getRepresentation());
+			}
+		}
+	}
+
+/* TEST GAME CLASS */
+
+	@Test
+	public void TestGameAttributes() {
+		Level testLevel = new TestDungeonLevel();
+		Game game = new Game(testLevel);
+		
+		if(game.getCurrentMatrix() == null)
+			fail("Current matrix is null");
+		
+		if(game.finalMessage() == null)
+			fail("Final message is null");
+	}
+}	
+		
+	
