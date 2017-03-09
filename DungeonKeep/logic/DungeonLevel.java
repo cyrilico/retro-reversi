@@ -8,37 +8,61 @@ public class DungeonLevel extends Level {
     Random guardGenerator;
     /* The villains for the level */
     Guard guard;
-
+    
     public DungeonLevel() {
+    	super();
 
-        super();
-        
-        levelIndex = 0;
-        guardGenerator = new Random();
-        map = new DungeonMap();
+    	levelIndex = 0;
+    	guardGenerator = new Random();
+    	map = new DungeonMap();
 
-        /*Create level's characters*/
-        //The hero
-        hero = new Hero(1,1);
-        //The guard
-        System.out.println("Checking which guard is patroling in this session...");
-        int whichGuard = guardGenerator.nextInt(9);
-        /* 0,1,2 -> Rookie
-         * 3,4,5 -> Drunken
-         * 6,7,8 -> Suspicious
-         */
-        if(whichGuard < 3){
-          System.out.println("It's the Rookie!");
-          guard = new Rookie(8,1);
-        }
-        else if(whichGuard < 6){
-          System.out.println("It's the Drunken!");
-          guard = new Drunken(8,1);
-        }
-        else{
-          System.out.println("It's the Suspicious!");
-          guard = new Suspicious(8,1);
-        }
+    	/*Create level's characters*/
+    	//The hero
+    	hero = new Hero(1,1);
+    	//The guard
+    	System.out.println("Checking which guard is patroling in this session...");
+
+    	int whichGuard = guardGenerator.nextInt(9);
+    	/* 0,1,2 -> Rookie
+    	 * 3,4,5 -> Drunken
+    	 * 6,7,8 -> Suspicious
+    	 */
+    	if(whichGuard < 3){
+    		System.out.println("It's the Rookie!");
+    		guard = new Rookie(8,1);
+    	}
+    	else if(whichGuard < 6){
+    		System.out.println("It's the Drunken!");
+    		guard = new Drunken(8,1);
+    	}
+    	else{
+    		System.out.println("It's the Suspicious!");
+    		guard = new Suspicious(8,1);
+    	}
+    }
+
+    public DungeonLevel(String guardType) {
+
+    	super();
+
+    	levelIndex = 0;
+    	map = new DungeonMap();
+
+    	/*Create level's characters*/
+    	//The hero
+    	hero = new Hero(1,1);
+
+    	switch(guardType) {
+    	case "Rookie":
+    		guard = new Rookie(8,1);
+    		break;
+    	case "Drunken":
+    		guard = new Drunken(8,1);
+    		break;
+    	case "Suspicious":
+    		guard = new Suspicious(8,1);
+    		break;
+    	}
     }
 
     public void checkIfHeroCaptured(){
@@ -104,6 +128,9 @@ public class DungeonLevel extends Level {
     }
 
     public Level getNextLevel() {
-        return new KeepLevel();
+    	if(Game.getnOgres() == 0)
+    		return new KeepLevel();
+
+        return new KeepLevel(Game.getnOgres());
     }
 }

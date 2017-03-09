@@ -10,8 +10,7 @@ public class KeepLevel extends Level {
     /* The villains for the level */
     ArrayList<Ogre> ogres;
 
-    public KeepLevel() {
-
+    public KeepLevel(int nOgres) {
         super();
         
         levelIndex = 1;
@@ -23,7 +22,29 @@ public class KeepLevel extends Level {
         hero.setRepresentation('A');
         //The ogres
         ogreGenerator = new Random();
+
+        int numberOfOgres = nOgres;
+        	
+        ogres = new ArrayList<Ogre>();
+        for(int i = 0; i < numberOfOgres; i++)
+            ogres.add(new Ogre(4,1));
+    }
+    
+    public KeepLevel() {
+        super();
+        
+        levelIndex = 1;
+        map = new KeepMap();
+
+        /*Create level's characters*/
+        //The hero
+        hero = new Hero(1,7);
+        hero.setRepresentation('A');
+        //The ogres
+        ogreGenerator = new Random();
+
         int numberOfOgres = ogreGenerator.nextInt(2)+1; //1 or 2 ogres, starting in the same position (tried with 3 and 4, nearly impossible to escape)
+        	
         ogres = new ArrayList<Ogre>();
         for(int i = 0; i < numberOfOgres; i++)
             ogres.add(new Ogre(4,1));

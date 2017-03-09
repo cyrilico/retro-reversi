@@ -5,12 +5,21 @@ public class Game {
         RUNNING, LOST, WON
     }
 
-		protected GameState gameStatus;
+	protected GameState gameStatus;
     protected Level level;
+
+    protected static int nOgres = 0;
+    protected static String guardType = null; //Default values
 
 	public Game(Level level) {
 		gameStatus = GameState.RUNNING;
 		this.level = level;
+	}
+	
+	public Game(int nOgres, String guardType, Level level) {
+		this(level);
+		this.nOgres = nOgres;
+		this.guardType = guardType;
 	}
 	
 	public int getCurrentLevelIndex(){
@@ -83,5 +92,13 @@ public class Game {
 
 	public boolean isRunning() {
 		return gameStatus == GameState.RUNNING;
+	}
+
+	public static int getnOgres() {
+		return nOgres;
+	}
+
+	public static String getGuardType() {
+		return guardType;
 	}
 }
