@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import java.awt.FlowLayout;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
@@ -20,7 +21,7 @@ public class WindowKeep {
 
 	private JFrame frame;
 	private JTextField ogreNumberInput;
-	private Game game = null;
+	protected Game game = null;
 
 	/**
 	 * Launch the application.
@@ -73,11 +74,16 @@ public class WindowKeep {
 		lblStatus.setForeground(Color.WHITE);
 		lblStatus.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
 		frame.getContentPane().add(lblStatus);
+		
+		JPanel gamePanel = new GamePanel(this);
+		gamePanel.setBounds(26, 116, 369, 287);
+		//frame.getContentPane().add(gamePanel);
 
-		JTextArea gameZone = new JTextArea();
+		/*JTextArea gameZone = new JTextArea();
 		gameZone.setFont(new Font("Courier New", Font.PLAIN, 18));
 		gameZone.setBounds(26, 116, 369, 287);
 		frame.getContentPane().add(gameZone);
+		*/
 
 		JComboBox guardPersonalityChooser = new JComboBox();
 		guardPersonalityChooser.setBounds(182, 73, 132, 27);
@@ -127,14 +133,16 @@ public class WindowKeep {
 				}
 
 				game = new Game(nOgres, guardType, new DungeonLevel(guardType));
-
+				frame.getContentPane().add(gamePanel);
+				gamePanel.repaint();
+				
 				btnLeft.setEnabled(true);
 				btnRight.setEnabled(true);
 				btnDown.setEnabled(true);
 				btnUp.setEnabled(true);
 
 				lblStatus.setText("Press the movement buttons to move the hero.");
-				gameZone.setText(game.getCurrentMatrix());
+				//gameZone.setText(game.getCurrentMatrix());
 			}
 		});
 		btnNewGame.setBounds(442, 129, 117, 29);
@@ -159,7 +167,8 @@ public class WindowKeep {
 		btnUp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				game.updateGame('w');
-				gameZone.setText(game.getCurrentMatrix());
+				//gameZone.setText(game.getCurrentMatrix());
+				gamePanel.repaint();
 
 				if(!game.isRunning()) {
 					lblStatus.setText(game.finalMessage());
@@ -169,13 +178,16 @@ public class WindowKeep {
 					btnDown.setEnabled(false);
 					btnUp.setEnabled(false);
 				}
+				
 			}
 		});
 
 		btnDown.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				game.updateGame('s');
-				gameZone.setText(game.getCurrentMatrix());
+				//gameZone.setText(game.getCurrentMatrix());
+				gamePanel.repaint();
+				
 				if(!game.isRunning()) {
 					lblStatus.setText(game.finalMessage());
 
@@ -190,7 +202,8 @@ public class WindowKeep {
 		btnRight.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				game.updateGame('d');
-				gameZone.setText(game.getCurrentMatrix());
+				//gameZone.setText(game.getCurrentMatrix());
+				gamePanel.repaint();
 
 				if(!game.isRunning()) {
 					lblStatus.setText(game.finalMessage());
@@ -206,7 +219,8 @@ public class WindowKeep {
 		btnLeft.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				game.updateGame('a');
-				gameZone.setText(game.getCurrentMatrix());
+				//gameZone.setText(game.getCurrentMatrix());
+				gamePanel.repaint();
 
 				if(!game.isRunning()) {
 					lblStatus.setText(game.finalMessage());
