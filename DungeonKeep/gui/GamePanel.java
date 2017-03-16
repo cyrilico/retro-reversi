@@ -32,6 +32,9 @@ public class GamePanel extends JPanel{
 			ogre_normal = ImageIO.read(new File("src/ogre.png"));
 			wall = ImageIO.read(new File("src/wall.png"));
 			floor = ImageIO.read(new File("src/floor.png"));
+			door_open = ImageIO.read(new File("src/door_open.png"));
+			door_closed = ImageIO.read(new File("src/door_closed.png"));
+			key = ImageIO.read(new File("src/key.png"));
 		}
 		catch(IOException e){
 			System.out.println("ERROR: Couldn't read all necessary images");
@@ -58,10 +61,10 @@ public class GamePanel extends JPanel{
 			result = guard_awake;
 			break;
 		case 'I':
-			result = wall;
+			result = door_closed;
 			break;
 		case 'k':
-			result = floor;
+			result = key;
 			break;
 		case '0':
 		case '8':
@@ -71,7 +74,7 @@ public class GamePanel extends JPanel{
 			result = ogre_normal;
 			break;
 		case 'S':
-			result = floor;
+			result = door_open;
 			break;
 		}
 		return result;
@@ -80,14 +83,22 @@ public class GamePanel extends JPanel{
 	@Override
 	public void paintComponent(Graphics g) { 
 		super.paintComponent(g);
+
+		for(int y = 0; y < 12; y++) {
+			int x;
+			for(x = 0; x < 15; x++)
+				g.drawImage(floor, x*25, y*25, 25, 25, null);
+			x = 0;
+		}
+		
 		String currentMap = window.game.getCurrentMatrix();
-		int lineSize = currentMap.indexOf('\n');
-		System.out.println(lineSize);
+
 		int k = 0, j = 0;
-		for(int i = 0; i < currentMap.length(); i++){
+
+		for(int i = 0; i < currentMap.length(); i++) {
 			if(currentMap.charAt(i) != '\n')
 				g.drawImage(getCurrentImage(currentMap.charAt(i)), 25*(k++), 25*j, 25, 25, null);
-			else{
+			else {
 				k=0;
 				j++;
 			}
