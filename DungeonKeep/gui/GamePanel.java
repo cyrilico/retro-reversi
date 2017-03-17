@@ -35,6 +35,7 @@ public class GamePanel extends JPanel{
 			door_open = ImageIO.read(new File("src/door_open.png"));
 			door_closed = ImageIO.read(new File("src/door_closed.png"));
 			key = ImageIO.read(new File("src/key.png"));
+			club = ImageIO.read(new File("src/club copy.png"));
 		}
 		catch(IOException e){
 			System.out.println("ERROR: Couldn't read all necessary images");
@@ -71,7 +72,7 @@ public class GamePanel extends JPanel{
 			result = ogre_normal;
 			break;
 		case '*':
-			result = ogre_normal;
+			result = club;
 			break;
 		case 'S':
 			result = door_open;
