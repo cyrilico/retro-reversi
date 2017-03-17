@@ -1,6 +1,8 @@
 package gui;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +10,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class GamePanel extends JPanel{
+public class GamePanel extends JPanel implements KeyListener{
 	private BufferedImage hero_nokey;
 	private BufferedImage hero_withkey;
 	private BufferedImage guard_awake;
@@ -26,16 +28,20 @@ public class GamePanel extends JPanel{
 	
 	public GamePanel(WindowKeep window){
 		this.window = window;
+		addKeyListener(this);
 		try{
-			hero_nokey = ImageIO.read(new File("src/hero.png"));
-			guard_awake = ImageIO.read(new File("src/guard.png"));
-			ogre_normal = ImageIO.read(new File("src/ogre.png"));
-			wall = ImageIO.read(new File("src/wall.png"));
-			floor = ImageIO.read(new File("src/floor.png"));
-			door_open = ImageIO.read(new File("src/door_open.png"));
-			door_closed = ImageIO.read(new File("src/door_closed.png"));
-			key = ImageIO.read(new File("src/key.png"));
-			club = ImageIO.read(new File("src/club copy.png"));
+			//Assumes program is being executed in an Eclipse project which has a src folder (reasonable?)
+			hero_nokey = ImageIO.read(new File("src/img/hero_nkey.png"));
+			hero_withkey = ImageIO.read(new File("src/img/hero_wkey.png"));
+			guard_awake = ImageIO.read(new File("src/img/guard.png"));
+			guard_asleep = ImageIO.read(new File("src/img/guard_asleep.png"));
+			ogre_normal = ImageIO.read(new File("src/img/ogre.png"));
+			wall = ImageIO.read(new File("src/img/wall.png"));
+			floor = ImageIO.read(new File("src/img/floor.png"));
+			door_open = ImageIO.read(new File("src/img/door_open.png"));
+			door_closed = ImageIO.read(new File("src/img/door_closed.png"));
+			key = ImageIO.read(new File("src/img/key.png"));
+			club = ImageIO.read(new File("src/img/club.png"));
 		}
 		catch(IOException e){
 			System.out.println("ERROR: Couldn't read all necessary images");
@@ -54,12 +60,16 @@ public class GamePanel extends JPanel{
 			break;
 		case 'H':
 		case 'A':
-		case 'K':
 			result = hero_nokey;
 			break;
+		case 'K':
+			result = hero_withkey;
+			break;
 		case 'G':
-		case 'g':
 			result = guard_awake;
+			break;
+		case 'g':
+			result = guard_asleep;
 			break;
 		case 'I':
 			result = door_closed;
@@ -68,10 +78,13 @@ public class GamePanel extends JPanel{
 			result = key;
 			break;
 		case '0':
-		case '8':
 			result = ogre_normal;
 			break;
+		case '8':
+			result = ogre_stunned;
+			break;
 		case '*':
+		case '$':
 			result = club;
 			break;
 		case 'S':
@@ -92,6 +105,7 @@ public class GamePanel extends JPanel{
 			x = 0;
 		}
 		
+		if(window.game == null) return;
 		String currentMap = window.game.getCurrentMatrix();
 
 		int k = 0, j = 0;
@@ -104,5 +118,22 @@ public class GamePanel extends JPanel{
 				j++;
 			}
 		}
-	} 
+	}
+	
+	public void keyPressed(KeyEvent e) { 
+		if(window.game == null) return;
+		switch(e.getKeyCode()){ 
+			case KeyEvent.VK_UP: window.game.updateGame('w'); repaint(); break; 
+			case KeyEvent.VK_DOWN: window.game.updateGame('s'); repaint(); break;  
+			case KeyEvent.VK_LEFT: window.game.updateGame('a'); repaint(); break; 
+			case KeyEvent.VK_RIGHT: window.game.updateGame('d'); repaint(); break;
+			default: window.game.updateGame('x'); repaint(); break; //Invalid movement input however game is still updated
+		}
+		
+		if(!window.game.isRunning())
+			window.finishGame();
+	}
+	
+	public void keyReleased(KeyEvent e){}
+	public void keyTyped(KeyEvent e){}
 }
