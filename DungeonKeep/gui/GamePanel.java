@@ -36,6 +36,7 @@ public class GamePanel extends JPanel implements KeyListener{
 			guard_awake = ImageIO.read(new File("src/img/guard.png"));
 			guard_asleep = ImageIO.read(new File("src/img/guard_asleep.png"));
 			ogre_normal = ImageIO.read(new File("src/img/ogre.png"));
+			ogre_stunned = ImageIO.read(new File("src/img/ogre_stunned.png"));
 			wall = ImageIO.read(new File("src/img/wall.png"));
 			floor = ImageIO.read(new File("src/img/floor.png"));
 			door_open = ImageIO.read(new File("src/img/door_open.png"));
