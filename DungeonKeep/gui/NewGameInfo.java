@@ -48,43 +48,43 @@ public class NewGameInfo extends JFrame {
 	 * Create the frame.
 	 */
 	public NewGameInfo() {
-		setType(Type.POPUP);
 		setResizable(false);
+		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 375, 202);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JComboBox<String> guardPersonalityChooser = new JComboBox<String>();
 		guardPersonalityChooser.setBounds(181, 48, 161, 27);
 		contentPane.add(guardPersonalityChooser);
 		guardPersonalityChooser.addItem("Rookie");
 		guardPersonalityChooser.addItem("Drunken");
 		guardPersonalityChooser.addItem("Suspicious");
-		
+
 		JLabel lblGuardPersonality = new JLabel("Guard Personality");
 		lblGuardPersonality.setBounds(31, 51, 130, 18);
 		lblGuardPersonality.setForeground(Color.BLACK);
 		lblGuardPersonality.setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
 		contentPane.add(lblGuardPersonality);
-		
+
 		ogreNumberInput = new JTextField();
 		ogreNumberInput.setBounds(183, 9, 65, 27);
 		ogreNumberInput.setColumns(10);
 		contentPane.add(ogreNumberInput);
-		
+
 		JLabel lblNumberOfOgres = new JLabel("Number of Ogres");
 		lblNumberOfOgres.setBounds(31, 6, 110, 33);
 		lblNumberOfOgres.setForeground(Color.BLACK);
 		lblNumberOfOgres.setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
 		contentPane.add(lblNumberOfOgres);
-		
+
 		JLabel lblGameStarterInfo = new JLabel("Please enter the game options");
 		lblGameStarterInfo.setBounds(31, 149, 311, 16);
 		contentPane.add(lblGameStarterInfo);
-		
+
 		JButton btnStartGame = new JButton("Start game!");
 		btnStartGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -116,7 +116,7 @@ public class NewGameInfo extends JFrame {
 		contentPane.add(btnStartGame);
 
 	}
-	
+
 	public NewGameInfo(WindowKeep window) {
 		this();
 		this.window = window;

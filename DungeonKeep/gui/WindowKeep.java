@@ -66,7 +66,7 @@ public class WindowKeep {
 		frame.setBounds(100, 100, 590, 384);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+
 		newGameFrame = new NewGameInfo(this);
 
 		JLabel lblStatus = new JLabel("You can start a new game.");
@@ -80,7 +80,7 @@ public class WindowKeep {
 		gamePanel.setBounds(26, 23, 369, 287);
 		frame.getContentPane().add(gamePanel);
 		gamePanel.requestFocusInWindow();
-		
+
 		JButton btnNewGame = new JButton("New Game");
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -102,17 +102,18 @@ public class WindowKeep {
 		});
 		frame.getContentPane().add(btnNewBuexittton);
 	}
-	
+
 	public void requestFocus() {
 		newGameFrame.setVisible(false);
 		frame.requestFocus();
 		frame.getContentPane().getComponent(1).requestFocus();
 	}
-	
+
 	public void setGame(Game game) {
 		this.game = game;
+		frame.getContentPane().getcomponent(1).repaint();
 	}
-	
+
 	public void setStatusMessage(String str) {
 		JLabel gameStatus = (JLabel) frame.getContentPane().getComponent(0);
 		gameStatus.setText(str);
