@@ -10,91 +10,16 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class GamePanel extends JPanel implements KeyListener{
-	private BufferedImage hero_nokey;
-	private BufferedImage hero_withkey;
-	private BufferedImage guard_awake;
-	private BufferedImage guard_asleep;
-	private BufferedImage ogre_normal;
-	private BufferedImage ogre_stunned;
-	private BufferedImage club;
-	private BufferedImage wall;
-	private BufferedImage floor;
-	private BufferedImage door_closed;
-	private BufferedImage door_open;
-	private BufferedImage key;
-	
-	private WindowKeep window;
-	
-	public GamePanel(WindowKeep window){
+public class GamePanel extends GraphicPanel implements KeyListener{
+
+	protected WindowKeep window;
+
+	public GamePanel(WindowKeep window) {
+		super();
 		this.window = window;
 		addKeyListener(this);
-		try{
-			//Assumes program is being executed in an Eclipse project which has a src folder (reasonable?)
-			hero_nokey = ImageIO.read(new File("src/img/hero_nkey.png"));
-			hero_withkey = ImageIO.read(new File("src/img/hero_wkey.png"));
-			guard_awake = ImageIO.read(new File("src/img/guard.png"));
-			guard_asleep = ImageIO.read(new File("src/img/guard_asleep.png"));
-			ogre_normal = ImageIO.read(new File("src/img/ogre.png"));
-			ogre_stunned = ImageIO.read(new File("src/img/ogre_stunned.png"));
-			wall = ImageIO.read(new File("src/img/wall.png"));
-			floor = ImageIO.read(new File("src/img/floor.png"));
-			door_open = ImageIO.read(new File("src/img/door_open.png"));
-			door_closed = ImageIO.read(new File("src/img/door_closed.png"));
-			key = ImageIO.read(new File("src/img/key.png"));
-			club = ImageIO.read(new File("src/img/club.png"));
-		}
-		catch(IOException e){
-			System.out.println("ERROR: Couldn't read all necessary images");
-			System.exit(-1);
-		}
 	}
-	
-	private BufferedImage getCurrentImage(char currentChar){
-		BufferedImage result = null;
-		switch(currentChar){
-		case 'X':
-			result = wall;
-			break;
-		case '.':
-			result = floor;
-			break;
-		case 'H':
-		case 'A':
-			result = hero_nokey;
-			break;
-		case 'K':
-			result = hero_withkey;
-			break;
-		case 'G':
-			result = guard_awake;
-			break;
-		case 'g':
-			result = guard_asleep;
-			break;
-		case 'I':
-			result = door_closed;
-			break;
-		case 'k':
-			result = key;
-			break;
-		case '0':
-			result = ogre_normal;
-			break;
-		case '8':
-			result = ogre_stunned;
-			break;
-		case '*':
-		case '$':
-			result = club;
-			break;
-		case 'S':
-			result = door_open;
-			break;
-		}
-		return result;
-	}
-	
+
 	@Override
 	public void paintComponent(Graphics g) { 
 		super.paintComponent(g);
@@ -105,7 +30,7 @@ public class GamePanel extends JPanel implements KeyListener{
 				g.drawImage(floor, x*25, y*25, 25, 25, null);
 			x = 0;
 		}
-		
+
 		if(window.game == null) return;
 		String currentMap = window.game.getCurrentMatrix();
 
@@ -120,7 +45,7 @@ public class GamePanel extends JPanel implements KeyListener{
 			}
 		}
 	}
-	
+
 	public void keyPressed(KeyEvent e) { 
 		if(window.game == null) return;
 		switch(e.getKeyCode()){ 
@@ -130,11 +55,11 @@ public class GamePanel extends JPanel implements KeyListener{
 			case KeyEvent.VK_RIGHT: window.game.updateGame('d'); repaint(); break;
 			default: window.game.updateGame('x'); repaint(); break; //Invalid movement input however game is still updated
 		}
-		
+
 		if(!window.game.isRunning())
 			window.finishGame();
 	}
-	
+
 	public void keyReleased(KeyEvent e){}
 	public void keyTyped(KeyEvent e){}
 }

@@ -27,7 +27,9 @@ public class WindowKeep {
 
 	protected JFrame frame;
 	protected Game game = null;
+
 	private JFrame newGameFrame;
+	private JFrame editMapFrame;
 
 	/**
 	 * Launch the application.
@@ -68,6 +70,7 @@ public class WindowKeep {
 		frame.getContentPane().setLayout(null);
 
 		newGameFrame = new NewGameInfo(this);
+		editMapFrame = new EditMapWindow(this);
 
 		JLabel lblStatus = new JLabel("You can start a new game.");
 		lblStatus.setName("lblStatus");
@@ -101,6 +104,17 @@ public class WindowKeep {
 			}
 		});
 		frame.getContentPane().add(btnNewBuexittton);
+		
+		JButton btnEditMap = new JButton("Edit Map");
+		btnEditMap.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setEnabled(false);
+				editMapFrame.requestFocusInWindow();
+				editMapFrame.setVisible(true);
+			}
+		});
+		btnEditMap.setBounds(442, 97, 117, 29);
+		frame.getContentPane().add(btnEditMap);
 	}
 
 	public void requestFocus() {
@@ -111,7 +125,7 @@ public class WindowKeep {
 
 	public void setGame(Game game) {
 		this.game = game;
-		frame.getContentPane().getcomponent(1).repaint();
+		frame.getContentPane().getComponent(1).repaint();
 	}
 
 	public void setStatusMessage(String str) {
