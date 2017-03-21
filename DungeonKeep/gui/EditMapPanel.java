@@ -4,10 +4,11 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
 
-public class EditMapPanel extends GraphicPanel implements MouseListener {
+public class EditMapPanel extends GraphicPanel implements MouseListener, MouseMotionListener {
 	
 	protected EditMapWindow window;
 
@@ -45,6 +46,13 @@ public class EditMapPanel extends GraphicPanel implements MouseListener {
 				j++;
 			}
 		}
+		
+		//Draw selectable icons
+		g.drawImage(hero_withkey, maxWidth * 25 + IMG_SIZE, 25, IMG_SIZE, IMG_SIZE, null);
+		g.drawImage(ogre_normal, maxWidth * 25 + IMG_SIZE, 75, IMG_SIZE, IMG_SIZE, null);
+		g.drawImage(door_closed, maxWidth * 25 + IMG_SIZE, 125, IMG_SIZE, IMG_SIZE, null);
+		g.drawImage(key, maxWidth * 25 + IMG_SIZE, 175, IMG_SIZE, IMG_SIZE, null);
+		g.drawImage(wall, maxWidth * 25 + IMG_SIZE, 225, IMG_SIZE, IMG_SIZE, null);
 	}
 
 	@Override
@@ -56,7 +64,7 @@ public class EditMapPanel extends GraphicPanel implements MouseListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		System.out.println("Pressed x : " + e.getX() + " y: " + e.getY());
 	}
 
 	@Override
@@ -73,6 +81,18 @@ public class EditMapPanel extends GraphicPanel implements MouseListener {
 
 	@Override
 	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+		System.out.println("Dragged x : " + e.getX() + " y: " + e.getY());
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}

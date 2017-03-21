@@ -81,7 +81,7 @@ public class EditMapWindow extends JFrame {
 		contentPane.add(spinnerWidth);
 		
 		JPanel mapPanel = new EditMapPanel(this);
-		mapPanel.setBounds(28, 86, MAX_WIDTH * 25, MAX_HEIGHT * 25);
+		mapPanel.setBounds(28, 86, MAX_WIDTH * 25 + 50, MAX_HEIGHT * 25);
 		contentPane.add(mapPanel);
 		
 		JLabel lblStatus = new JLabel("");
