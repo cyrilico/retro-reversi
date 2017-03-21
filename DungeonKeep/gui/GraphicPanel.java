@@ -20,6 +20,8 @@ public abstract class GraphicPanel extends JPanel {
 	protected BufferedImage door_closed;
 	protected BufferedImage door_open;
 	protected BufferedImage key;
+	
+	protected static final int IMG_SIZE = 25; //Images are always squared
 
 	
 	/**

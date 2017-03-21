@@ -10,7 +10,6 @@ import javax.swing.JPanel;
 public class EditMapPanel extends GraphicPanel implements MouseListener {
 	
 	protected EditMapWindow window;
-	private String currentMap = "XXXXX\nX...X\nX...X\nX...X\nXXXXX\n";
 
 	/**
 	 * Create the panel.
@@ -24,19 +23,23 @@ public class EditMapPanel extends GraphicPanel implements MouseListener {
 	@Override
 	public void paintComponent(Graphics g) { 
 		super.paintComponent(g);
-
-		for(int y = 0; y < 12; y++) {
+		
+		int maxHeight = EditMapWindow.getMaxHeight();
+		int maxWidth = EditMapWindow.getMaxWidth();
+		
+		for(int y = 0; y < maxHeight; y++) {
 			int x;
-			for(x = 0; x < 15; x++)
-				g.drawImage(floor, x*25, y*25, 25, 25, null);
+			for(x = 0; x < maxWidth; x++)
+				g.drawImage(floor, x*IMG_SIZE, y*IMG_SIZE, IMG_SIZE, IMG_SIZE, null);
 			x = 0;
 		}
 
 		int k = 0, j = 0;
+		String currentMap = window.getCurrentMap();
 
 		for(int i = 0; i < currentMap.length(); i++) {
 			if(currentMap.charAt(i) != '\n')
-				g.drawImage(getCurrentImage(currentMap.charAt(i)), 25*(k++), 25*j, 25, 25, null);
+				g.drawImage(getCurrentImage(currentMap.charAt(i)), IMG_SIZE*(k++), IMG_SIZE*j, IMG_SIZE, IMG_SIZE, null);
 			else {
 				k=0;
 				j++;
