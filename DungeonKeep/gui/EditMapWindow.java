@@ -12,6 +12,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.beans.PropertyChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -25,10 +26,17 @@ public class EditMapWindow extends JFrame {
 	private JPanel contentPane;
 	private int mapWidth;
 	private int mapHeight;
-	private String currentMap = "XXXXX\nX...X\nX...X\nX...X\nXXXXX\n";
+	private char[][] currentMap = {
+									{'X','X','X','X','X'},
+									{'X','.','.','.','X'},
+									{'X','.','.','.','X'},
+									{'X','.','.','.','X'},
+									{'X','X','X','X','X'},
+									};
+	
 	private char currentChar;
-	WindowKeep window;
-	EditMapPanel mapPanel;
+	protected WindowKeep window;
+	private EditMapPanel mapPanel;
 	
 	private static final int MIN_HEIGHT = 5;
 	private static final int MAX_HEIGHT = 12;
@@ -145,6 +153,7 @@ public class EditMapWindow extends JFrame {
 		JButton btnDelete = new JButton("Delete");
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				currentChar = '.';
 			}
 		});
 		btnDelete.setBounds(455, 232, 117, 29);
@@ -153,6 +162,26 @@ public class EditMapWindow extends JFrame {
 		JButton btnStartGame = new JButton("Start Game");
 		btnStartGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int[] heroPos = getCharPosition('A');
+				Hero hero = new Hero(heroPos[0], heroPos[1]);
+				
+				ArrayList<Ogre> ogres = new ArrayList<Ogre>();
+				int[] result = new int[2];
+				while(result[0] != -1) {
+					result = getCharPosition('0');
+					
+					if(result[0] != -1)
+						ogres.add(new Ogre(result[0], result[1]));
+				}
+				
+				Map editedMap = new EditKeepMap(currentMap);
+				Level editedLevel = new KeepLevel(ogres, hero, editedMap);
+				Level dungeonLevel = new DungeonLevel(editedLevel);
+				
+				window.setGame(new Game(dungeonLevel));
+				window.requestFocus();
+				window.frame.setEnabled(true);
+				window.setStatusMessage("Press the keyboard arrows to move the hero.");
 				
 			}
 		});
@@ -196,25 +225,27 @@ public class EditMapWindow extends JFrame {
 	}
 	
 	public void resizeMap() {
-		String temp = "";
+		char[][] temp = new char[mapHeight][mapWidth];
 		
 		for(int i = 0; i < mapHeight; i++) {
-			if(i == 0 || i == mapHeight - 1) 
-				temp += String.join("" , Collections.nCopies(mapWidth, new String("X"))) + "\n";
-			else 
-				temp += "X" + String.join("" , Collections.nCopies(mapWidth-2, new String("."))) + "X\n";
-		}
+			for(int j = 0; j < mapWidth; j++) {
+				if( i % (mapHeight-1) == 0 || j % (mapWidth-1) == 0) 
+					temp[i][j] = 'X';
+				else
+					temp[i][j] = '.';
+			}
+		}	
 		
 		setCurrentMap(temp);
 		contentPane.getComponent(4).repaint();
 	}
 	
-	public String getCurrentMap() {
+	public char[][] getCurrentMap() {
 		return currentMap;
 	}
 	
-	public void setCurrentMap(String str) {
-		currentMap = str;
+	public void setCurrentMap(char[][] map) {
+		currentMap = map;
 	}
 
 	public static int getMaxHeight() {
@@ -238,25 +269,22 @@ public class EditMapWindow extends JFrame {
 	}
 	
 	public void addCurrentChar(int x, int y) {
-		
 		if(currentChar == 'N')
 			return;
 
 		int mapX = x / 25;
 		int mapY = y / 25;
-	
-		char[] temp = currentMap.toCharArray();
 		
-		char toReplace = temp[mapX + ( (mapWidth + 1) * mapY )];
-		if(toReplace == 'X') {
+		char toReplace = currentMap[mapY][mapX];
+
+		if(toReplace == 'X' && currentChar != '.') {
 			setStatusMessage("Please choose a spot without a wall.");
 			return; //If it returns here, it doesn't reset the currentChar, 
-					//giving the user a chance to try to place the icon without reclicking the button
+			//giving the user a chance to try to place the icon without reclicking the button
 		}
 			
-		temp[mapX + ( (mapWidth + 1) * mapY )] = currentChar;
+		currentMap[mapY][mapX] = currentChar;
 		
-		currentMap = String.valueOf(temp);
 		resetCurrentChar();
 		contentPane.getComponent(4).repaint();
 	}
@@ -268,6 +296,24 @@ public class EditMapWindow extends JFrame {
 	public void setStatusMessage(String str) {
 		JLabel gameStatus = (JLabel) contentPane.getComponent(5);
 		gameStatus.setText(str);
+	}
+	
+	public int[] getCharPosition(char icon) {
+		int[] result = new int[2];
+		result[0] = -1; //default value
+		
+		for(int i = 0; i < mapHeight; i++) {
+			for(int j = 0; j < mapWidth; j++) {
+				if(currentMap[i][j] == icon) {
+					currentMap[i][j] = '.';
+					result[1] = i;
+					result[0] = j;
+					break;
+				}
+			}
+		}
+		
+		return result;
 	}
 	
 }

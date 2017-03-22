@@ -119,6 +119,8 @@ public class WindowKeep {
 
 	public void requestFocus() {
 		newGameFrame.setVisible(false);
+		editMapFrame.setVisible(false);
+		frame.setVisible(true);
 		frame.requestFocus();
 		frame.getContentPane().getComponent(1).requestFocus();
 	}

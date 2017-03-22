@@ -8,6 +8,12 @@ public class DungeonLevel extends Level {
     Random guardGenerator;
     /* The villains for the level */
     Guard guard;
+    Level nextLevel = null;
+    
+    public DungeonLevel(Level next) {
+    	this();
+    	nextLevel = next;
+    }
     
     public DungeonLevel() {
     	super();
@@ -128,6 +134,10 @@ public class DungeonLevel extends Level {
     }
 
     public Level getNextLevel() {
+    	
+    	if(nextLevel != null)
+    		return nextLevel;
+    	
     	if(Game.getnOgres() == 0)
     		return new KeepLevel();
 

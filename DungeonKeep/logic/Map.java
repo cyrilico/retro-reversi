@@ -1,6 +1,8 @@
 package logic;
 
 public abstract class Map {
+	protected int height;
+	protected int width;
 	protected char[][] mapMatrix;
 
 	protected void setMap(char[][] newMap) {
@@ -16,5 +18,13 @@ public abstract class Map {
 	}
 
 	public abstract void openDoors();
-	public abstract char[][] getCurrentPlan();
+	
+	public char[][] getCurrentPlan(){
+		char[][] plant = new char[height][width];
+		int index = 0;
+		for(char[] line : mapMatrix)
+			plant[index++] = (char[])line.clone();
+
+		return plant;
+	}
 }

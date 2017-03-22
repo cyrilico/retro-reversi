@@ -35,16 +35,11 @@ public class EditMapPanel extends GraphicPanel implements MouseListener, MouseMo
 			x = 0;
 		}
 
-		int k = 0, j = 0;
-		String currentMap = window.getCurrentMap();
-
-		for(int i = 0; i < currentMap.length(); i++) {
-			if(currentMap.charAt(i) != '\n')
-				g.drawImage(getCurrentImage(currentMap.charAt(i)), IMG_SIZE*(k++), IMG_SIZE*j, IMG_SIZE, IMG_SIZE, null);
-			else {
-				k=0;
-				j++;
-			}
+		char[][] tempMap = window.getCurrentMap();
+		
+		for(int i = 0; i < tempMap.length; i++) {
+			for(int j = 0; j < tempMap[i].length; j++) 
+				g.drawImage(getCurrentImage(tempMap[i][j]), IMG_SIZE*j, IMG_SIZE*i, IMG_SIZE, IMG_SIZE, null);
 		}
 	}
 
