@@ -1,5 +1,6 @@
 package gui;
 
+import logic.*;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -15,6 +16,9 @@ import java.util.Collections;
 import java.beans.PropertyChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class EditMapWindow extends JFrame {
 
@@ -22,6 +26,7 @@ public class EditMapWindow extends JFrame {
 	private int mapWidth;
 	private int mapHeight;
 	private String currentMap = "XXXXX\nX...X\nX...X\nX...X\nXXXXX\n";
+	private char currentChar;
 	WindowKeep window;
 	EditMapPanel mapPanel;
 	
@@ -30,6 +35,10 @@ public class EditMapWindow extends JFrame {
 
 	private static final int MIN_WIDTH = 5;
 	private static final int MAX_WIDTH = 15;
+	
+	private static final int MAP_START_X = 28;
+	private static final int MAP_START_Y = 86;
+
 
 	/**
 	 * Launch the application.
@@ -81,12 +90,74 @@ public class EditMapWindow extends JFrame {
 		contentPane.add(spinnerWidth);
 		
 		JPanel mapPanel = new EditMapPanel(this);
-		mapPanel.setBounds(28, 86, MAX_WIDTH * 25 + 50, MAX_HEIGHT * 25);
+		mapPanel.setBounds(MAP_START_X, MAP_START_Y, MAX_WIDTH * 25, MAX_HEIGHT * 25);
 		contentPane.add(mapPanel);
 		
 		JLabel lblStatus = new JLabel("");
 		lblStatus.setBounds(28, 401, 544, 16);
 		contentPane.add(lblStatus);
+		
+		JButton btnHero = new JButton("Hero");
+		btnHero.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				currentChar = 'A';
+			}
+		});
+		btnHero.setBounds(455, 86, 117, 29);
+		contentPane.add(btnHero);
+		
+		JButton btnOgre = new JButton("Ogre");
+		btnOgre.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				currentChar = '0';
+			}
+		});
+		btnOgre.setBounds(455, 116, 117, 29);
+		contentPane.add(btnOgre);
+		
+		JButton btnKey = new JButton("Key");
+		btnKey.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				currentChar = 'k';
+			}
+		});
+		btnKey.setBounds(455, 146, 117, 29);
+		contentPane.add(btnKey);
+		
+		JButton btnWall = new JButton("Wall");
+		btnWall.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				currentChar = 'X';
+			}
+		});
+		btnWall.setBounds(455, 173, 117, 29);
+		contentPane.add(btnWall);
+		
+		JButton btnDoor = new JButton("Door");
+		btnDoor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				currentChar = 'I';
+			}
+		});
+		btnDoor.setBounds(455, 204, 117, 29);
+		contentPane.add(btnDoor);
+		
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnDelete.setBounds(455, 232, 117, 29);
+		contentPane.add(btnDelete);
+		
+		JButton btnStartGame = new JButton("Start Game");
+		btnStartGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		btnStartGame.setBounds(455, 357, 117, 29);
+		contentPane.add(btnStartGame);
 		mapPanel.requestFocusInWindow();
 		
 		
@@ -153,4 +224,50 @@ public class EditMapWindow extends JFrame {
 	public static int getMaxWidth() {
 		return MAX_WIDTH;
 	}
+
+	public static int getMapStartX() {
+		return MAP_START_X;
+	}
+
+	public static int getMapStartY() {
+		return MAP_START_Y;
+	}
+	
+	public char getCurrentChar() {
+		return currentChar;
+	}
+	
+	public void addCurrentChar(int x, int y) {
+		
+		if(currentChar == 'N')
+			return;
+
+		int mapX = x / 25;
+		int mapY = y / 25;
+	
+		char[] temp = currentMap.toCharArray();
+		
+		char toReplace = temp[mapX + ( (mapWidth + 1) * mapY )];
+		if(toReplace == 'X') {
+			setStatusMessage("Please choose a spot without a wall.");
+			return; //If it returns here, it doesn't reset the currentChar, 
+					//giving the user a chance to try to place the icon without reclicking the button
+		}
+			
+		temp[mapX + ( (mapWidth + 1) * mapY )] = currentChar;
+		
+		currentMap = String.valueOf(temp);
+		resetCurrentChar();
+		contentPane.getComponent(4).repaint();
+	}
+	
+	public void resetCurrentChar() {
+		currentChar = 'N';
+	}
+	
+	public void setStatusMessage(String str) {
+		JLabel gameStatus = (JLabel) contentPane.getComponent(5);
+		gameStatus.setText(str);
+	}
+	
 }

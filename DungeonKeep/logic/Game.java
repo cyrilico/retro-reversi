@@ -59,17 +59,17 @@ public class Game {
 	}
 
 	public String getCurrentMatrix() {
-        String result = "\n";
-        char[][] matrix = level.getLevelMatrix();
+		String result = "\n";
+		char[][] matrix = level.getLevelMatrix();
 
-        for(char[] line : matrix) {
-					for(char element : line)
-            	result += element;
-            result += '\n';
-        }
+		for(char[] line : matrix) {
+			for(char element : line)
+				result += element;
+			result += '\n';
+		}
 
-				return result;
-    }
+		return result;
+	}
 
 	private void advanceLevel() {
 		System.out.println("You escaped this level. Let's see what awaits you next...");

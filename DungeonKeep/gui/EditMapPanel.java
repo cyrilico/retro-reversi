@@ -46,55 +46,29 @@ public class EditMapPanel extends GraphicPanel implements MouseListener, MouseMo
 				j++;
 			}
 		}
-		
-		//Draw selectable icons
-		g.drawImage(hero_withkey, maxWidth * 25 + IMG_SIZE, 25, IMG_SIZE, IMG_SIZE, null);
-		g.drawImage(ogre_normal, maxWidth * 25 + IMG_SIZE, 75, IMG_SIZE, IMG_SIZE, null);
-		g.drawImage(door_closed, maxWidth * 25 + IMG_SIZE, 125, IMG_SIZE, IMG_SIZE, null);
-		g.drawImage(key, maxWidth * 25 + IMG_SIZE, 175, IMG_SIZE, IMG_SIZE, null);
-		g.drawImage(wall, maxWidth * 25 + IMG_SIZE, 225, IMG_SIZE, IMG_SIZE, null);
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseClicked(MouseEvent e) { }
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		System.out.println("Pressed x : " + e.getX() + " y: " + e.getY());
+		window.addCurrentChar(e.getX(), e.getY());
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseReleased(MouseEvent e) { }
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseEntered(MouseEvent e) { }
 
 	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseExited(MouseEvent e) { }
 
 	@Override
-	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
-		System.out.println("Dragged x : " + e.getX() + " y: " + e.getY());
-	}
+	public void mouseDragged(MouseEvent e) { }
 
 	@Override
-	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseMoved(MouseEvent e) { }
 	
 }

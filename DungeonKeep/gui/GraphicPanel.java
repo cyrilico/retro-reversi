@@ -23,7 +23,6 @@ public abstract class GraphicPanel extends JPanel {
 	
 	protected static final int IMG_SIZE = 25; //Images are always squared
 
-	
 	/**
 	 * Create the panel.
 	 */
@@ -92,6 +91,11 @@ public abstract class GraphicPanel extends JPanel {
 			break;
 		}
 		return result;
+	}
+	
+	
+	public static int getImgSize() {
+		return IMG_SIZE;
 	}
 
 }
