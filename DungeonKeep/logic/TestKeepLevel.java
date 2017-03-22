@@ -50,34 +50,8 @@ public class TestKeepLevel extends Level {
     }
 
     public void updatePositions(int[] input) {
-        //Update the hero's position
-        int dx = input[0];
-        int dy = input[1];
-
-        int heroX = hero.getCoordinates()[0];
-        int heroY = hero.getCoordinates()[1];
-
-        char currentChar = map.elementAt(heroX+dx, heroY+dy);
-
-        switch(currentChar) { //Checking what is present in the cell the hero wants to move to
-            case 'S':
-                levelStatus = LevelState.WON;
-                return; /* Avoids checking for enemies on negative indexes */
-            case 'k':
-                heroHasKey = true;
-                hero.setRepresentation('K');
-            case '.':
-                break;
-            case 'I':
-                if(heroHasKey)
-                    map.openDoors(); /* No break statement because while he's opening the door, he's still. No break forces dx=dy=0, like we want */
-            default: /* currentChar == 'X' so we can't move through */
-                dy = 0;
-                dx = 0;
-        }
-
-        hero.setCoordinates(heroX+dx, heroY+dy);
-        
+    	char currentChar = map.elementAt(hero.getCoordinates()[0]+input[0], hero.getCoordinates()[1]+input[1]);
+    	updateHero(input[0],input[1],currentChar);
         if(ogreMoves){
         //Update the villains' position
         //Update the ogre's position
@@ -183,7 +157,31 @@ generateClubMovement:
 
 	@Override
 	public void updateHero(int x, int y, char currentChar) {
-		// TODO Auto-generated method stub
+        int dx = x;
+        int dy = y;
+
+        int heroX = hero.getCoordinates()[0];
+        int heroY = hero.getCoordinates()[1];
+
+
+        switch(currentChar) { //Checking what is present in the cell the hero wants to move to
+            case 'S':
+                levelStatus = LevelState.WON;
+                return; /* Avoids checking for enemies on negative indexes */
+            case 'k':
+                heroHasKey = true;
+                hero.setRepresentation('K');
+            case '.':
+                break;
+            case 'I':
+                if(heroHasKey)
+                    map.openDoors(); /* No break statement because while he's opening the door, he's still. No break forces dx=dy=0, like we want */
+            default: /* currentChar == 'X' so we can't move through */
+                dy = 0;
+                dx = 0;
+        }
+
+        hero.setCoordinates(heroX+dx, heroY+dy);
 		
 	}
 }

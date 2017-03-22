@@ -12,9 +12,12 @@ import java.util.Random;
 import org.junit.Test;
 
 import logic.DungeonLevel;
+import logic.DungeonMap;
+import logic.EditKeepMap;
 import logic.Game;
 import logic.Guard;
 import logic.KeepLevel;
+import logic.KeepMap;
 import logic.Level;
 import logic.Ogre;
 import logic.TestDungeonLevel;
@@ -189,6 +192,14 @@ public class TestLogic {
 	}
 	
 	@Test
+	public void TestKeepTestHeroRepresentation() {
+		Level testLevel = new TestKeepLevel(false);
+        Game game = new Game(testLevel);	
+        
+        assertEquals('A', testLevel.getHeroRep());
+	}
+	
+	@Test
 	public void TestHeroMovesIntoDoorWithKey(){
 		Level testLevel = new TestKeepLevel(false);
         Game game = new Game(testLevel);
@@ -306,6 +317,26 @@ public class TestLogic {
 	/* 'NORMAL' DUNGEON LEVEL TESTING */
 	
 	@Test
+	public void TestDungeonMap(){
+		char[][] map = {
+	              {'X','X','X','X','X','X','X','X','X','X'},
+	              {'X','.','.','.','I','.','X','.','.','X'},
+	              {'X','X','X','.','X','X','X','.','.','X'},
+	              {'X','.','I','.','I','.','X','.','.','X'},
+	              {'X','X','X','.','X','X','X','.','.','X'},
+	              {'I','.','.','.','.','.','.','.','.','X'},
+	              {'I','.','.','.','.','.','.','.','.','X'},
+	              {'X','X','X','.','X','X','X','X','.','X'},
+	              {'X','.','I','.','I','.','X','k','.','X'},
+	              {'X','X','X','X','X','X','X','X','X','X'}
+	          };
+		DungeonMap d1 = new DungeonMap();
+		char[][] d1map = d1.getCurrentPlan();
+		for(int i = 0; i < 10; i++)
+			assertArrayEquals(map[i], d1map[i]);
+	}
+	
+	@Test
 	public void TestDungeonHeroMovement() {
 		Level testLevel = new DungeonLevel();
         Game game = new Game(testLevel);
@@ -335,7 +366,7 @@ public class TestLogic {
 	}
 	
 	@Test
-	public void TestDungeonGuardMovement() {
+	public void TestDungeonGuardMoves() {
 		Level testLevel = new DungeonLevel();
         Game game = new Game(testLevel);
         
@@ -348,7 +379,7 @@ public class TestLogic {
         
         int[] endingPosition = ((DungeonLevel)testLevel).getGuardCoordinates();
 
-        assertFalse((startingPosition[0] == endingPosition[0]) && (startingPosition[1] == endingPosition[1]));
+        assertFalse((startingPosition[0] == endingPosition[0]) && (startingPosition[1] == endingPosition[1]) && ((DungeonLevel)testLevel).getGuard().getRepresentation() != 'g');
 	}
 	
 	@Test
@@ -370,7 +401,91 @@ public class TestLogic {
 			fail("Next level is null");
 	}
 	
+	@Test
+	public void TestDungeonRookieMovement(){
+		Level testLevel = new DungeonLevel("Rookie");
+        Game game = new Game(testLevel);
+        
+        int initialMovIndex = ((DungeonLevel)testLevel).getGuard().getMovIndex();
+        int[] position1 = {8,1};
+        assertArrayEquals(position1, ((DungeonLevel)testLevel).getGuard().getCoordinates());
+        game.updateGame('s');
+        int[] position2 = {7,1};
+        assertEquals(((DungeonLevel)testLevel).getGuard().getMovIndex(), initialMovIndex+1);
+        assertArrayEquals(position2, ((DungeonLevel)testLevel).getGuard().getCoordinates());
+        game.updateGame('s');
+        assertEquals(((DungeonLevel)testLevel).getGuard().getMovIndex(), initialMovIndex+2);
+        int[] position3 = {7,2};
+        assertArrayEquals(position3, ((DungeonLevel)testLevel).getGuard().getCoordinates());
+        game.updateGame('s');
+        assertEquals(((DungeonLevel)testLevel).getGuard().getMovIndex(), initialMovIndex+3);
+        int[] position4 = {7,3};
+        assertArrayEquals(position4, ((DungeonLevel)testLevel).getGuard().getCoordinates());
+	}
+	
+	@Test
+	public void TestDungeonDrunkenMovement(){
+		int i = 0;
+		do{
+			Level testLevel = new DungeonLevel("Drunken");
+			Game game = new Game(testLevel);
+
+			int initialMovIndex = ((DungeonLevel)testLevel).getGuard().getMovIndex();
+			int[] position1 = {8,1};
+			int[] realposition1 = ((DungeonLevel)testLevel).getGuard().getCoordinates();
+			assertTrue((position1[0] == realposition1[0] && position1[1] == realposition1[1])); 
+			game.updateGame('s');
+			int[] position2 = {7,1};
+			int[] realposition2 = ((DungeonLevel)testLevel).getGuard().getCoordinates();
+			assertTrue((((DungeonLevel)testLevel).getGuard().getRepresentation() == 'G' && ((DungeonLevel)testLevel).getGuard().getMovIndex() == initialMovIndex + 1 && position2[0] == realposition2[0] && position2[1] == realposition2[1]) ||
+					(((DungeonLevel)testLevel).getGuard().getRepresentation() == 'g' && initialMovIndex == ((DungeonLevel)testLevel).getGuard().getMovIndex()));
+		}while(i++ < 5);
+	}
+	
+	@Test
+	public void testDungeonSuspiciousMovement(){
+		Level testLevel = new DungeonLevel("Suspicious");
+        Game game = new Game(testLevel);
+        
+        int initialMovIndex = ((DungeonLevel)testLevel).getGuard().getMovIndex();
+        int[] position1 = {8,1};
+        assertArrayEquals(position1, ((DungeonLevel)testLevel).getGuard().getCoordinates());
+        game.updateGame('s');
+        int[] position2_1 = {7,1}; int[] position2_2 = {8, 2};
+        if(((DungeonLevel)testLevel).getGuard().getMovIndex() == initialMovIndex+1)
+        	assertArrayEquals(position2_1, ((DungeonLevel)testLevel).getGuard().getCoordinates());
+        else if(((DungeonLevel)testLevel).getGuard().getMovIndex() - initialMovIndex > 1)
+        	assertArrayEquals(position2_2, ((DungeonLevel)testLevel).getGuard().getCoordinates());
+        else
+        	fail("Bad movement, Suspicious guard!");
+	}
+	
 	/* 'NORMAL' KEEP LEVEL TESTING */
+	
+	@Test
+	public void TestKeepOgreGenerator(){
+		KeepLevel k1 = new KeepLevel();
+		assertTrue(k1.getOgres().size() > 0);
+	}
+	
+	@Test
+	public void TestKeepMap(){
+		char[][] map = {
+				{'X','X','X','X','X','X','X','X','X'},
+				{'I','.','.','.','.','.','.','k','X'},
+				{'X','.','.','.','.','.','.','.','X'},
+				{'X','.','.','.','.','.','.','.','X'},
+				{'X','.','.','.','.','.','.','.','X'},
+				{'X','.','.','.','.','.','.','.','X'},
+				{'X','.','.','.','.','.','.','.','X'},
+				{'X','.','.','.','.','.','.','.','X'},
+				{'X','X','X','X','X','X','X','X','X'}
+		};
+		KeepMap k1 = new KeepMap();
+		char[][] k1map = k1.getCurrentPlan();
+		for(int i = 0; i < 9; i++)
+			assertArrayEquals(map[i], k1map[i]);
+	}
 	
 	@Test(timeout = 1000)
 	public void TestKeepHeroMovement() {
@@ -475,6 +590,26 @@ public class TestLogic {
 		assertEquals(0, game.getCurrentLevelIndex());
 		assertEquals(2, game.getnOgres());
 		assertEquals("Rookie", game.getGuardType());
+	}
+	
+/* OTHER TESTS */
+	
+	@Test
+	public void TestEditKeepMap(){
+		char[][] map = {
+				{'X','X','X','X','X','X','X','X','X'},
+				{'I','.','.','.','.','.','.','k','X'},
+				{'X','.','.','.','.','.','.','.','X'},
+				{'X','.','.','.','.','.','.','.','X'},
+				{'X','.','.','.','.','.','.','.','X'},
+				{'X','.','.','.','.','.','.','.','X'},
+				{'X','.','.','.','.','.','.','.','X'},
+				{'X','.','.','.','.','.','.','.','X'},
+				{'X','X','X','X','X','X','X','X','X'}
+		};
+		EditKeepMap e1 = new EditKeepMap(map);
+		e1.openDoors();
+		assertEquals(e1.getCurrentPlan()[1][0], 'S');
 	}
 	
 }	

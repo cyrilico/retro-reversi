@@ -44,7 +44,7 @@ public class NewGameInfo extends JFrame {
 	 */
 	public NewGameInfo() {
 		setResizable(false);
-		setVisible(true);
+		setVisible(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 375, 202);
 		contentPane = new JPanel();

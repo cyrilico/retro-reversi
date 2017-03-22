@@ -165,17 +165,31 @@ public class EditMapWindow extends JFrame {
 		JButton btnStartGame = new JButton("Start Game");
 		btnStartGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(!allElementsPresent()){
+					lblStatus.setText("Can't have the map without all its elements!");
+					return; //User can't start game if hasn't placed all elements yet
+				}
+				
+				System.out.println(getCharPosition('A')[0] + " - " + getCharPosition('A')[1]);
+				if(!(validMap(getInitialisedVisitMap(), getCharPosition('A')[0], getCharPosition('A')[1], 'I') &&
+					 validMap(getInitialisedVisitMap(), getCharPosition('A')[0], getCharPosition('A')[1], 'k'))){
+					lblStatus.setText("Can't have an unnescapable map!");
+					return; //Map must be "winnable" (hero must be able to reach a door and the key)
+				}
+				
 				int[] heroPos = getCharPosition('A');
 				Hero hero = new Hero(heroPos[0], heroPos[1]);
 				
 				ArrayList<Ogre> ogres = new ArrayList<Ogre>();
-				int[] result = new int[2];
-				while(result[0] != -1) {
-					result = getCharPosition('0');
-					
-					if(result[0] != -1)
-						ogres.add(new Ogre(result[0], result[1]));
-				}
+				int ogreX, ogreY;
+				do{
+					int result[] = getCharPosition('0');
+					ogreX = result[0];
+					ogreY = result[1];
+					//System.out.println("Current ogre:" + ogreX + " - " + ogreY);
+					if(ogreX != -1)
+						ogres.add(new Ogre(ogreX, ogreY));
+				}while(ogreX != -1);
 				
 				Map editedMap = new EditKeepMap(currentMap);
 				Level editedLevel = new KeepLevel(ogres, hero, editedMap);
@@ -219,6 +233,52 @@ public class EditMapWindow extends JFrame {
 				resizeMap();
 			}
 		});
+	}
+	
+	private boolean[][] getInitialisedVisitMap(){
+		boolean[][] visitMap = new boolean[mapHeight][mapWidth];
+		for(int i = 0; i < visitMap.length; i++){
+			for(int j = 0; j < visitMap[i].length; j++)
+				visitMap[i][j] = false;
+		}
+		return visitMap;
+	}
+	
+	private boolean validMap(boolean[][] vMap, int startX, int startY, char goal){
+		vMap[startY][startX] = true;
+		if(currentMap[startY][startX] == goal)
+			return true;
+		else if(currentMap[startY][startX] == 'X' || (currentMap[startY][startX] == 'I' && goal != 'I'))
+			return false;
+		else{
+			boolean testUp, testLeft, testDown, testRight;
+			testUp = !vMap[startY-1][startX];
+			testDown = !vMap[startY+1][startX];
+			testLeft = !vMap[startY][startX-1];
+			testRight = !vMap[startY][startX+1];
+			return (testRight ? validMap(vMap, startX+1, startY, goal) : false) ||
+					(testUp ? validMap(vMap, startX, startY-1, goal) : false) ||
+					(testLeft ? validMap(vMap, startX-1, startY, goal) : false) ||
+					(testDown ? validMap(vMap, startX, startY+1, goal) : false);
+		}
+	}
+	
+	private boolean allElementsPresent(){
+		return elementIsPresent('A') &&
+				elementIsPresent('0') &&
+				elementIsPresent('I') &&
+				elementIsPresent('k');
+	}
+	
+	private boolean elementIsPresent(char element){
+		Character c1 = new Character(element);
+		for(char[] line : currentMap){
+			for(char c : line){
+				if(c1.equals(new Character(c)))
+					return true;
+			}
+		}
+		return false;
 	}
 	
 	public EditMapWindow(WindowKeep window) {
@@ -289,6 +349,12 @@ public class EditMapWindow extends JFrame {
 		
 		resetCurrentChar();
 		contentPane.getComponent(4).repaint();
+		//TEST PRINT
+		for(char[] line : currentMap){
+			for(char c : line)
+				System.out.print(c);
+			System.out.println("");
+		}
 	}
 	
 	public void resetCurrentChar() {
@@ -308,7 +374,8 @@ public class EditMapWindow extends JFrame {
 		for(int i = 0; i < mapHeight; i++) {
 			for(int j = 0; j < mapWidth; j++) {
 				if(currentMap[i][j] == icon) {
-					currentMap[i][j] = '.';
+					if(icon == '0')
+						currentMap[i][j] = '.';
 					result[1] = i;
 					result[0] = j;
 					break IterateMap;

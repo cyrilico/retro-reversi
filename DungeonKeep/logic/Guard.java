@@ -46,5 +46,9 @@ public abstract class Guard extends Character{
 					 );
 	}
 	
+	public int getMovIndex(){
+		return movementIndex;
+	}
+	
 	public abstract void updatePosition(); //Different kinds of update for different kinds of guards
 }

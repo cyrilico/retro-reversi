@@ -72,7 +72,6 @@ public class Game {
 	}
 
 	private void advanceLevel() {
-		System.out.println("You escaped this level. Let's see what awaits you next...");
 		Level newLevel = level.getNextLevel();
 		if(newLevel == null) //No more levels
 			gameStatus = GameState.WON;

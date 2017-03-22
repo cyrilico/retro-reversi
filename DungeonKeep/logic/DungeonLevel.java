@@ -26,25 +26,17 @@ public class DungeonLevel extends Level {
     	//The hero
     	hero = new Hero(1,1);
     	//The guard
-    	System.out.println("Checking which guard is patroling in this session...");
-
     	int whichGuard = guardGenerator.nextInt(9);
     	/* 0,1,2 -> Rookie
     	 * 3,4,5 -> Drunken
     	 * 6,7,8 -> Suspicious
     	 */
-    	if(whichGuard < 3){
-    		System.out.println("It's the Rookie!");
+    	if(whichGuard < 3)
     		guard = new Rookie(8,1);
-    	}
-    	else if(whichGuard < 6){
-    		System.out.println("It's the Drunken!");
+    	else if(whichGuard < 6)
     		guard = new Drunken(8,1);
-    	}
-    	else{
-    		System.out.println("It's the Suspicious!");
+    	else
     		guard = new Suspicious(8,1);
-    	}
     }
 
     public DungeonLevel(String guardType) {

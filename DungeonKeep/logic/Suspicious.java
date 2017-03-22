@@ -1,6 +1,7 @@
 package logic;
 
 public class Suspicious extends Guard{
+	private static int chanceOfInverting = 4;
 	protected boolean invertedDirection; //To see if he's following the path in the normal or inverse direction
 
 	public Suspicious(int startX, int startY) {
@@ -10,7 +11,7 @@ public class Suspicious extends Guard{
 
 	public void updatePosition(){
 		int invertMovement = generator.nextInt(10);
-		if(invertMovement < 4){ //40% chance of inverting movement (had 50% but he turned too much and didn't pose a real threat)
+		if(invertMovement < chanceOfInverting){ //40% chance of inverting movement (had 50% but he turned too much and didn't pose a real threat)
 				invertedDirection = !invertedDirection;
 				if(invertedDirection){
 					if(--movementIndex < 0) //Restart movement pattern
