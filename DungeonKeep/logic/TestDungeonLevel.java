@@ -96,4 +96,10 @@ public class TestDungeonLevel extends Level {
     public Level getNextLevel() {
         return new KeepLevel();
     }
+
+	@Override
+	public void updateHero(int x, int y, char currentChar) {
+		// TODO Auto-generated method stub
+		
+	}
 }

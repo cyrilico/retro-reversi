@@ -1,12 +1,9 @@
 package gui;
 
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
-import javax.swing.JPanel;
 
 public class EditMapPanel extends GraphicPanel implements MouseListener, MouseMotionListener {
 	

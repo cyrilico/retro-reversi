@@ -18,8 +18,8 @@ public class Game {
 	
 	public Game(int nOgres, String guardType, Level level) {
 		this(level);
-		this.nOgres = nOgres;
-		this.guardType = guardType;
+		Game.nOgres = nOgres;
+		Game.guardType = guardType;
 	}
 	
 	public int getCurrentLevelIndex(){
@@ -59,7 +59,7 @@ public class Game {
 	}
 
 	public String getCurrentMatrix() {
-		String result = "\n";
+		String result = "";
 		char[][] matrix = level.getLevelMatrix();
 
 		for(char[] line : matrix) {
@@ -80,15 +80,15 @@ public class Game {
       level = newLevel;
 	}
 
-    public void updateGame(char userInput) {
-        int[] nextHeroMovement = charToMovement(userInput);
+	public void updateGame(char userInput) {
+		int[] nextHeroMovement = charToMovement(userInput);
 
-        level.updatePositions(nextHeroMovement);
-        if(level.hasWon())
-            advanceLevel();
-				else if(level.hasLost())
-						gameStatus = GameState.LOST;
-    }
+		level.updatePositions(nextHeroMovement);
+		if(level.hasWon())
+			advanceLevel();
+		else if(level.hasLost())
+			gameStatus = GameState.LOST;
+	}
 
 	public boolean isRunning() {
 		return gameStatus == GameState.RUNNING;

@@ -1,7 +1,8 @@
 package cli;
-import logic.*;
-
 import java.util.Scanner;
+
+import logic.DungeonLevel;
+import logic.Game;
 
 public class DKeep {
 	public Game game;

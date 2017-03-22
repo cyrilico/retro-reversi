@@ -1,25 +1,28 @@
 package gui;
 
-import logic.*;
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
-
-import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.beans.PropertyChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.event.ChangeListener;
+
+import logic.DungeonLevel;
+import logic.EditKeepMap;
+import logic.Game;
+import logic.Hero;
+import logic.KeepLevel;
+import logic.Level;
+import logic.Map;
+import logic.Ogre;
 
 public class EditMapWindow extends JFrame {
 
@@ -182,7 +185,6 @@ public class EditMapWindow extends JFrame {
 				window.requestFocus();
 				window.frame.setEnabled(true);
 				window.setStatusMessage("Press the keyboard arrows to move the hero.");
-				
 			}
 		});
 		btnStartGame.setBounds(455, 357, 117, 29);
@@ -302,13 +304,14 @@ public class EditMapWindow extends JFrame {
 		int[] result = new int[2];
 		result[0] = -1; //default value
 		
+		IterateMap:
 		for(int i = 0; i < mapHeight; i++) {
 			for(int j = 0; j < mapWidth; j++) {
 				if(currentMap[i][j] == icon) {
 					currentMap[i][j] = '.';
 					result[1] = i;
 					result[0] = j;
-					break;
+					break IterateMap;
 				}
 			}
 		}

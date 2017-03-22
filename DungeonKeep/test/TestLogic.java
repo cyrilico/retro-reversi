@@ -1,15 +1,24 @@
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
-import logic.*;
+import logic.DungeonLevel;
+import logic.Game;
+import logic.Guard;
+import logic.KeepLevel;
+import logic.Level;
+import logic.Ogre;
+import logic.TestDungeonLevel;
+import logic.TestKeepLevel;
 
 public class TestLogic {
 	
@@ -453,15 +462,21 @@ public class TestLogic {
 
 	@Test
 	public void TestGameAttributes() {
-		Level testLevel = new TestDungeonLevel();
-		Game game = new Game(testLevel);
+		Level testLevel = new DungeonLevel();
+		Game game = new Game(2, "Rookie", testLevel);
 		
 		if(game.getCurrentMatrix() == null)
 			fail("Current matrix is null");
 		
 		if(game.finalMessage() == null)
 			fail("Final message is null");
+		
+		assertTrue(game.isRunning());
+		assertEquals(0, game.getCurrentLevelIndex());
+		assertEquals(2, game.getnOgres());
+		assertEquals("Rookie", game.getGuardType());
 	}
+	
 }	
 		
 	

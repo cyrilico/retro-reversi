@@ -86,26 +86,33 @@ public class DungeonLevel extends Level {
         int heroY = hero.getCoordinates()[1];
 
         char currentChar = map.elementAt(heroX+dx, heroY+dy);
-
-        switch(currentChar) { //Checking what is present in the cell the hero wants to move to
-            case 'S':
-              levelStatus = LevelState.WON;
-              return; /* Avoids checking for enemies on negative indexes */
-            case 'k':
-              map.openDoors(); /* No need to use the heroHasKey attribute on this level since the hero doesn't change his representation and doors are open right away */
-            case '.':
-              break;
-            default: /* currentChar == 'X' || currentChar = 'I' so we can't move through */
-                dy = 0;
-                dx = 0;
-        }
-
-        hero.setCoordinates(heroX+dx, heroY+dy);
+        
+        updateHero(dx, dy, currentChar);
 
         //Update the villains' position
         guard.updatePosition();
 
         checkIfHeroCaptured();
+    }
+    
+    public void updateHero(int dx, int dy, char currentChar) {
+        int heroX = hero.getCoordinates()[0];
+        int heroY = hero.getCoordinates()[1];
+    	
+        switch(currentChar) { //Checking what is present in the cell the hero wants to move to
+        case 'S':
+          levelStatus = LevelState.WON;
+          return; /* Avoids checking for enemies on negative indexes */
+        case 'k':
+          map.openDoors(); /* No need to use the heroHasKey attribute on this level since the hero doesn't change his representation and doors are open right away */
+        case '.':
+          break;
+        default: /* currentChar == 'X' || currentChar = 'I' so we can't move through */
+            dy = 0;
+            dx = 0;
+        }
+        
+        hero.setCoordinates(heroX+dx, heroY+dy);
     }
     
     public int[] getGuardCoordinates() {

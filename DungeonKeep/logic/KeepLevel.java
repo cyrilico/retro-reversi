@@ -1,7 +1,7 @@
 package logic;
 
-import java.util.Random;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class KeepLevel extends Level {
 
@@ -90,24 +90,7 @@ public class KeepLevel extends Level {
 
 		char currentChar = map.elementAt(heroX+dx, heroY+dy);
 
-		switch(currentChar) { //Checking what is present in the cell the hero wants to move to
-		case 'S':
-			levelStatus = LevelState.WON;
-			return; /* Avoids checking for enemies on negative indexes */
-		case 'k':
-			heroHasKey = true;
-			hero.setRepresentation('K');
-		case '.':
-			break;
-		case 'I':
-			if(heroHasKey)
-				map.openDoors(); /* No break statement because while he's opening the door, he's still. No break forces dx=dy=0, like we want */
-		default: /* currentChar == 'X' so we can't move through */
-			dy = 0;
-			dx = 0;
-		}
-
-		hero.setCoordinates(heroX+dx, heroY+dy);
+		updateHero(dx, dy, currentChar);
 
 		//Update the villains' position
 		for(Ogre ogre : ogres) {
@@ -158,6 +141,30 @@ public class KeepLevel extends Level {
 
 		checkIfHeroStuns();
 		checkIfHeroCaptured();
+	}
+	
+	public void updateHero(int dx, int dy, char currentChar) {
+		int heroX = hero.getCoordinates()[0];
+		int heroY = hero.getCoordinates()[1];
+		
+		switch(currentChar) { //Checking what is present in the cell the hero wants to move to
+		case 'S':
+			levelStatus = LevelState.WON;
+			return; /* Avoids checking for enemies on negative indexes */
+		case 'k':
+			heroHasKey = true;
+			hero.setRepresentation('K');
+		case '.':
+			break;
+		case 'I':
+			if(heroHasKey)
+				map.openDoors(); /* No break statement because while he's opening the door, he's still. No break forces dx=dy=0, like we want */
+		default: /* currentChar == 'X' so we can't move through */
+			dy = 0;
+			dx = 0;
+		}
+
+		hero.setCoordinates(heroX+dx, heroY+dy);	
 	}
 
 	public ArrayList<Ogre> getOgres() {

@@ -22,6 +22,8 @@ public abstract class Level {
     //Game class transforms key received into movement vector and sends that information to the function
     //Updates every dynamic element's position
     public abstract void updatePositions(int[] input);
+    
+    public abstract void updateHero(int x, int y, char currentChar);
 
     //Checks if any enemy is in the hero's surroundings and changes level state accordingly if so
     public abstract void checkIfHeroCaptured();
