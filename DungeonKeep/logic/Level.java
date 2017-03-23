@@ -1,6 +1,6 @@
 package logic;
 
-public abstract class Level {
+public abstract class Level implements java.io.Serializable{
     protected enum LevelState {
         RUNNING, LOST, WON
     }

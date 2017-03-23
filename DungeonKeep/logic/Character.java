@@ -2,7 +2,7 @@ package logic;
 
 import java.util.Random;
 
-public abstract class Character {
+public abstract class Character implements java.io.Serializable{
 	protected char representation;
 	protected int posX;
 	protected int posY;

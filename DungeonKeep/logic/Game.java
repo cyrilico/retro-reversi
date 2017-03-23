@@ -1,6 +1,6 @@
 package logic;
 
-public class Game {
+public class Game implements java.io.Serializable{
 	protected enum GameState {
         RUNNING, LOST, WON
     }

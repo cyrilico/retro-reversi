@@ -1,6 +1,6 @@
 package logic;
 
-public abstract class Map {
+public abstract class Map implements java.io.Serializable{
 	protected int height;
 	protected int width;
 	protected char[][] mapMatrix;
