@@ -35,25 +35,39 @@ public class Ogre extends Character {
 		return clubOnKey;
 	}
 
-    public boolean isNearHero(int heroX, int heroY) {
-		boolean ogreNearHero = (posX == heroX && posY == heroY) || //They're on the same cell
-		 											 (posX == heroX-1 && posY == heroY) || //The ogre is on the cell to the left of the hero
-		 											 (posX == heroX+1 && posY == heroY) || //The ogre is on the cell to the right of the hero
-		 										 	 (posX == heroX && posY == heroY-1) || //The ogre is on the cell above the hero
-		 										 	 (posX == heroX && posY == heroY+1); //The ogre is on the cell below the hero
-        return ogreNearHero;
-    }
-
 	public boolean hasCaughtHero(int heroX, int heroY) {
+		return (clubSameCell(heroX, heroY) || clubToTheLeft(heroX, heroY) || 
+				clubToTheRight(heroX, heroY) || clubBelow(heroX, heroY) || clubUp(heroX, heroY));
+	}
+	
+	public boolean clubSameCell(int heroX, int heroY) {
 		int clubX = posX+clubOffsetX;
 		int clubY = posY+clubOffsetY;
-		boolean clubNearHero = (clubX == heroX && clubY == heroY) || //They're on the same cell
-		 											 (clubX == heroX-1 && clubY == heroY) || //The club is on the cell to the left of the hero
-		 											 (clubX == heroX+1 && clubY == heroY) || //The club is on the cell to the right of the hero
-		 										 	 (clubX == heroX && clubY == heroY-1) || //The club is on the cell above the hero
-		 										 	 (clubX == heroX && clubY == heroY+1); //The club is on the cell below the hero
-
-		return clubNearHero;
+		return clubX == heroX && clubY == heroY;
+	}
+	
+	public boolean clubToTheLeft(int heroX, int heroY) {
+		int clubX = posX+clubOffsetX;
+		int clubY = posY+clubOffsetY;
+		return clubX == heroX-1 && clubY == heroY;
+	}
+	
+	public boolean clubToTheRight(int heroX, int heroY) {
+		int clubX = posX+clubOffsetX;
+		int clubY = posY+clubOffsetY;
+		return clubX == heroX+1 && clubY == heroY;
+	}
+	
+	public boolean clubBelow(int heroX, int heroY) {
+		int clubX = posX+clubOffsetX;
+		int clubY = posY+clubOffsetY;
+		return clubX == heroX && clubY == heroY-1;
+	}
+	
+	public boolean clubUp(int heroX, int heroY) {
+		int clubX = posX+clubOffsetX;
+		int clubY = posY+clubOffsetY;
+		return clubX == heroX && clubY == heroY+1;
 	}
 
 	private int[] randomMovement() {

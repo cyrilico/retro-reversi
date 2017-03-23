@@ -32,4 +32,34 @@ public abstract class Character implements java.io.Serializable{
 	public void setRepresentation(char newRep){
 		representation = newRep;
 	}
+	
+	public boolean isNearHero(int heroX, int heroY) {
+		return 	 	sameCell(heroX, heroY) || //They're on the same cell
+					toTheLeft(heroX, heroY) || //The guard is on the cell to the left of the hero
+					toTheRight(heroX, heroY) || //The guard is on the cell to the right of the hero
+					below(heroX, heroY) || //The guard is on the cell above the hero
+					up(heroX, heroY); //The guard is on the cell below the hero
+				 
+	}
+	
+	public boolean sameCell(int heroX, int heroY){
+		return posX == heroX && posY == heroY;
+	}
+	
+	public boolean toTheLeft(int heroX, int heroY){
+		return posX == heroX-1 && posY == heroY;
+	}
+	
+	public boolean toTheRight(int heroX, int heroY){
+		return posX == heroX+1 && posY == heroY;
+	}
+	
+	public boolean below(int heroX, int heroY){
+		return posX == heroX && posY == heroY-1;
+	}
+	
+	public boolean up(int heroX, int heroY){
+		return posX == heroX && posY == heroY+1;
+	}
+	
 }

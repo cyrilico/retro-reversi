@@ -171,11 +171,11 @@ public class EditMapWindow extends JFrame {
 				}
 				
 				int[] heroPos = getCharPosition('A');
-				if(!(validMap(getInitialisedVisitMap(), heroPos[0], heroPos[1], 'I') &&
-					 validMap(getInitialisedVisitMap(), heroPos[0], heroPos[1], 'k'))){
+				if(!isEscapable(heroPos[0], heroPos[1])) {
 					lblStatus.setText("Can't have an unnescapable map!");
 					return; //Map must be "winnable" (hero must be able to reach a door and the key)
 				}
+					
 				
 				Hero hero = new Hero(heroPos[0], heroPos[1]);
 				
@@ -286,6 +286,12 @@ public class EditMapWindow extends JFrame {
 		return false;
 	}
 	
+	private boolean isEscapable(int heroX, int heroY) {
+		return validMap(getInitialisedVisitMap(), heroX, heroY, 'I') &&
+				 validMap(getInitialisedVisitMap(), heroX, heroY, 'k');
+			
+	}
+	
 	public EditMapWindow(WindowKeep window) {
 		this();
 		this.window = window;
@@ -354,12 +360,6 @@ public class EditMapWindow extends JFrame {
 		
 		resetCurrentChar();
 		contentPane.getComponent(4).repaint();
-		//TEST PRINT
-		for(char[] line : currentMap){
-			for(char c : line)
-				System.out.print(c);
-			System.out.println("");
-		}
 	}
 	
 	public void resetCurrentChar() {
