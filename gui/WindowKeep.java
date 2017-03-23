@@ -29,6 +29,7 @@ public class WindowKeep implements java.io.Serializable{
 	private JLabel lblStatus;
 	private JButton btnNewGame, btnNewBuexittton, btnEditMap, btnSaveGame, btnLoadGame;
 	protected JPanel gamePanel;
+	private JButton btnLeft, btnRight, btnUp, btnDown;
 
 	/**
 	 * Launch the application.
@@ -83,10 +84,11 @@ public class WindowKeep implements java.io.Serializable{
 		createEditMapButton();
 		createSaveButton();
 		createLoadButton();
+		createMovementButtons();
 	}
 	
 	private void createNewGameButton(){
-		btnNewGame = new JButton("New Game");
+		btnNewGame = new JButton("NG Orig. Keep");
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setEnabled(false);
@@ -95,13 +97,13 @@ public class WindowKeep implements java.io.Serializable{
 			}
 		});
 
-		btnNewGame.setBounds(442, 60, 117, 29);
+		btnNewGame.setBounds(433, 60, 135, 29);
 		frame.getContentPane().add(btnNewGame);
 	}
 	
 	private void createExitButton(){
 		btnNewBuexittton = new JButton("Exit");
-		btnNewBuexittton.setBounds(442, 243, 117, 29);
+		btnNewBuexittton.setBounds(433, 343, 135, 29);
 		btnNewBuexittton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
@@ -111,7 +113,7 @@ public class WindowKeep implements java.io.Serializable{
 	}
 	
 	private void createEditMapButton(){
-		btnEditMap = new JButton("Edit Map");
+		btnEditMap = new JButton("NG New Keep");
 		btnEditMap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setEnabled(false);
@@ -119,7 +121,7 @@ public class WindowKeep implements java.io.Serializable{
 				editMapFrame.setVisible(true);
 			}
 		});
-		btnEditMap.setBounds(442, 97, 117, 29);
+		btnEditMap.setBounds(433, 97, 135, 29);
 		frame.getContentPane().add(btnEditMap);
 	}
 	
@@ -141,7 +143,7 @@ public class WindowKeep implements java.io.Serializable{
 				frame.getContentPane().getComponent(1).requestFocusInWindow();
 			}
 		});
-		btnSaveGame.setBounds(442, 138, 117, 25);
+		btnSaveGame.setBounds(433, 138, 135, 25);
 		frame.getContentPane().add(btnSaveGame);
 	}
 	
@@ -160,11 +162,99 @@ public class WindowKeep implements java.io.Serializable{
 					System.out.println("Game class not found"); return;
 				}
 				setGame(newGame);
+				enableMovementButtons();
 				frame.getContentPane().getComponent(1).requestFocusInWindow();
 			}
 		});
-		btnLoadGame.setBounds(442, 174, 117, 25);
+		btnLoadGame.setBounds(433, 174, 135, 25);
 		frame.getContentPane().add(btnLoadGame);
+	}
+	
+	private void createMovementButtons(){
+		createUpButton();
+		createDownButton();
+		createLeftButton();
+		createRightButton();
+		
+		disableMovementButtons();
+	}
+	
+	private void createUpButton(){
+		btnUp = new JButton("Up"); btnUp.setBounds(458, 211, 76, 25);
+		frame.getContentPane().add(btnUp);
+		btnUp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				game.updateGame('w');
+				gamePanel.repaint(); gamePanel.requestFocusInWindow();
+
+				if(!game.isRunning()) {
+					lblStatus.setText(game.finalMessage());
+					disableMovementButtons();
+				}
+			}
+		});
+	}
+	
+	private void createDownButton(){
+		btnDown = new JButton("Down"); btnDown.setBounds(458, 285, 76, 25);
+		frame.getContentPane().add(btnDown);
+		btnDown.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				game.updateGame('s');
+				gamePanel.repaint(); gamePanel.requestFocusInWindow();
+
+				if(!game.isRunning()) {
+					lblStatus.setText(game.finalMessage());
+					disableMovementButtons();
+				}
+			}
+		});
+	}
+	
+	private void createLeftButton(){
+		btnLeft = new JButton("Left"); btnLeft.setBounds(422, 248, 76, 25);
+		frame.getContentPane().add(btnLeft);
+		btnLeft.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				game.updateGame('a'); 
+				gamePanel.repaint(); gamePanel.requestFocusInWindow();
+
+				if(!game.isRunning()) {
+					lblStatus.setText(game.finalMessage());
+					disableMovementButtons();
+				}
+			}
+		});
+	}
+	
+	private void createRightButton(){
+		btnRight = new JButton("Right"); btnRight.setBounds(502, 248, 76, 25);
+		frame.getContentPane().add(btnRight);
+		btnRight.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				game.updateGame('d');
+				gamePanel.repaint(); gamePanel.requestFocusInWindow();
+
+				if(!game.isRunning()) {
+					lblStatus.setText(game.finalMessage());
+					disableMovementButtons();
+				}
+			}
+		});
+	}
+	
+	private void disableMovementButtons(){
+		btnUp.setEnabled(false);
+		btnDown.setEnabled(false);
+		btnLeft.setEnabled(false);
+		btnRight.setEnabled(false);
+	}
+	
+	protected void enableMovementButtons(){
+		btnUp.setEnabled(true);
+		btnDown.setEnabled(true);
+		btnLeft.setEnabled(true);
+		btnRight.setEnabled(true);
 	}
 	
 	private void createGamePanel(){
@@ -178,6 +268,7 @@ public class WindowKeep implements java.io.Serializable{
 		gamePanel = new GamePanel(this);
 		gamePanel.setBounds(26, 23, 369, 287);
 		frame.getContentPane().add(gamePanel);
+		
 		gamePanel.requestFocusInWindow();
 	}
 

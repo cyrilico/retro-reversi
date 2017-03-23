@@ -224,7 +224,8 @@ public class EditMapWindow extends JFrame {
 		Level editedLevel = new KeepLevel(ogres, hero, editedMap);
 		Level dungeonLevel = new DungeonLevel(editedLevel);
 		
-		window.setGame(new Game(dungeonLevel));
+		window.setGame(new Game(dungeonLevel)); 
+		window.enableMovementButtons();
 		window.requestFocus();
 		window.frame.setEnabled(true);
 		window.gamePanel.requestFocusInWindow();

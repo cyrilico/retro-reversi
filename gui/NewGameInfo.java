@@ -121,6 +121,7 @@ public class NewGameInfo extends JFrame {
 		lblGameStarterInfo.setText("");
 		window.requestFocus();
 		window.frame.setEnabled(true);
+		window.enableMovementButtons();
 		window.gamePanel.requestFocusInWindow();
 		window.setStatusMessage("Press the keyboard arrows to move the hero.");
 	}
