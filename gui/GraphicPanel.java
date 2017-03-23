@@ -3,6 +3,7 @@ package gui;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -20,6 +21,8 @@ public abstract class GraphicPanel extends JPanel {
 	protected BufferedImage door_closed;
 	protected BufferedImage door_open;
 	protected BufferedImage key;
+	
+	private HashMap<Character, BufferedImage> CHAR_TO_IMG = new HashMap<Character, BufferedImage>();
 	
 	protected static final int IMG_SIZE = 25; //Images are always squared
 
@@ -46,53 +49,32 @@ public abstract class GraphicPanel extends JPanel {
 			System.out.println("ERROR: Couldn't read all necessary images");
 			System.exit(-1);
 		}
+		
+		loadHashMap();
+	}
+	
+	private void loadHashMap() {
+		 CHAR_TO_IMG.put('X', wall);
+		 CHAR_TO_IMG.put('.', floor);
+		 CHAR_TO_IMG.put('H', hero_nokey);
+		 CHAR_TO_IMG.put('A', hero_nokey);
+		 CHAR_TO_IMG.put('K', hero_withkey);
+		 CHAR_TO_IMG.put('G', guard_awake);
+		 CHAR_TO_IMG.put('g', guard_asleep);
+		 CHAR_TO_IMG.put('I', door_closed);
+		 CHAR_TO_IMG.put('k', key);
+		 CHAR_TO_IMG.put('0', ogre_normal);
+		 CHAR_TO_IMG.put('8', ogre_stunned);
+		 CHAR_TO_IMG.put('*', club);
+		 CHAR_TO_IMG.put('$', club);
+		 CHAR_TO_IMG.put('S', door_open);
 	}
 	
 	protected BufferedImage getCurrentImage(char currentChar){
-		BufferedImage result = null;
-		switch(currentChar){
-		case 'X':
-			result = wall;
-			break;
-		case '.':
-			result = floor;
-			break;
-		case 'H':
-		case 'A':
-			result = hero_nokey;
-			break;
-		case 'K':
-			result = hero_withkey;
-			break;
-		case 'G':
-			result = guard_awake;
-			break;
-		case 'g':
-			result = guard_asleep;
-			break;
-		case 'I':
-			result = door_closed;
-			break;
-		case 'k':
-			result = key;
-			break;
-		case '0':
-			result = ogre_normal;
-			break;
-		case '8':
-			result = ogre_stunned;
-			break;
-		case '*':
-		case '$':
-			result = club;
-			break;
-		case 'S':
-			result = door_open;
-			break;
-		}
+		BufferedImage result = CHAR_TO_IMG.get(new Character(currentChar));
 		return result;
 	}
-	
+
 	
 	public static int getImgSize() {
 		return IMG_SIZE;

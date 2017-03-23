@@ -36,14 +36,36 @@ public abstract class Guard extends Character{
 	}
 
 	public boolean hasCaughtHero(int heroX, int heroY){
-		return representation == 'G' && //Can't catch him if you're asleep (looking at you, Drunken)!
-					 (
-					 	(posX == heroX && posY == heroY) || //They're on the same cell
-						(posX == heroX-1 && posY == heroY) || //The guard is on the cell to the left of the hero
-						(posX == heroX+1 && posY == heroY) || //The guard is on the cell to the right of the hero
-						(posX == heroX && posY == heroY-1) || //The guard is on the cell above the hero
-						(posX == heroX && posY == heroY+1) //The guard is on the cell below the hero
-					 );
+		return representation == 'G' && isNearHero(heroX, heroY);
+	}
+	
+	private boolean isNearHero(int heroX, int heroY){
+		return 	 	sameCell(heroX, heroY) || //They're on the same cell
+					toTheLeft(heroX, heroY) || //The guard is on the cell to the left of the hero
+					toTheRight(heroX, heroY) || //The guard is on the cell to the right of the hero
+					below(heroX, heroY) || //The guard is on the cell above the hero
+					up(heroX, heroY); //The guard is on the cell below the hero
+				 
+	}
+	
+	private boolean sameCell(int heroX, int heroY){
+		return posX == heroX && posY == heroY;
+	}
+	
+	private boolean toTheLeft(int heroX, int heroY){
+		return posX == heroX-1 && posY == heroY;
+	}
+	
+	private boolean toTheRight(int heroX, int heroY){
+		return posX == heroX+1 && posY == heroY;
+	}
+	
+	private boolean below(int heroX, int heroY){
+		return posX == heroX && posY == heroY-1;
+	}
+	
+	private boolean up(int heroX, int heroY){
+		return posX == heroX && posY == heroY+1;
 	}
 	
 	public int getMovIndex(){

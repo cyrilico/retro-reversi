@@ -246,19 +246,26 @@ public class EditMapWindow extends JFrame {
 		vMap[startY][startX] = true;
 		if(currentMap[startY][startX] == goal)
 			return true;
-		else if(currentMap[startY][startX] == 'X' || (currentMap[startY][startX] == 'I' && goal != 'I'))
+		else if(deadEnd(startX, startY))
 			return false;
-		else {
-			boolean testUp, testLeft, testDown, testRight;
-			testUp = !vMap[startY-1][startX];
-			testDown = !vMap[startY+1][startX];
-			testLeft = !vMap[startY][startX-1];
-			testRight = !vMap[startY][startX+1];
-			return (testRight ? validMap(vMap, startX+1, startY, goal) : false) ||
-					(testUp ? validMap(vMap, startX, startY-1, goal) : false) ||
-					(testLeft ? validMap(vMap, startX-1, startY, goal) : false) ||
-					(testDown ? validMap(vMap, startX, startY+1, goal) : false);
-		}
+		else
+			return nextMovement(vMap, startX, startY, goal);
+	}
+	
+	private boolean deadEnd(int x, int y){
+		return currentMap[y][x] == 'X' || currentMap[y][x] == 'I';
+	}
+	
+	private boolean nextMovement(boolean[][] vMap, int startX, int startY, char goal){
+		boolean testUp, testLeft, testDown, testRight;
+		testUp = !vMap[startY-1][startX];
+		testDown = !vMap[startY+1][startX];
+		testLeft = !vMap[startY][startX-1];
+		testRight = !vMap[startY][startX+1];
+		return (testRight ? validMap(vMap, startX+1, startY, goal) : false) ||
+				(testUp ? validMap(vMap, startX, startY-1, goal) : false) ||
+				(testLeft ? validMap(vMap, startX-1, startY, goal) : false) ||
+				(testDown ? validMap(vMap, startX, startY+1, goal) : false);
 	}
 	
 	private boolean allElementsPresent(){
