@@ -2,18 +2,23 @@ package logic;
 
 public class Drunken extends Guard{
 	protected boolean invertedDirection; //To see if he's following the path in the normal or inverse direction
+	private boolean sleep;
 
 	public Drunken(int startX, int startY) {
 		super(startX, startY);
 		invertedDirection = false;
+		sleep = false;
 	}
 
 	public void updatePosition(){
 		int fallAsleep = generator.nextInt(10);
-		if(fallAsleep < 3) //Only a 30% chance of falling (or remaining) asleep. If wanna change in the future, do it here and/or in the line above
+		if(fallAsleep < 3) { //Only a 30% chance of falling (or remaining) asleep. If wanna change in the future, do it here and/or in the line above
 			setRepresentation('g');
+			sleep = true;
+		}
 		else{
-			if(getRepresentation() == 'g'){ //Was asleep
+			if(sleep){ //Was asleep
+				sleep = false;
 				setRepresentation('G');
 				int invertMovement = generator.nextInt(10);
 				if(invertMovement < 4){ //40% chance of inverting movement (had 50% but he turned too much and didn't pose a real threat)
@@ -43,5 +48,9 @@ public class Drunken extends Guard{
 					movementIndex = 0;
 			}
 		}
+	}
+
+	public boolean isSleep() {
+		return sleep;
 	}
 }

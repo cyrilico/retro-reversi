@@ -13,9 +13,31 @@ package logic;
 public class TestDungeonLevel extends Level {
     /* The villains for the level */
     Guard guard;
+    
+    public TestDungeonLevel(String guardType) {
+        super();
+        
+        levelIndex = 2;
+        map = new TestDungeonMap();
+
+        /*Create level's characters*/
+        //The hero
+        switch(guardType) {
+        case "Rookie":
+        	guard = new Rookie(3,1);
+        	break;
+        case "Drunken":
+        	guard = new Drunken(3,1);
+        	break;
+        case "Suspicious":
+        	guard = new Suspicious(3,1);
+        	break;
+        }
+        
+        hero = new Hero(1,1);
+    }
 
     public TestDungeonLevel() {
-
         super();
         
         levelIndex = 2;

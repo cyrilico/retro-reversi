@@ -170,26 +170,24 @@ public class EditMapWindow extends JFrame {
 					return; //User can't start game if hasn't placed all elements yet
 				}
 				
-				System.out.println(getCharPosition('A')[0] + " - " + getCharPosition('A')[1]);
-				if(!(validMap(getInitialisedVisitMap(), getCharPosition('A')[0], getCharPosition('A')[1], 'I') &&
-					 validMap(getInitialisedVisitMap(), getCharPosition('A')[0], getCharPosition('A')[1], 'k'))){
+				int[] heroPos = getCharPosition('A');
+				if(!(validMap(getInitialisedVisitMap(), heroPos[0], heroPos[1], 'I') &&
+					 validMap(getInitialisedVisitMap(), heroPos[0], heroPos[1], 'k'))){
 					lblStatus.setText("Can't have an unnescapable map!");
 					return; //Map must be "winnable" (hero must be able to reach a door and the key)
 				}
 				
-				int[] heroPos = getCharPosition('A');
 				Hero hero = new Hero(heroPos[0], heroPos[1]);
 				
 				ArrayList<Ogre> ogres = new ArrayList<Ogre>();
 				int ogreX, ogreY;
-				do{
+				do {
 					int result[] = getCharPosition('0');
 					ogreX = result[0];
 					ogreY = result[1];
-					//System.out.println("Current ogre:" + ogreX + " - " + ogreY);
 					if(ogreX != -1)
 						ogres.add(new Ogre(ogreX, ogreY));
-				}while(ogreX != -1);
+				} while(ogreX != -1);
 				
 				Map editedMap = new EditKeepMap(currentMap);
 				Level editedLevel = new KeepLevel(ogres, hero, editedMap);
@@ -250,7 +248,7 @@ public class EditMapWindow extends JFrame {
 			return true;
 		else if(currentMap[startY][startX] == 'X' || (currentMap[startY][startX] == 'I' && goal != 'I'))
 			return false;
-		else{
+		else {
 			boolean testUp, testLeft, testDown, testRight;
 			testUp = !vMap[startY-1][startX];
 			testDown = !vMap[startY+1][startX];
@@ -369,19 +367,17 @@ public class EditMapWindow extends JFrame {
 	public int[] getCharPosition(char icon) {
 		int[] result = new int[2];
 		result[0] = -1; //default value
-		
+
 		IterateMap:
-		for(int i = 0; i < mapHeight; i++) {
-			for(int j = 0; j < mapWidth; j++) {
-				if(currentMap[i][j] == icon) {
-					if(icon == '0')
+			for(int i = 0; i < mapHeight; i++) {
+				for(int j = 0; j < mapWidth; j++) {
+					if(currentMap[i][j] == icon) {
 						currentMap[i][j] = '.';
-					result[1] = i;
-					result[0] = j;
-					break IterateMap;
+						result[1] = i; result[0] = j;
+						break IterateMap;
+					}
 				}
 			}
-		}
 		
 		return result;
 	}

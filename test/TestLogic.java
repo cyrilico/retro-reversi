@@ -11,11 +11,13 @@ import java.util.Random;
 
 import org.junit.Test;
 
+import logic.Drunken;
 import logic.DungeonLevel;
 import logic.DungeonMap;
 import logic.EditKeepMap;
 import logic.Game;
 import logic.Guard;
+import logic.Hero;
 import logic.KeepLevel;
 import logic.KeepMap;
 import logic.Level;
@@ -458,6 +460,30 @@ public class TestLogic {
         	assertArrayEquals(position2_2, ((DungeonLevel)testLevel).getGuard().getCoordinates());
         else
         	fail("Bad movement, Suspicious guard!");
+	}
+	
+	@Test
+	public void TestDrunkenRepresentation() {
+		Level testLevel = new TestDungeonLevel("Drunken");
+		Game game = new Game(1, "Drunken", testLevel);
+		
+		int counter = 1000; //Number of movements
+		
+		while(counter-- > 0 && game.isRunning()) {
+			game.updateGame('x'); //Hero doesn't move but ogres do
+			Drunken guard = ((Drunken) ((TestDungeonLevel ) testLevel).getGuard());
+			char guardRep = guard.getRepresentation();
+			
+			if(guardRep == 'g')
+				assertTrue(guard.isSleep());
+			else
+				assertFalse(guard.isSleep());
+			
+			if(guard.isSleep())
+				assertEquals('g', guardRep);
+			else
+				assertEquals('G', guardRep);
+		}
 	}
 	
 	/* 'NORMAL' KEEP LEVEL TESTING */
