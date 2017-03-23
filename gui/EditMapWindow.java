@@ -27,6 +27,8 @@ import logic.Ogre;
 public class EditMapWindow extends JFrame {
 
 	private JPanel contentPane;
+	private JLabel lblHeight, lblWidth, lblStatus;
+	private JSpinner spinnerHeight, spinnerWidth;
 	private int mapWidth;
 	private int mapHeight;
 	private char[][] currentMap = {
@@ -71,6 +73,16 @@ public class EditMapWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public EditMapWindow() {
+		
+		setFrameSettings();
+		createMapResizeOptions();
+		createEditPanel();
+		createElementsButtons();
+		createNewGameButton();
+		addSpinnerListeners();
+	}
+	
+	private void setFrameSettings(){
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 613, 452);
@@ -78,36 +90,43 @@ public class EditMapWindow extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		mapHeight = 5;
-		mapWidth = 5;
-		
-		JLabel lblHeight = new JLabel("Height");
-		lblHeight.setBounds(28, 20, 61, 16);
+	}
+	
+	private void createMapResizeOptions(){
+		mapWidth = 5; mapHeight = 5;
+		lblHeight = new JLabel("Height"); lblHeight.setBounds(28, 20, 61, 16);
 		contentPane.add(lblHeight);
-
-		JLabel lblWidth = new JLabel("Width");
-		lblWidth.setBounds(28, 47, 61, 16);
+		lblWidth = new JLabel("Width"); lblWidth.setBounds(28, 47, 61, 16);
 		contentPane.add(lblWidth);
 		
-		JSpinner spinnerHeight = new JSpinner();
-		spinnerHeight.setBounds(85, 15, 48, 26);
+		spinnerHeight = new JSpinner(); spinnerHeight.setBounds(85, 15, 48, 26);
 		spinnerHeight.setModel(new SpinnerNumberModel(5, MIN_HEIGHT, MAX_HEIGHT, 1));
 		contentPane.add(spinnerHeight);
-		
-		JSpinner spinnerWidth = new JSpinner();
-		spinnerWidth.setBounds(85, 42, 48, 26);
-		spinnerWidth.setModel(new SpinnerNumberModel(5, MIN_WIDTH, MAX_WIDTH, 1));
+		spinnerWidth = new JSpinner();
+		spinnerWidth.setBounds(85, 42, 48, 26); spinnerWidth.setModel(new SpinnerNumberModel(5, MIN_WIDTH, MAX_WIDTH, 1));
 		contentPane.add(spinnerWidth);
-		
-		JPanel mapPanel = new EditMapPanel(this);
+	}
+	
+	private void createEditPanel(){
+		mapPanel = new EditMapPanel(this);
 		mapPanel.setBounds(MAP_START_X, MAP_START_Y, MAX_WIDTH * 25, MAX_HEIGHT * 25);
 		contentPane.add(mapPanel);
 		
-		JLabel lblStatus = new JLabel("");
+		lblStatus = new JLabel("");
 		lblStatus.setBounds(28, 401, 544, 16);
 		contentPane.add(lblStatus);
-		
+	}
+	
+	private void createElementsButtons(){
+		createHeroButton();
+		createOgreButton();
+		createKeyButton();
+		createWallButton();
+		createDoorButton();
+		createDeleteButton();
+	}
+	
+	private void createHeroButton(){
 		JButton btnHero = new JButton("Hero");
 		btnHero.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -116,7 +135,9 @@ public class EditMapWindow extends JFrame {
 		});
 		btnHero.setBounds(455, 86, 117, 29);
 		contentPane.add(btnHero);
-		
+	}
+	
+	private void createOgreButton(){
 		JButton btnOgre = new JButton("Ogre");
 		btnOgre.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -125,7 +146,9 @@ public class EditMapWindow extends JFrame {
 		});
 		btnOgre.setBounds(455, 116, 117, 29);
 		contentPane.add(btnOgre);
-		
+	}
+	
+	private void createKeyButton(){
 		JButton btnKey = new JButton("Key");
 		btnKey.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -135,6 +158,9 @@ public class EditMapWindow extends JFrame {
 		btnKey.setBounds(455, 146, 117, 29);
 		contentPane.add(btnKey);
 		
+	}
+	
+	private void createWallButton(){
 		JButton btnWall = new JButton("Wall");
 		btnWall.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -143,7 +169,9 @@ public class EditMapWindow extends JFrame {
 		});
 		btnWall.setBounds(455, 173, 117, 29);
 		contentPane.add(btnWall);
-		
+	}
+	
+	private void createDoorButton(){
 		JButton btnDoor = new JButton("Door");
 		btnDoor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -153,6 +181,9 @@ public class EditMapWindow extends JFrame {
 		btnDoor.setBounds(455, 204, 117, 29);
 		contentPane.add(btnDoor);
 		
+	}
+	
+	private void createDeleteButton(){
 		JButton btnDelete = new JButton("Delete");
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -161,49 +192,51 @@ public class EditMapWindow extends JFrame {
 		});
 		btnDelete.setBounds(455, 232, 117, 29);
 		contentPane.add(btnDelete);
-		
+	}
+	
+	private void createNewGameButton(){
 		JButton btnStartGame = new JButton("Start Game");
 		btnStartGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(!allElementsPresent()){
-					lblStatus.setText("Can't have the map without all its elements!");
-					return; //User can't start game if hasn't placed all elements yet
-				}
+				if(!allElementsPresent()){ lblStatus.setText("Can't have the map without all its elements!"); return; }
 				
 				int[] heroPos = getCharPosition('A');
-				if(!isEscapable(heroPos[0], heroPos[1])) {
-					lblStatus.setText("Can't have an unnescapable map!");
-					return; //Map must be "winnable" (hero must be able to reach a door and the key)
-				}
-					
+				if(!isEscapable(heroPos[0], heroPos[1])) { lblStatus.setText("Can't have an unnescapable map!"); return; }
 				
-				Hero hero = new Hero(heroPos[0], heroPos[1]);
-				
-				ArrayList<Ogre> ogres = new ArrayList<Ogre>();
-				int ogreX, ogreY;
-				do {
-					int result[] = getCharPosition('0');
-					ogreX = result[0];
-					ogreY = result[1];
-					if(ogreX != -1)
-						ogres.add(new Ogre(ogreX, ogreY));
-				} while(ogreX != -1);
-				
-				Map editedMap = new EditKeepMap(currentMap);
-				Level editedLevel = new KeepLevel(ogres, hero, editedMap);
-				Level dungeonLevel = new DungeonLevel(editedLevel);
-				
-				window.setGame(new Game(dungeonLevel));
-				window.requestFocus();
-				window.frame.setEnabled(true);
-				window.setStatusMessage("Press the keyboard arrows to move the hero.");
+				getRemainingElementsAndStartGame(heroPos[0], heroPos[1]);
 			}
 		});
 		btnStartGame.setBounds(455, 357, 117, 29);
 		contentPane.add(btnStartGame);
 		mapPanel.requestFocusInWindow();
+	}
+	
+	private void getRemainingElementsAndStartGame(int heroX, int heroY){
+		Hero hero = new Hero(heroX, heroY);
+		ArrayList<Ogre> ogres = new ArrayList<Ogre>();
+		int ogreX, ogreY;
+		do {
+			int result[] = getCharPosition('0'); ogreX = result[0]; ogreY = result[1];
+			if(ogreX != -1) ogres.add(new Ogre(ogreX, ogreY));
+		} while(ogreX != -1);
 		
+		Map editedMap = new EditKeepMap(currentMap);
+		Level editedLevel = new KeepLevel(ogres, hero, editedMap);
+		Level dungeonLevel = new DungeonLevel(editedLevel);
 		
+		window.setGame(new Game(dungeonLevel));
+		window.requestFocus();
+		window.frame.setEnabled(true);
+		window.gamePanel.requestFocusInWindow();
+		window.setStatusMessage("Press the keyboard arrows to move the hero.");
+	}
+	
+	private void addSpinnerListeners(){
+		addSpinnerHeightListener();
+		addSpinnerWidthListener();
+	}
+	
+	private void addSpinnerHeightListener(){
 		spinnerHeight.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				int input = (Integer) spinnerHeight.getValue();
@@ -217,7 +250,9 @@ public class EditMapWindow extends JFrame {
 				resizeMap();
 			}
 		});
-		
+	}
+	
+	private void addSpinnerWidthListener(){
 		spinnerWidth.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				int input = (Integer) spinnerWidth.getValue();

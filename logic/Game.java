@@ -30,19 +30,14 @@ public class Game implements java.io.Serializable{
         int[] result = new int[2];
         switch(input){
             case 'a':
-                result[0]--; //[-1,0] - left
-                break;
+                result[0]--; break; //[-1,0] - left
             case 'w':
-                result[1]--; //[0,-1] - up
-                break;
+                result[1]--; break; //[0,-1] - up
             case 's':
-                result[1]++; //[0,1] - down
-                break;
+                result[1]++; break;//[0,1] - down
             case 'd':
-                result[0]++; //[1,0] - right
-                break;
-            default: //[0,0] - invalid movement key
-                break;
+                result[0]++; break;//[1,0] - right
+            default: break;//[0,0] - invalid movement key
         }
         return result;
     }

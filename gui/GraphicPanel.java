@@ -31,7 +31,6 @@ public abstract class GraphicPanel extends JPanel {
 	 */
 	public GraphicPanel() {
 		try{
-			//Assumes program is being executed in an Eclipse project which has a src folder (reasonable?)
 			hero_nokey = ImageIO.read(new File("src/img/hero_nkey.png"));
 			hero_withkey = ImageIO.read(new File("src/img/hero_wkey.png"));
 			guard_awake = ImageIO.read(new File("src/img/guard.png"));
@@ -46,10 +45,8 @@ public abstract class GraphicPanel extends JPanel {
 			club = ImageIO.read(new File("src/img/club.png"));
 		}
 		catch(IOException e) {
-			System.out.println("ERROR: Couldn't read all necessary images");
-			System.exit(-1);
+			System.out.println("ERROR: Couldn't read all necessary images"); System.exit(-1);
 		}
-		
 		loadHashMap();
 	}
 	

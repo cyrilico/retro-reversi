@@ -25,6 +25,10 @@ public class WindowKeep implements java.io.Serializable{
 
 	private JFrame newGameFrame;
 	private JFrame editMapFrame;
+	
+	private JLabel lblStatus;
+	private JButton btnNewGame, btnNewBuexittton, btnEditMap, btnSaveGame, btnLoadGame;
+	protected JPanel gamePanel;
 
 	/**
 	 * Launch the application.
@@ -53,6 +57,14 @@ public class WindowKeep implements java.io.Serializable{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		createFrame();
+		newGameFrame = new NewGameInfo(this);
+		editMapFrame = new EditMapWindow(this);
+		createButtons();
+		createGamePanel();
+	}
+	
+	private void createFrame(){
 		frame = new JFrame();
 
 		frame.setResizable(false);
@@ -63,23 +75,18 @@ public class WindowKeep implements java.io.Serializable{
 		frame.setBounds(100, 100, 590, 384);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-
-		newGameFrame = new NewGameInfo(this);
-		editMapFrame = new EditMapWindow(this);
-
-		JLabel lblStatus = new JLabel("You can start a new game.");
-		lblStatus.setName("lblStatus");
-		lblStatus.setBounds(36, 322, 357, 16);
-		lblStatus.setForeground(Color.WHITE);
-		lblStatus.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
-		frame.getContentPane().add(lblStatus);
-
-		JPanel gamePanel = new GamePanel(this);
-		gamePanel.setBounds(26, 23, 369, 287);
-		frame.getContentPane().add(gamePanel);
-		gamePanel.requestFocusInWindow();
-
-		JButton btnNewGame = new JButton("New Game");
+	}
+	
+	private void createButtons(){
+		createNewGameButton();
+		createExitButton();
+		createEditMapButton();
+		createSaveButton();
+		createLoadButton();
+	}
+	
+	private void createNewGameButton(){
+		btnNewGame = new JButton("New Game");
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setEnabled(false);
@@ -90,8 +97,10 @@ public class WindowKeep implements java.io.Serializable{
 
 		btnNewGame.setBounds(442, 60, 117, 29);
 		frame.getContentPane().add(btnNewGame);
-
-		JButton btnNewBuexittton = new JButton("Exit");
+	}
+	
+	private void createExitButton(){
+		btnNewBuexittton = new JButton("Exit");
 		btnNewBuexittton.setBounds(442, 243, 117, 29);
 		btnNewBuexittton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -99,8 +108,10 @@ public class WindowKeep implements java.io.Serializable{
 			}
 		});
 		frame.getContentPane().add(btnNewBuexittton);
-		
-		JButton btnEditMap = new JButton("Edit Map");
+	}
+	
+	private void createEditMapButton(){
+		btnEditMap = new JButton("Edit Map");
 		btnEditMap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setEnabled(false);
@@ -110,19 +121,18 @@ public class WindowKeep implements java.io.Serializable{
 		});
 		btnEditMap.setBounds(442, 97, 117, 29);
 		frame.getContentPane().add(btnEditMap);
-		
-		JButton btnSaveGame = new JButton("Save Game");
+	}
+	
+	private void createSaveButton(){
+		btnSaveGame = new JButton("Save Game");
 		btnSaveGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(game == null)
 					return;
-
 				try {
 					FileOutputStream fileOut = new FileOutputStream("src/GameSession.ser");
 					ObjectOutputStream out = new ObjectOutputStream(fileOut);
-					out.writeObject(game);
-					out.close();
-					fileOut.close();
+					out.writeObject(game); out.close(); fileOut.close();
 					lblStatus.setText("Game Session saved in src/GameSession.ser");
 				}catch(IOException i) {
 					lblStatus.setText("Couldn't save current game session!");
@@ -133,31 +143,42 @@ public class WindowKeep implements java.io.Serializable{
 		});
 		btnSaveGame.setBounds(442, 138, 117, 25);
 		frame.getContentPane().add(btnSaveGame);
-		
-		JButton btnLoadGame = new JButton("Load Game");
+	}
+	
+	private void createLoadButton(){
+		btnLoadGame = new JButton("Load Game");
 		btnLoadGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Game newGame;
 				try {
 					FileInputStream fileIn = new FileInputStream("src/GameSession.ser");
 					ObjectInputStream in = new ObjectInputStream(fileIn);
-					newGame = (Game) in.readObject();
-					in.close();
-					fileIn.close();
+					newGame = (Game) in.readObject(); in.close(); fileIn.close();
 				}catch(IOException i) {
-					lblStatus.setText("Couldn't load game session!");
-					return;
+					lblStatus.setText("Couldn't load game session!"); return;
 				}catch(ClassNotFoundException c) {
-					System.out.println("Game class not found");
-					return;
+					System.out.println("Game class not found"); return;
 				}
-				
 				setGame(newGame);
 				frame.getContentPane().getComponent(1).requestFocusInWindow();
 			}
 		});
 		btnLoadGame.setBounds(442, 174, 117, 25);
 		frame.getContentPane().add(btnLoadGame);
+	}
+	
+	private void createGamePanel(){
+		lblStatus = new JLabel("You can start a new game.");
+		lblStatus.setName("lblStatus");
+		lblStatus.setBounds(36, 322, 357, 16);
+		lblStatus.setForeground(Color.WHITE);
+		lblStatus.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
+		frame.getContentPane().add(lblStatus);
+
+		gamePanel = new GamePanel(this);
+		gamePanel.setBounds(26, 23, 369, 287);
+		frame.getContentPane().add(gamePanel);
+		gamePanel.requestFocusInWindow();
 	}
 
 	public void requestFocus() {
@@ -174,13 +195,11 @@ public class WindowKeep implements java.io.Serializable{
 	}
 
 	public void setStatusMessage(String str) {
-		JLabel gameStatus = (JLabel) frame.getContentPane().getComponent(0);
-		gameStatus.setText(str);
+		lblStatus.setText(str);
 	}
 
 	public void finishGame(){
-		JLabel gameStatus = (JLabel) frame.getContentPane().getComponent(0);
-		gameStatus.setText(game.finalMessage());
+		lblStatus.setText(game.finalMessage());
 		game = null;
 	}
 }

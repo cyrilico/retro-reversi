@@ -174,14 +174,19 @@ public class KeepLevel extends Level {
 
 	public char[][] getLevelMatrix() {
 		char[][] matrix = map.getCurrentPlan();
-
-		//Draw hero
+		drawHero(matrix);
+		drawOgres(matrix);
+		return matrix;
+	}
+	
+	private void drawHero(char[][] mapClone){
 		int[] heroCoordinates = hero.getCoordinates();
 		int heroX = heroCoordinates[0];
 		int heroY = heroCoordinates[1];
-		matrix[heroY][heroX] = hero.getRepresentation();
-
-		//Draw ogres
+		mapClone[heroY][heroX] = hero.getRepresentation();
+	}
+	
+	private void drawOgres(char[][] mapClone){
 		for(Ogre ogre : ogres){
 			int[] ogreCoordinates = ogre.getCoordinates();
 			int[] ogreClubOffsetCoordinates = ogre.getClubOffset();
@@ -189,11 +194,9 @@ public class KeepLevel extends Level {
 			int ogreClubX = ogreX + ogreClubOffsetCoordinates[0];
 			int ogreY = ogreCoordinates[1];
 			int ogreClubY = ogreY + ogreClubOffsetCoordinates[1];
-			matrix[ogreY][ogreX] = ogre.getRepresentation();
-			matrix[ogreClubY][ogreClubX] = (ogre.clubIsOnKey() ? '$' : '*');
+			mapClone[ogreY][ogreX] = ogre.getRepresentation();
+			mapClone[ogreClubY][ogreClubX] = (ogre.clubIsOnKey() ? '$' : '*');
 		}
-
-		return matrix;
 	}
 
 	public Level getNextLevel() {

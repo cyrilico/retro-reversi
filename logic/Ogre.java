@@ -71,9 +71,7 @@ public class Ogre extends Character {
 	}
 
 	private int[] randomMovement() {
-        int movementType = generator.nextInt(2);
-        int randomY;
-        int randomX;
+        int movementType = generator.nextInt(2), randomY, randomX;
         if(movementType == 0){ //Horizontal movement
           randomY = 0;
           do {
@@ -86,9 +84,7 @@ public class Ogre extends Character {
           } while(randomY == 0); //Just to make sure he does indeed move every time
           randomX = 0;
         }
-
-        int[] result = {randomX, randomY};
-        return result;
+        int[] result = {randomX, randomY}; return result;
     }
 
     public int isStunned() {

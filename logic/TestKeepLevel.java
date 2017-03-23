@@ -103,27 +103,30 @@ generateClubMovement:
         checkIfHeroCaptured();
     }
 
-    public char[][] getLevelMatrix() {
-        char[][] matrix = map.getCurrentPlan();
-
-        //Draw hero
-        int[] heroCoordinates = hero.getCoordinates();
-        int heroX = heroCoordinates[0];
-        int heroY = heroCoordinates[1];
-        matrix[heroY][heroX] = hero.getRepresentation();
-
-        //Draw ogre
-            int[] ogreCoordinates = ogre.getCoordinates();
-            int[] ogreClubOffsetCoordinates = ogre.getClubOffset();
-            int ogreX = ogreCoordinates[0];
-            int ogreClubX = ogreX + ogreClubOffsetCoordinates[0];
-            int ogreY = ogreCoordinates[1];
-            int ogreClubY = ogreY + ogreClubOffsetCoordinates[1];
-            matrix[ogreY][ogreX] = ogre.getRepresentation();
-            matrix[ogreClubY][ogreClubX] = (ogre.clubIsOnKey() ? '$' : '*');
-
-        return matrix;
-    }
+	public char[][] getLevelMatrix() {
+		char[][] matrix = map.getCurrentPlan();
+		drawHero(matrix);
+		drawOgre(matrix);
+		return matrix;
+	}
+	
+	private void drawHero(char[][] mapClone){
+		int[] heroCoordinates = hero.getCoordinates();
+		int heroX = heroCoordinates[0];
+		int heroY = heroCoordinates[1];
+		mapClone[heroY][heroX] = hero.getRepresentation();
+	}
+	
+	private void drawOgre(char[][] mapClone){
+		int[] ogreCoordinates = ogre.getCoordinates();
+		int[] ogreClubOffsetCoordinates = ogre.getClubOffset();
+		int ogreX = ogreCoordinates[0];
+		int ogreClubX = ogreX + ogreClubOffsetCoordinates[0];
+		int ogreY = ogreCoordinates[1];
+		int ogreClubY = ogreY + ogreClubOffsetCoordinates[1];
+		mapClone[ogreY][ogreX] = ogre.getRepresentation();
+		mapClone[ogreClubY][ogreClubX] = (ogre.clubIsOnKey() ? '$' : '*');
+	}
     
     
     public int[] getHeroCoordinates() {
