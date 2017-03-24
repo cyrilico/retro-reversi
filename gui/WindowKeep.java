@@ -88,7 +88,7 @@ public class WindowKeep implements java.io.Serializable{
 	}
 	
 	private void createNewGameButton(){
-		btnNewGame = new JButton("NG Orig. Keep");
+		btnNewGame = new JButton("Play Default");
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setEnabled(false);
@@ -97,13 +97,13 @@ public class WindowKeep implements java.io.Serializable{
 			}
 		});
 
-		btnNewGame.setBounds(433, 60, 135, 29);
+		btnNewGame.setBounds(433, 23, 135, 44);
 		frame.getContentPane().add(btnNewGame);
 	}
 	
 	private void createExitButton(){
 		btnNewBuexittton = new JButton("Exit");
-		btnNewBuexittton.setBounds(433, 343, 135, 29);
+		btnNewBuexittton.setBounds(433, 322, 135, 29);
 		btnNewBuexittton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
@@ -113,7 +113,7 @@ public class WindowKeep implements java.io.Serializable{
 	}
 	
 	private void createEditMapButton(){
-		btnEditMap = new JButton("NG New Keep");
+		btnEditMap = new JButton("Play Custom Map");
 		btnEditMap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setEnabled(false);
@@ -121,7 +121,7 @@ public class WindowKeep implements java.io.Serializable{
 				editMapFrame.setVisible(true);
 			}
 		});
-		btnEditMap.setBounds(433, 97, 135, 29);
+		btnEditMap.setBounds(433, 66, 135, 44);
 		frame.getContentPane().add(btnEditMap);
 	}
 	

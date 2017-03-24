@@ -31,6 +31,7 @@ public class EditMapWindow extends JFrame {
 	private JSpinner spinnerHeight, spinnerWidth;
 	private int mapWidth;
 	private int mapHeight;
+	private boolean hasHero;
 	private char[][] currentMap = {
 									{'X','X','X','X','X'},
 									{'X','.','.','.','X'},
@@ -131,6 +132,7 @@ public class EditMapWindow extends JFrame {
 		btnHero.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				currentChar = 'A';
+				toggleHasHero();
 			}
 		});
 		btnHero.setBounds(455, 86, 117, 29);
@@ -331,6 +333,7 @@ public class EditMapWindow extends JFrame {
 	public EditMapWindow(WindowKeep window) {
 		this();
 		this.window = window;
+		this.hasHero = false;
 	}
 	
 	public void resizeMap() {
@@ -391,6 +394,9 @@ public class EditMapWindow extends JFrame {
 			return; //If it returns here, it doesn't reset the currentChar, 
 			//giving the user a chance to try to place the icon without reclicking the button
 		}
+		
+		if(toReplace == 'A')
+			toggleHasHero();
 			
 		currentMap[mapY][mapX] = currentChar;
 		
@@ -400,6 +406,22 @@ public class EditMapWindow extends JFrame {
 	
 	public void resetCurrentChar() {
 		currentChar = 'N';
+	}
+
+	public void toggleHasHero() {
+		if(hasHero) {
+			hasHero = false;
+			setHeroButton(true);
+		}
+		else {
+			hasHero = true;
+			setHeroButton(false);
+		}
+	}
+	
+	public void setHeroButton(boolean val) {
+		JButton tempHero = (JButton) contentPane.getComponent(6);
+		tempHero.setEnabled(val);
 	}
 	
 	public void setStatusMessage(String str) {
