@@ -26,7 +26,7 @@ public class KeepMap extends Map {
 		setMap(tempMatrix);
 	}
 	
-
+	
 	/**
 	 * Opens the map's doors (changes the doors' representation from 'I' to 'S')
 	 */

@@ -21,6 +21,8 @@ import logic.KeepLevel;
 import logic.KeepMap;
 import logic.Level;
 import logic.Ogre;
+import logic.Rookie;
+import logic.Suspicious;
 import logic.TestDungeonLevel;
 import logic.TestKeepLevel;
 
@@ -127,6 +129,16 @@ public class TestLogic {
         
         //1 is the KeepLevel's unique index
         assertEquals(1, game.getCurrentLevelIndex());
+	}
+	
+	@Test
+	public void testCorrectGuardSpawns(){
+		TestDungeonLevel level_1 = new TestDungeonLevel("Rookie");
+		assertTrue(level_1.getGuard() instanceof Rookie);
+		TestDungeonLevel level_2 = new TestDungeonLevel("Drunken");
+		assertTrue(level_2.getGuard() instanceof Drunken);
+		TestDungeonLevel level_3 = new TestDungeonLevel("Suspicious");
+		assertTrue(level_3.getGuard() instanceof Suspicious);
 	}
 	
 	/* TESTKEEP LEVEL TESTING */
@@ -483,7 +495,7 @@ public class TestLogic {
 	
 	@Test
 	public void TestKeepOgreGenerator(){
-		KeepLevel k1 = new KeepLevel();
+		KeepLevel k1 = new KeepLevel(5);
 		assertTrue(k1.getOgres().size() > 0);
 	}
 	
@@ -529,6 +541,10 @@ public class TestLogic {
 		Level testLevel = new KeepLevel();	
         
         assertEquals('A', testLevel.getHeroRep());
+        
+        Level testLevel_2 = new KeepLevel(5);
+        
+        assertEquals('A', testLevel_2.getHeroRep());
 	}
 	
 	@Test
@@ -547,6 +563,19 @@ public class TestLogic {
 			int clubOffset[] = elem.getClubOffset();
 			assertTrue(clubOffset[0] == 0 && clubOffset[1] == 0);
 		}
+	}
+	
+	@Test
+	public void TestKeepOgreStunDuration(){
+		Ogre ogre = new Ogre(1,1);
+		ogre.setStun();
+		int[] nextMov1 = {0,0};
+		assertArrayEquals(nextMov1,ogre.getNextMovement());
+		ogre.updateStun();
+		assertArrayEquals(nextMov1,ogre.getNextMovement());
+		ogre.updateStun();
+		int[] nextOgreMov = ogre.getNextMovement();
+		assertFalse(nextOgreMov[0] == 0 && nextOgreMov[1] == 0);
 	}
 	
 	@Test
@@ -570,20 +599,30 @@ public class TestLogic {
 	public void TestOgreRepresentation() {
 		Level testLevel = new KeepLevel();
 		Game game = new Game(testLevel);
-		
+
 		int counter = 1000; //Number of movements
-		
+
 		while(counter-- > 0 && game.isRunning()) {
 			game.updateGame('x'); //Hero doesn't move but ogres do
 			ArrayList<Ogre> ogres = ((KeepLevel) testLevel).getOgres();
-			
+
 			for(Ogre elem : ogres) {
-				if(elem.isStunned() != 0)
+				if(elem.isStunned() != 0){
 					assertEquals('8', elem.getRepresentation());
-				
-				int coordinates[] = elem.getCoordinates();
-				if(coordinates[0] == 1 && coordinates[1] == 7) //Ogre is on key
-					assertEquals('$', elem.getRepresentation());
+				}
+				else{
+
+					int coordinates[] = elem.getCoordinates();
+					if(coordinates[0] == 7 && coordinates[1] == 1) //Ogre is on key
+						assertEquals('$', elem.getRepresentation());
+					else
+						assertEquals('0', elem.getRepresentation());
+					int clubCoordinates[] = {coordinates[0]+elem.getClubOffset()[0],coordinates[1]+elem.getClubOffset()[1]};
+					if(elem.clubIsOnKey())
+						assertEquals(testLevel.getLevelMatrix()[1][7], '$');
+					else
+						assertEquals(testLevel.getLevelMatrix()[clubCoordinates[1]][clubCoordinates[0]], '*');
+				}
 			}
 		}
 	}
@@ -605,6 +644,13 @@ public class TestLogic {
 		assertEquals(0, game.getCurrentLevelIndex());
 		assertEquals(2, Game.getnOgres());
 		assertEquals("Rookie", Game.getGuardType());
+	}
+	
+	@Test
+	public void TestCorrectGameStart(){
+		Game game = new Game(new DungeonLevel());
+		String expected_matrix = "XXXXXXXXXX\nXH..I.X.GX\nXXX.XXX..X\nX.I.I.X..X\nXXX.XXX..X\nI........X\nI........X\nXXX.XXXX.X\nX.I.I.Xk.X\nXXXXXXXXXX\n";
+		assertEquals(game.getCurrentMatrix(), expected_matrix);
 	}
 	
 /* OTHER TESTS */
