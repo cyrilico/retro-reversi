@@ -77,8 +77,6 @@ public class TestDungeonLevel extends Level {
 
         updateHero(dx, dy, currentChar);
 
-        hero.setCoordinates(heroX+dx, heroY+dy);
-
         checkIfHeroCaptured();
     }
     /**
