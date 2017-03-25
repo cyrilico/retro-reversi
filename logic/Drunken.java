@@ -1,15 +1,34 @@
 package logic;
 
+/**
+ * A type of Guard that can randomly fall asleep and invert the pre-determined path's direction when he wakes up
+ *
+ */
 public class Drunken extends Guard{
-	protected boolean invertedDirection; //To see if he's following the path in the normal or inverse direction
+	/**
+	 * If set to true, then the Drunken guard is moving in the opposite direction to the default one
+	 */
+	protected boolean invertedDirection;
 	private boolean sleep;
-
+	
+	/**
+	 * Constructor. Initializes all fields and puts Drunken guard at it's starting position
+	 * 
+	 * @param startX Drunken guard's initial x-axis position
+	 * @param startY Drunken guard's initial y-axis position
+	 */
 	public Drunken(int startX, int startY) {
 		super(startX, startY);
 		invertedDirection = false;
 		sleep = false;
 	}
-
+	
+	/**
+	 * Updates the Drunken guard's position based on his movement behavior.
+	 * - First, it generates a random number and depending on its value he can go (or stay) sleeping
+	 * - If he's not sleeping and just woke up, another number is generated to see if he will invert his movement's direction
+	 * - If neither of the previous apply, he just moves according to his last known pattern
+	 */
 	public void updatePosition(){
 		int fallAsleep = generator.nextInt(10);
 		if(fallAsleep < 3) { //Only a 30% chance of falling (or remaining) asleep. If wanna change in the future, do it here and/or in the line above
@@ -49,7 +68,12 @@ public class Drunken extends Guard{
 			}
 		}
 	}
-
+	
+	/**
+	 * Checks if Drunken guard is currently sleeping
+	 * 
+	 * @return true if he indeed isn't moving, false otherwise
+	 */
 	public boolean isSleep() {
 		return sleep;
 	}

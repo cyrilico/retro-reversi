@@ -1,8 +1,19 @@
 package logic;
 
+/**
+ * 
+ * Map used in the first game level
+ *
+ */
 public class DungeonMap extends Map{
+	
+	/**
+	 * Constructor. Initializes the map matrix to the default 10x10 Dungeon map
+	 */
   public DungeonMap(){
-    mapMatrix = new char[10][10];
+	height = 10;
+	width = 10;
+    mapMatrix = new char[height][width];
     char[][] tempMatrix = {
               {'X','X','X','X','X','X','X','X','X','X'},
               {'X','.','.','.','I','.','X','.','.','X'},
@@ -18,17 +29,11 @@ public class DungeonMap extends Map{
    setMap(tempMatrix);
   }
 
+  /**
+   * Opens the map's doors (changes the doors' representation from 'I' to 'S')
+   */
   public void openDoors(){
     mapMatrix[5][0] = 'S';
     mapMatrix[6][0] = 'S';
-  }
-
-  public char[][] getCurrentPlan(){
-    char[][] plant = new char[10][10];
-    int index = 0;
-    for(char[] line : mapMatrix)
-      plant[index++] = (char[])line.clone();
-
-    return plant;
   }
 }

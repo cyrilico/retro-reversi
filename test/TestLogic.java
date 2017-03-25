@@ -17,7 +17,6 @@ import logic.DungeonMap;
 import logic.EditKeepMap;
 import logic.Game;
 import logic.Guard;
-import logic.Hero;
 import logic.KeepLevel;
 import logic.KeepMap;
 import logic.Level;
@@ -32,7 +31,6 @@ public class TestLogic {
 	@Test
 	public void TestGuardInitialValues() {
 		Level testLevel = new TestDungeonLevel();
-        Game game = new Game(testLevel);
         
         Guard guard = ((TestDungeonLevel) testLevel).getGuard();
         if(guard == null)
@@ -136,7 +134,6 @@ public class TestLogic {
 	@Test
 	public void TestOgreInitialValues() {
 		Level testLevel = new TestKeepLevel(false);
-        Game game = new Game(testLevel);
         
         Ogre ogre = ((TestKeepLevel) testLevel).getOgre();
        
@@ -196,7 +193,6 @@ public class TestLogic {
 	@Test
 	public void TestKeepTestHeroRepresentation() {
 		Level testLevel = new TestKeepLevel(false);
-        Game game = new Game(testLevel);	
         
         assertEquals('A', testLevel.getHeroRep());
 	}
@@ -357,7 +353,6 @@ public class TestLogic {
 	@Test
 	public void TestDungeonHeroInitialValues() {
 		Level testLevel = new DungeonLevel();
-        Game game = new Game(testLevel);
         
         Guard guard = ((DungeonLevel)testLevel).getGuard();
         if(guard == null)
@@ -387,7 +382,6 @@ public class TestLogic {
 	@Test
 	public void TestDungeonGetMatrix() {
 		Level testLevel = new DungeonLevel();
-        Game game = new Game(testLevel);
 		
         char[][] currentPlan = testLevel.getLevelMatrix();
         if(currentPlan == null)
@@ -397,7 +391,6 @@ public class TestLogic {
 	@Test
 	public void TestDungeonNextLevel() {
 		Level testLevel = new DungeonLevel();
-		Game game = new Game(testLevel);
 
 		if(testLevel.getNextLevel() == null)
 			fail("Next level is null");
@@ -533,8 +526,7 @@ public class TestLogic {
 	
 	@Test
 	public void TestKeepHeroRepresentation() {
-		Level testLevel = new KeepLevel();
-        Game game = new Game(testLevel);	
+		Level testLevel = new KeepLevel();	
         
         assertEquals('A', testLevel.getHeroRep());
 	}
@@ -542,7 +534,6 @@ public class TestLogic {
 	@Test
 	public void TestKeepOgreInitialValues() {
 		Level testLevel = new KeepLevel();
-		Game game = new Game(testLevel);
 
 		ArrayList<Ogre> ogres = ((KeepLevel) testLevel).getOgres();
 
@@ -561,7 +552,6 @@ public class TestLogic {
 	@Test
 	public void TestKeepGetMatrix() {
 		Level testLevel = new KeepLevel();
-        Game game = new Game(testLevel);
 		
         char[][] currentPlan = testLevel.getLevelMatrix();
         if(currentPlan == null)
@@ -571,7 +561,6 @@ public class TestLogic {
 	@Test
 	public void TestKeepNextLevel() {
 		Level testLevel = new KeepLevel();
-		Game game = new Game(testLevel);
 
 		if(testLevel.getNextLevel() != null)
 			fail("Next level is not null");
@@ -614,8 +603,8 @@ public class TestLogic {
 		
 		assertTrue(game.isRunning());
 		assertEquals(0, game.getCurrentLevelIndex());
-		assertEquals(2, game.getnOgres());
-		assertEquals("Rookie", game.getGuardType());
+		assertEquals(2, Game.getnOgres());
+		assertEquals("Rookie", Game.getGuardType());
 	}
 	
 /* OTHER TESTS */

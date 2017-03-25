@@ -1,15 +1,16 @@
 package logic;
 
+/**
+ * The default map for the second game level
+ *
+ */
 public class KeepMap extends Map {
-
-	private int width;
-	private int height;
-
+	/**
+	 * Constructor. Initializes the map matrix with the default Keep map
+	 */
 	public KeepMap() {
-
-		width = 9;
 		height = 9;
-
+		width = 9;
 		mapMatrix = new char[height][width];
 		char[][] tempMatrix = {
 				{'X','X','X','X','X','X','X','X','X'},
@@ -24,17 +25,12 @@ public class KeepMap extends Map {
 		};
 		setMap(tempMatrix);
 	}
+	
 
+	/**
+	 * Opens the map's doors (changes the doors' representation from 'I' to 'S')
+	 */
 	public void openDoors() {
 		mapMatrix[1][0] = 'S';
-	}
-
-	public char[][] getCurrentPlan(){
-		char[][] plant = new char[height][width];
-		int index = 0;
-		for(char[] line : mapMatrix)
-			plant[index++] = (char[])line.clone();
-
-		return plant;
 	}
 }

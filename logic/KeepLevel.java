@@ -168,6 +168,7 @@ public class KeepLevel extends Level {
 	}
 
 	public ArrayList<Ogre> getOgres() {
+		@SuppressWarnings("unchecked")
 		ArrayList<Ogre> clone = (ArrayList<Ogre>)ogres.clone();
 		return clone;
 	}

@@ -291,6 +291,7 @@ public class WindowKeep implements java.io.Serializable{
 
 	public void finishGame(){
 		lblStatus.setText(game.finalMessage());
+		disableMovementButtons();
 		game = null;
 	}
 }
