@@ -3,13 +3,24 @@ package logic;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * The second game level
+ *
+ */
 public class KeepLevel extends Level {
 
-	/* Calculate how many ogres will be generated */
+	/**
+     *  Used to randomly choose the number of ogres the level if user didn't specify 
+     */
 	Random ogreGenerator;
-	/* The villains for the level */
+	/**
+	 *  The level's enemies
+	 */
 	ArrayList<Ogre> ogres;
-	
+	/**
+	 * Constructor where user specifies how many ogres there will be. All will start at the same position
+	 * @param nOgres Number of ogres to be present
+	 */
 	public KeepLevel(int nOgres) {
 		super();
 
@@ -29,14 +40,21 @@ public class KeepLevel extends Level {
 		for(int i = 0; i < numberOfOgres; i++)
 			ogres.add(new Ogre(4,1));   	
 	}
-	
+	/**
+	 * Constructor that specifies all elements for the current level. Used when the KeepLevel comes from a user's creation in the map editor
+	 * @param ogres Ogres for the map (do not have to be all in the same starting position)
+	 * @param hero Hero for the level
+	 * @param map Level Map directly from map editor
+	 */
 	public KeepLevel(ArrayList<Ogre> ogres, Hero hero, Map map) {
 		levelIndex = 1;
 		this.map = map;
 		this.ogres = ogres;
 		this.hero = hero;
 	}
-
+	/**
+	 * Default constructor. Initializes the default level, with the hero at the default position and a random number of ogres (within a certain limit)
+	 */
 	public KeepLevel() {
 		super();
 
@@ -56,7 +74,9 @@ public class KeepLevel extends Level {
 		for(int i = 0; i < numberOfOgres; i++)
 			ogres.add(new Ogre(4,1));
 	}
-
+	/**
+     * Checks if an Ogre is in position to catch the hero. Changes level state accordingly if so
+     */
 	public void checkIfHeroCaptured(){
 		int[] heroCoordinates = hero.getCoordinates();
 		for(Ogre ogre : ogres) {
@@ -64,7 +84,9 @@ public class KeepLevel extends Level {
 				levelStatus = LevelState.LOST;
 		}
 	}
-
+	/**
+	 * Checks if the Hero is an adjacent position to an Ogre and stuns it if so
+	 */
 	public void checkIfHeroStuns() {
 		int[] heroCoordinates = hero.getCoordinates();
 
@@ -79,7 +101,12 @@ public class KeepLevel extends Level {
 			}
 		}
 	}
-
+	/**
+     * Updates the Hero and Ogres' positions based on user input and/or their respective behavior
+     * 
+     * @param input user input containing desired Hero's next movement
+     * @see updateHero
+     */
 	public void updatePositions(int[] input) {
 		//Update the hero's position
 		int dx = input[0];
@@ -142,12 +169,18 @@ public class KeepLevel extends Level {
 		checkIfHeroStuns();
 		checkIfHeroCaptured();
 	}
-	
+	/**
+     * Moves the hero to his next desired position if said movement is valid
+     * @param dx Desired offset to current x-axis position
+     * @param dy Desired offset to current y-axis position
+     * @param currentChar Current element at next desired position
+     * @see updatePositions
+     */
 	public void updateHero(int dx, int dy, char currentChar) {
 		int heroX = hero.getCoordinates()[0];
 		int heroY = hero.getCoordinates()[1];
 		
-		switch(currentChar) { //Checking what is present in the cell the hero wants to move to
+		switch(currentChar) {
 		case 'S':
 			levelStatus = LevelState.WON;
 			return; /* Avoids checking for enemies on negative indexes */
@@ -159,34 +192,46 @@ public class KeepLevel extends Level {
 		case 'I':
 			if(heroHasKey)
 				map.openDoors(); /* No break statement because while he's opening the door, he's still. No break forces dx=dy=0, like we want */
-		default: /* currentChar == 'X' so we can't move through */
+		default:
 			dy = 0;
 			dx = 0;
 		}
 
 		hero.setCoordinates(heroX+dx, heroY+dy);	
 	}
-
+	/**
+	 * Gets the current session's Ogres. Used for Unit testing purposes only
+	 * @return level's Ogre ArrayList
+	 */
 	public ArrayList<Ogre> getOgres() {
 		@SuppressWarnings("unchecked")
 		ArrayList<Ogre> clone = (ArrayList<Ogre>)ogres.clone();
 		return clone;
 	}
-
+	/**
+     *  Returns a copy of the game map with all the characters placed
+     *  @return char matrix with current game situation
+     */
 	public char[][] getLevelMatrix() {
 		char[][] matrix = map.getCurrentPlan();
 		drawHero(matrix);
 		drawOgres(matrix);
 		return matrix;
 	}
-	
+	/**
+	 * Draws the hero in the map
+	 * @param mapClone Map where the hero will be drawn at
+	 */
 	private void drawHero(char[][] mapClone){
 		int[] heroCoordinates = hero.getCoordinates();
 		int heroX = heroCoordinates[0];
 		int heroY = heroCoordinates[1];
 		mapClone[heroY][heroX] = hero.getRepresentation();
 	}
-	
+	/**
+	 * Draws the ogres in the map
+	 * @param mapClone Map where the ogres will be drawn at
+	 */
 	private void drawOgres(char[][] mapClone){
 		for(Ogre ogre : ogres){
 			int[] ogreCoordinates = ogre.getCoordinates();
@@ -199,7 +244,11 @@ public class KeepLevel extends Level {
 			mapClone[ogreClubY][ogreClubX] = (ogre.clubIsOnKey() ? '$' : '*');
 		}
 	}
-
+	/**
+     * Gets the level following the current one
+     * @return null, since this is the last level
+     * @see nextLevel
+     */
 	public Level getNextLevel() {
 		return null;
 	}

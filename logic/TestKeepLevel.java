@@ -1,20 +1,24 @@
 package logic;
 
-/* NOTE: Although this is an independent level, it is highly based on the 'real' KeepLevel, with the only changes being:
- * - The map (it is a smaller one, defined in TestKeepMap.java)
- * - The ogre, which movement is based on a boolean flag (which can be easily added to the 'real' level altering very few lines of code)
- * - The characters' starting positions
- * 
- * In order not to modify the original content these levels were created. Due to their similarity in the game functionalities, it
- * is expected that these are a good telling if the game logic is working well or not
+/**
+ *  Imitation of the second game level. Used for Unit testing purposes only.
  */
 
 public class TestKeepLevel extends Level {
 	
-	/* The villains for the level */
+	/**
+	 *  The level's enemy
+	 */
     Ogre ogre;
+    /**
+     * Flag that controls if the ogre moves or not
+     */
     boolean ogreMoves;
-
+    /**
+     * Constructor. Initializes all fields
+     * @param ogreMoves Initial ogre movement flag state
+     * @see ogreMoves
+     */
     public TestKeepLevel(boolean ogreMoves) {
 
         super();
@@ -29,13 +33,17 @@ public class TestKeepLevel extends Level {
         //The ogre
         ogre = new Ogre(3,3);
     }
-
+    /**
+     * Checks if an Ogre is in position to catch the hero. Changes level state accordingly if so
+     */
     public void checkIfHeroCaptured(){
         int[] heroCoordinates = hero.getCoordinates();
         if(ogre.hasCaughtHero(heroCoordinates[0],heroCoordinates[1]))
                 levelStatus = LevelState.LOST;
     }
-
+    /**
+	 * Checks if the Hero is an adjacent position to an Ogre and stuns it if so
+	 */
     public void checkIfHeroStuns() {
     	int[] heroCoordinates = hero.getCoordinates();
 
@@ -48,13 +56,17 @@ public class TestKeepLevel extends Level {
     		ogre.setRepresentation('8');
     	}
     }
-
+    /**
+     * Updates the Hero and Ogre's (if flag is set) positions based on user input and/or their respective behavior
+     * 
+     * @param input user input containing desired Hero's next movement
+     * @see updateHero
+     */
     public void updatePositions(int[] input) {
     	char currentChar = map.elementAt(hero.getCoordinates()[0]+input[0], hero.getCoordinates()[1]+input[1]);
     	updateHero(input[0],input[1],currentChar);
+    	
         if(ogreMoves){
-        //Update the villains' position
-        //Update the ogre's position
             int ogreX = ogre.getCoordinates()[0];
             int ogreY = ogre.getCoordinates()[1];
             int[] nextMovement;
@@ -99,24 +111,32 @@ generateClubMovement:
             ogre.setClubOffset(nextMovement[0],nextMovement[1]);
         }
 
-        //checkIfHeroStuns();
         checkIfHeroCaptured();
     }
-
+    /**
+     *  Returns a copy of the game map with all the characters placed
+     *  @return char matrix with current game situation
+     */
 	public char[][] getLevelMatrix() {
 		char[][] matrix = map.getCurrentPlan();
 		drawHero(matrix);
 		drawOgre(matrix);
 		return matrix;
 	}
-	
+	/**
+	 * Draws the hero in the map
+	 * @param mapClone Map where the hero will be drawn at
+	 */
 	private void drawHero(char[][] mapClone){
 		int[] heroCoordinates = hero.getCoordinates();
 		int heroX = heroCoordinates[0];
 		int heroY = heroCoordinates[1];
 		mapClone[heroY][heroX] = hero.getRepresentation();
 	}
-	
+	/**
+	 * Draws the ogre in the map
+	 * @param mapClone Map where the ogre will be drawn at
+	 */
 	private void drawOgre(char[][] mapClone){
 		int[] ogreCoordinates = ogre.getCoordinates();
 		int[] ogreClubOffsetCoordinates = ogre.getClubOffset();
@@ -128,16 +148,25 @@ generateClubMovement:
 		mapClone[ogreClubY][ogreClubX] = (ogre.clubIsOnKey() ? '$' : '*');
 	}
     
-    
+	/**
+     * Gets the Hero's current position
+     * @return int array containing Hero's coordinates
+     */
     public int[] getHeroCoordinates() {
         int[] result = hero.getCoordinates();
         return result;
     }
-    
+    /**
+     * Gets the Ogre's current position
+     * @return int array containing Ogre's coordinates
+     */
     public int[] getOgreCoordinates(){
     	return ogre.getCoordinates();
     }
-    
+    /**
+     * Gets the Ogre's club's current position (not the offset)
+     * @return int array containing Ogre's club's coordinates
+     */
     public int[] getOgreClubCoordinates(){
     	int[] ogreCoo = getOgreCoordinates();
     	int[] offset = ogre.getClubOffset();
@@ -145,20 +174,35 @@ generateClubMovement:
     	ogreCoo[1] += offset[1];
     	return ogreCoo;
     }
-    
+    /**
+     * Gets the level's ogre
+     * @return Current session's ogre
+     */
     public Ogre getOgre() {
     	return ogre;
     }
-    
+    /**
+     * Gets the Hero's current representation
+     * @return char containing Hero's representation
+     */
     public char getHeroRep(){
     	return hero.getRepresentation();
     }
-
+    /**
+     * Gets the next level.
+     * @return null since there are no levels after this one
+     */
     public Level getNextLevel() {
         return null;
     }
 
-	@Override
+    /**
+     * Moves the hero to his next desired position if said movement is valid
+     * @param dx Desired offset to current x-axis position
+     * @param dy Desired offset to current y-axis position
+     * @param currentChar Current element at next desired position
+     * @see updatePositions
+     */
 	public void updateHero(int x, int y, char currentChar) {
         int dx = x;
         int dy = y;
@@ -167,7 +211,7 @@ generateClubMovement:
         int heroY = hero.getCoordinates()[1];
 
 
-        switch(currentChar) { //Checking what is present in the cell the hero wants to move to
+        switch(currentChar) {
             case 'S':
                 levelStatus = LevelState.WON;
                 return; /* Avoids checking for enemies on negative indexes */
@@ -179,7 +223,7 @@ generateClubMovement:
             case 'I':
                 if(heroHasKey)
                     map.openDoors(); /* No break statement because while he's opening the door, he's still. No break forces dx=dy=0, like we want */
-            default: /* currentChar == 'X' so we can't move through */
+            default:
                 dy = 0;
                 dx = 0;
         }

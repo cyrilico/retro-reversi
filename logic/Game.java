@@ -1,27 +1,56 @@
 package logic;
 
+/**
+ * Game class, the one that holds all the pieces about the current session
+ *
+ */
 public class Game implements java.io.Serializable{
+	/**
+	 * Holds information about the current session (RUNNING, LOST or WON)
+	 *
+	 */
 	protected enum GameState {
         RUNNING, LOST, WON
     }
-
+	/**
+	 * Instance of GameState enumeration that actually stores current game state
+	 */
 	protected GameState gameStatus;
+	/**
+	 * Game level being currently played
+	 */
     protected Level level;
-
+    /**
+     * Number of ogres present at KeepLevel (not-zero when game is ran through GUI)
+     */
     protected static int nOgres = 0;
-    protected static String guardType = null; //Default values
-
+    /*
+     * The type of guard present at DungeonLevel (not-null when game is ran through GUI)
+     */
+    protected static String guardType = null;
+    /**
+     * Start the game at a specific level
+     * @param level Level to start the game at
+     */
 	public Game(Level level) {
 		gameStatus = GameState.RUNNING;
 		this.level = level;
 	}
-	
+	/**
+	 * Start the game at a specific level, initializing static fields
+	 * @param nOgres Number of desired ogres at KeepLevel
+	 * @param guardType Desired type of guard at DungeonLevel
+	 * @param level Level to start the game at
+	 */
 	public Game(int nOgres, String guardType, Level level) {
 		this(level);
 		Game.nOgres = nOgres;
 		Game.guardType = guardType;
 	}
-	
+	/**
+	 * Gets the current level's unique index. Used for Unit testing purposes only
+	 * @return
+	 */
 	public int getCurrentLevelIndex(){
 		return level.getIndex();
 	}
@@ -41,7 +70,11 @@ public class Game implements java.io.Serializable{
         }
         return result;
     }
-
+	/**
+	 * Returns an unique message according to the final game state (WON or LOST)
+	 * @return "You've been captured!" if LOST, "You've escaped from all levels!" if WON
+	 * @see GameState
+	 */
 	public String finalMessage() {
         switch(gameStatus){
         case LOST:
@@ -52,7 +85,10 @@ public class Game implements java.io.Serializable{
             return "How did you end up here?!";
         }
 	}
-
+	/**
+	 * Gets the current level's matrix and converts it to a Strin
+	 * @return String containing current level status 
+	 */
 	public String getCurrentMatrix() {
 		String result = "";
 		char[][] matrix = level.getLevelMatrix();
@@ -73,7 +109,10 @@ public class Game implements java.io.Serializable{
 		else
       level = newLevel;
 	}
-
+	/**
+	 * Converts the user's input to a movement vector and calls the level's update function
+	 * @param userInput Key pressed for next desired Hero movement
+	 */
 	public void updateGame(char userInput) {
 		int[] nextHeroMovement = charToMovement(userInput);
 
@@ -83,15 +122,27 @@ public class Game implements java.io.Serializable{
 		else if(level.hasLost())
 			gameStatus = GameState.LOST;
 	}
-
+	/**
+	 * Checks if game is still going
+	 * @return true if gameStatus is RUNNING, false otherwise
+	 * @see gameStatus
+	 */
 	public boolean isRunning() {
 		return gameStatus == GameState.RUNNING;
 	}
-
+	/**
+	 * Gets the static field corresponding to the number of ogres desired in KeepLevel
+	 * @return static field nOgres
+	 * @see nOgres
+	 */
 	public static int getnOgres() {
 		return nOgres;
 	}
-
+	/**
+	 * Gets the static field corresponding to the guard type desired in DungeonLevel
+	 * @return static field guardType
+	 * @see guardType
+	 */
 	public static String getGuardType() {
 		return guardType;
 	}
