@@ -145,7 +145,7 @@ public class WindowKeep implements java.io.Serializable{
 					lblStatus.setText("Couldn't save current game session!");
 				}
 				
-				frame.getContentPane().getComponent(1).requestFocusInWindow();
+				gamePanel.requestFocusInWindow();
 			}
 		});
 		btnSaveGame.setBounds(433, 138, 135, 25);
@@ -168,7 +168,7 @@ public class WindowKeep implements java.io.Serializable{
 				}
 				setGame(newGame);
 				enableMovementButtons();
-				frame.getContentPane().getComponent(1).requestFocusInWindow();
+				gamePanel.requestFocusInWindow();
 			}
 		});
 		btnLoadGame.setBounds(433, 174, 135, 25);
@@ -282,12 +282,12 @@ public class WindowKeep implements java.io.Serializable{
 		editMapFrame.setVisible(false);
 		frame.setVisible(true);
 		frame.requestFocus();
-		frame.getContentPane().getComponent(1).requestFocus();
+		gamePanel.requestFocus();
 	}
 
 	public void setGame(Game game) {
 		this.game = game;
-		frame.getContentPane().getComponent(1).repaint();
+		gamePanel.repaint();
 	}
 
 	public void setStatusMessage(String str) {
