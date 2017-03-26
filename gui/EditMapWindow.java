@@ -406,6 +406,7 @@ public class EditMapWindow extends JFrame {
 			
 		currentMap[mapY][mapX] = currentChar;
 		
+		setStatusMessage("");
 		resetCurrentChar();
 		contentPane.getComponent(4).repaint();
 	}

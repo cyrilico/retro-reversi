@@ -48,10 +48,8 @@ public class EditMapPanel extends GraphicPanel implements MouseListener, MouseMo
 		int clickX = e.getX();
 		int clickY = e.getY();
 		
-		if(isValidPress(clickX, clickY)) {
+		if(isValidPress(clickX, clickY))
 			window.addCurrentChar(clickX, clickY);
-			window.setStatusMessage("");
-		}
 		else
 			window.setStatusMessage("You can't change the map on or outside the closing walls.");
 	}
@@ -60,31 +58,34 @@ public class EditMapPanel extends GraphicPanel implements MouseListener, MouseMo
 		int mapX = x / IMG_SIZE;
 		int mapY = y / IMG_SIZE;
 
-		if(isOnWall(mapX, mapY))
+		int mapHeight = window.getMapHeight();
+		int mapWidth = window.getMapWidth();
+
+		if(isOnWall(mapX, mapY, mapHeight, mapWidth))
 			return false;
 		
-		if(isOutsideWall(mapX, mapY))
+		if(isOutsideWall(mapX, mapY, mapHeight, mapWidth))
 			return false;
 		
 		return true;
 	}
 	
-	public boolean isOnWall(int mapX, int mapY) {
+	public boolean isOnWall(int mapX, int mapY, int mapHeight, int mapWidth) {
 		
-		if((mapX % (window.getMapWidth()-1)) == 0)
+		if((mapX % (mapWidth-1)) == 0)
 			return true;
 		
-		if((mapY % (window.getMapHeight()-1)) == 0)
+		if((mapY % (mapHeight-1)) == 0)
 			return true;
 		
 		return false;
 	}
 	
-	public boolean isOutsideWall(int mapX, int mapY) {
-		if(mapX > (window.getMapWidth()-1))
+	public boolean isOutsideWall(int mapX, int mapY, int mapHeight, int mapWidth) {
+		if(mapX > (mapWidth-1))
 			return true;
 		
-		if(mapY > (window.getMapHeight()-1))
+		if(mapY > (mapHeight-1))
 			return true;
 		
 		return false;
