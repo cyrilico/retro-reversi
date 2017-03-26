@@ -69,6 +69,11 @@ public abstract class Level implements java.io.Serializable{
      */
     public abstract char[][] getLevelMatrix();
     /**
+     *  Returns a copy of the game map with all the characters placed
+     *  @return char matrix with current game situation
+     */
+    public abstract char[][] getLevelMatrixGUI();
+    /**
      * Gets the level following the current one
      * @return next game level
      */

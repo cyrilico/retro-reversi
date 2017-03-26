@@ -150,4 +150,11 @@ public class TestDungeonLevel extends Level {
         hero.setCoordinates(heroX+dx, heroY+dy);
 		
 	}
+	/**
+     *  Returns a copy of the game map with all the characters placed
+     *  @return char matrix with current game situation
+     */
+	public char[][] getLevelMatrixGUI() {
+		return getLevelMatrix();
+	}
 }

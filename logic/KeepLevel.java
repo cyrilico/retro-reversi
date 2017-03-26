@@ -215,7 +215,7 @@ public class KeepLevel extends Level {
 	public char[][] getLevelMatrix() {
 		char[][] matrix = map.getCurrentPlan();
 		drawHero(matrix);
-		drawOgres(matrix);
+		drawOgres(matrix, false);
 		return matrix;
 	}
 	/**
@@ -231,8 +231,9 @@ public class KeepLevel extends Level {
 	/**
 	 * Draws the ogres in the map
 	 * @param mapClone Map where the ogres will be drawn at
+	 * @param gui If set to true, whenever the representation is $ sets it back to 0
 	 */
-	private void drawOgres(char[][] mapClone){
+	private void drawOgres(char[][] mapClone, boolean gui){
 		for(Ogre ogre : ogres){
 			int[] ogreCoordinates = ogre.getCoordinates();
 			int[] ogreClubOffsetCoordinates = ogre.getClubOffset();
@@ -240,16 +241,25 @@ public class KeepLevel extends Level {
 			int ogreClubX = ogreX + ogreClubOffsetCoordinates[0];
 			int ogreY = ogreCoordinates[1];
 			int ogreClubY = ogreY + ogreClubOffsetCoordinates[1];
-			mapClone[ogreY][ogreX] = ogre.getRepresentation();
-			mapClone[ogreClubY][ogreClubX] = (ogre.clubIsOnKey() ? '$' : '*');
+			mapClone[ogreY][ogreX] = (gui && ogre.getRepresentation() == '$') ? '0' : ogre.getRepresentation();
+			mapClone[ogreClubY][ogreClubX] = (gui || (!gui && !ogre.clubIsOnKey())) ? '*' : '$';
 		}
 	}
 	/**
      * Gets the level following the current one
      * @return null, since this is the last level
-     * @see nextLevel
      */
 	public Level getNextLevel() {
 		return null;
+	}
+	/**
+     *  Returns a copy of the game map with all the characters placed
+     *  @return char matrix with current game situation
+     */
+	public char[][] getLevelMatrixGUI() {
+		char[][] matrix = map.getCurrentPlan();
+		drawHero(matrix);
+		drawOgres(matrix, true);
+		return matrix;
 	}
 }

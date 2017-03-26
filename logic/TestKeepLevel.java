@@ -120,24 +120,18 @@ generateClubMovement:
 	public char[][] getLevelMatrix() {
 		char[][] matrix = map.getCurrentPlan();
 		drawHero(matrix);
-		drawOgre(matrix);
+		drawOgre(matrix, false);
 		return matrix;
 	}
-	/**
-	 * Draws the hero in the map
-	 * @param mapClone Map where the hero will be drawn at
-	 */
+
 	private void drawHero(char[][] mapClone){
 		int[] heroCoordinates = hero.getCoordinates();
 		int heroX = heroCoordinates[0];
 		int heroY = heroCoordinates[1];
 		mapClone[heroY][heroX] = hero.getRepresentation();
 	}
-	/**
-	 * Draws the ogre in the map
-	 * @param mapClone Map where the ogre will be drawn at
-	 */
-	private void drawOgre(char[][] mapClone){
+
+	private void drawOgre(char[][] mapClone, boolean gui){
 		int[] ogreCoordinates = ogre.getCoordinates();
 		int[] ogreClubOffsetCoordinates = ogre.getClubOffset();
 		int ogreX = ogreCoordinates[0];
@@ -198,8 +192,8 @@ generateClubMovement:
 
     /**
      * Moves the hero to his next desired position if said movement is valid
-     * @param dx Desired offset to current x-axis position
-     * @param dy Desired offset to current y-axis position
+     * @param x Desired offset to current x-axis position
+     * @param y Desired offset to current y-axis position
      * @param currentChar Current element at next desired position
      * @see updatePositions
      */
@@ -230,6 +224,16 @@ generateClubMovement:
 
         hero.setCoordinates(heroX+dx, heroY+dy);
 		
+	}
+	/**
+     *  Returns a copy of the game map with all the characters placed
+     *  @return char matrix with current game situation
+     */
+	public char[][] getLevelMatrixGUI() {
+		char[][] matrix = map.getCurrentPlan();
+		drawHero(matrix);
+		drawOgre(matrix, true);
+		return matrix;
 	}
 }
 

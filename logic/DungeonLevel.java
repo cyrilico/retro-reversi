@@ -185,4 +185,11 @@ public class DungeonLevel extends Level {
 
         return new KeepLevel(Game.getnOgres());
     }
+    /**
+     *  Returns a copy of the game map with all the characters placed
+     *  @return char matrix with current game situation
+     */
+	public char[][] getLevelMatrixGUI() {
+		return getLevelMatrix();
+	}
 }

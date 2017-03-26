@@ -49,7 +49,7 @@ public class Game implements java.io.Serializable{
 	}
 	/**
 	 * Gets the current level's unique index. Used for Unit testing purposes only
-	 * @return
+	 * @return current level's unique index
 	 */
 	public int getCurrentLevelIndex(){
 		return level.getIndex();
@@ -86,12 +86,29 @@ public class Game implements java.io.Serializable{
         }
 	}
 	/**
-	 * Gets the current level's matrix and converts it to a Strin
+	 * Gets the current level's matrix and converts it to a String. Used for CLI and Unit testing
 	 * @return String containing current level status 
 	 */
 	public String getCurrentMatrix() {
 		String result = "";
 		char[][] matrix = level.getLevelMatrix();
+
+		for(char[] line : matrix) {
+			for(char element : line)
+				result += element;
+			result += '\n';
+		}
+
+		return result;
+	}
+	
+	/**
+	 * Gets the current level's matrix and converts it to a String. Used for GUI
+	 * @return String containing current level status 
+	 */
+	public String getCurrentMatrixGUI() {
+		String result = "";
+		char[][] matrix = level.getLevelMatrixGUI();
 
 		for(char[] line : matrix) {
 			for(char element : line)

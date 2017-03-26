@@ -122,6 +122,7 @@ public class NewGameInfo extends JFrame {
 		window.requestFocus();
 		window.frame.setEnabled(true);
 		window.enableMovementButtons();
+		window.gamePanel.repaint();
 		window.gamePanel.requestFocusInWindow();
 		window.setStatusMessage("Press the keyboard arrows to move the hero.");
 	}

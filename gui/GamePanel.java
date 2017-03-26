@@ -44,7 +44,7 @@ public class GamePanel extends GraphicPanel implements KeyListener{
 	
 	private void paintGame(Graphics g) {
 		int k = 0, j = 0;
-		String currentMap = window.game.getCurrentMatrix();
+		String currentMap = window.game.getCurrentMatrixGUI();
 		
 		for(int i = 0; i < currentMap.length(); i++) {
 			if(currentMap.charAt(i) != '\n')

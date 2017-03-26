@@ -228,6 +228,7 @@ public class EditMapWindow extends JFrame {
 		window.enableMovementButtons();
 		window.requestFocus();
 		window.frame.setEnabled(true);
+		window.gamePanel.repaint();
 		window.gamePanel.requestFocusInWindow();
 		window.setStatusMessage("Press the keyboard arrows to move the hero.");
 	}
