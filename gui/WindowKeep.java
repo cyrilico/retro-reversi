@@ -24,7 +24,7 @@ public class WindowKeep implements java.io.Serializable{
 	protected Game game = null;
 
 	private JFrame newGameFrame;
-	private JFrame editMapFrame;
+	private EditMapWindow editMapFrame;
 	
 	private JLabel lblStatus;
 	private JButton btnNewGame, btnNewBuexittton, btnEditMap, btnSaveGame, btnLoadGame;
@@ -117,6 +117,7 @@ public class WindowKeep implements java.io.Serializable{
 		btnEditMap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setEnabled(false);
+				editMapFrame.resizeMap();
 				editMapFrame.requestFocusInWindow();
 				editMapFrame.setVisible(true);
 			}

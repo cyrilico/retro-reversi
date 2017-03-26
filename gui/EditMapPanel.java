@@ -45,7 +45,49 @@ public class EditMapPanel extends GraphicPanel implements MouseListener, MouseMo
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		window.addCurrentChar(e.getX(), e.getY());
+		int clickX = e.getX();
+		int clickY = e.getY();
+		
+		if(isValidPress(clickX, clickY)) {
+			window.addCurrentChar(clickX, clickY);
+			window.setStatusMessage("");
+		}
+		else
+			window.setStatusMessage("You can't change the map on or outside the closing walls.");
+	}
+	
+	public boolean isValidPress(int x, int y) {
+		int mapX = x / IMG_SIZE;
+		int mapY = y / IMG_SIZE;
+
+		if(isOnWall(mapX, mapY))
+			return false;
+		
+		if(isOutsideWall(mapX, mapY))
+			return false;
+		
+		return true;
+	}
+	
+	public boolean isOnWall(int mapX, int mapY) {
+		
+		if((mapX % (window.getMapWidth()-1)) == 0)
+			return true;
+		
+		if((mapY % (window.getMapHeight()-1)) == 0)
+			return true;
+		
+		return false;
+	}
+	
+	public boolean isOutsideWall(int mapX, int mapY) {
+		if(mapX > (window.getMapWidth()-1))
+			return true;
+		
+		if(mapY > (window.getMapHeight()-1))
+			return true;
+		
+		return false;
 	}
 
 	@Override
@@ -62,5 +104,4 @@ public class EditMapPanel extends GraphicPanel implements MouseListener, MouseMo
 
 	@Override
 	public void mouseMoved(MouseEvent e) { }
-	
 }
