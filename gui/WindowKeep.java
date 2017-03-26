@@ -24,7 +24,7 @@ public class WindowKeep implements java.io.Serializable{
 	protected Game game = null;
 
 	private JFrame newGameFrame;
-	private EditMapWindow editMapFrame;
+	private JFrame editMapFrame;
 	
 	private JLabel lblStatus;
 	private JButton btnNewGame, btnNewBuexittton, btnEditMap, btnSaveGame, btnLoadGame;
@@ -116,14 +116,18 @@ public class WindowKeep implements java.io.Serializable{
 		btnEditMap = new JButton("Play Custom Map");
 		btnEditMap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				createMapEditor();
 				frame.setEnabled(false);
-				editMapFrame.resizeMap();
 				editMapFrame.requestFocusInWindow();
 				editMapFrame.setVisible(true);
 			}
 		});
 		btnEditMap.setBounds(433, 66, 135, 44);
 		frame.getContentPane().add(btnEditMap);
+	}
+	
+	private void createMapEditor() {
+		editMapFrame = new EditMapWindow(this);
 	}
 	
 	private void createSaveButton(){
