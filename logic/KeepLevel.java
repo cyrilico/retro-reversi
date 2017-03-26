@@ -93,7 +93,7 @@ public class KeepLevel extends Level {
 		for(Ogre ogre : ogres) {
 			if(ogre.isStunned() != 0) { //If the ogre is stun, update the stun counter
 				ogre.updateStun();
-				ogre.setRepresentation('8');
+				ogre.setRepresentation(ogre.isStunned() == 0 ? '0' : '8');
 			}
 			else if(ogre.isNearHero(heroCoordinates[0],heroCoordinates[1])) {
 				ogre.setStun(); //Can't just use updateStun because the ogre may already be stunned
