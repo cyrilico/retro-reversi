@@ -1,6 +1,10 @@
 # Reversi
 ### Architecture Design
-
+##### Design Patterns
+- Singleton
+- Strategy - the games will have different AI difficulties, which differ in the way their moves are selected
+- Command / Action / Transaction - implement undo (?)
+- Model-View-Controller (possibly Model-View)
 ### GUI Design
 ##### Features:
 - Single Player (play against AI)
