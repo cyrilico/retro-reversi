@@ -1,5 +1,10 @@
 # Reversi
 ### Architecture Design
+##### Behavioural Diagrams
+- Application State Machine:
+ [![AppStateMachine](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/behavioural-diagrams/app-state-machine.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/behavioural-diagrams/app-state-machine.png?raw=true)
+- Game Logic State Machine
+ [![GameStateMachine](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/behavioural-diagrams/game-state-machine.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/behavioural-diagrams/game-state-machine.png?raw=true)
 ##### Design Patterns
 - Singleton
 - Strategy - the games will have different AI difficulties, which differ in the way their moves are selected
