@@ -24,3 +24,15 @@
 [![DifferentDevices](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/gui-mockups/Different%20Devices%20Screen.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/gui-mockups/Different%20Devices%20Screen.png?raw=true)
 
 ### Test Design
+##### Expected Unit Tests
+- Test proper game initialization - starting pieces on correct locations
+- Test turn attribution - turns aren't necessarily rotative
+- Test legal moves on the current turn - to verify move when player is human, and later to test decision when AI is implemented
+- Test a move's effect on the board - verify if pieces that should rotate after a move are actually rotated
+- Test score update and display - a player's score is the number of pieces they have on currently on the board
+- Test AI move choice 
+- Test game sate change when player uses undo functionality
+- Test case where game finishes because the board is full
+- Test case where game finishes because there are no more valid moves for either players
+- Test victory attribution upon game completion
+- Test network connection (?)
