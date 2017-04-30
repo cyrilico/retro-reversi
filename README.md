@@ -1,6 +1,8 @@
 # Reversi
 ### Architecture Design
 ##### Structural Diagrams
+
+**Note:** to simplify how connections between classes work and to better organize the overall diagram structure, the main classes displayed in the diagram (GameLogic, Board, Player) are a representation of multiple classes. They'll each be divided to work according to the Model-View-Controller design pattern.
 - Packages
 
  [![Packages](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/structure-diagrams/packages.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/structure-diagrams/packages.png?raw=true)
