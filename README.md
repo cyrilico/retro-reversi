@@ -1,5 +1,10 @@
 # Reversi
 ### Architecture Design
+##### Structural Diagrams
+- Packages
+ [![Packages](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/structure-diagrams/packages.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/structure-diagrams/packages.png?raw=true)
+- Classes
+ [![Classes](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/structure-diagrams/classes.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/structure-diagrams/classes.png?raw=true)
 ##### Behavioural Diagrams
 - Application State Machine:
  [![AppStateMachine](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/behavioural-diagrams/app-state-machine.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/behavioural-diagrams/app-state-machine.png?raw=true)
