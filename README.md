@@ -6,10 +6,11 @@
 - Game Logic State Machine
  [![GameStateMachine](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/behavioural-diagrams/game-state-machine.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/behavioural-diagrams/game-state-machine.png?raw=true)
 ##### Design Patterns
-- Singleton
-- Strategy - the games will have different AI difficulties, which differ in the way their moves are selected
-- Command / Action / Transaction - implement undo (?)
-- Model-View-Controller (possibly Model-View)
+- Singleton - To guarantee main MVC components are instantiated exactly once so always the same object is acessed
+- Strategy - An AI's moves are chosen through an algorithm. Different AI difficulties have different algorithms for the way it chooses a move
+- Model-View-Controller - To separate the components' representation from its logic and relations. Also to facilitate unit testing further on
+- Memento - Implement 'Undo last turn' functionality (only on singleplayer mode)
+- Flyweight - A lot of pieces will be represented but they will all have similar representation
 ### GUI Design
 ##### Features:
 - Single Player (play against AI)
