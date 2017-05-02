@@ -3,7 +3,9 @@ package feup.lpoo.reversi;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -16,6 +18,7 @@ public class Reversi extends Game {
 	private SpriteBatch batch;
 	private AssetManager assetManager;
 	private Viewport viewport;
+	private OrthographicCamera camera;
 
 	private Skin skin;
 	private TextureAtlas atlas;
@@ -29,6 +32,7 @@ public class Reversi extends Game {
 		batch = new SpriteBatch();
         assetManager = new AssetManager();
 		viewport = new ExtendViewport(480, 854);
+		camera = new OrthographicCamera();
 		atlas = new TextureAtlas("reversi-cyan/reversi-cyan.atlas");
 		skin = new Skin(Gdx.files.internal("reversi-cyan/reversi-cyan.json"), atlas);
 
@@ -52,6 +56,10 @@ public class Reversi extends Game {
 
 	public Viewport getViewport() {
 		return viewport;
+	}
+
+	public OrthographicCamera getCamera() {
+		return camera;
 	}
 
 	public Skin getSkin() {
