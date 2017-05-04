@@ -32,7 +32,7 @@ public class BoardModel {
     }
 
     public boolean validPosition(int x, int y) {
-        if(x < GameModel.BOARD_SIZE && y < GameModel.BOARD_SIZE && x >= 0 && y >0)
+        if(x < GameModel.BOARD_SIZE && y < GameModel.BOARD_SIZE && x >= 0 && y >= 0)
             return true;
 
         return false;

@@ -32,11 +32,6 @@ public class MoveModel {
         return piece;
     }
 
-    public void addChangedPosition(int x, int y) {
-        Integer[] temp = {x,y};
-        changedPositions.add(temp);
-    }
-
     public void addChangedPositions(ArrayList<Integer[]> toAdd) {
        changedPositions.addAll(toAdd);
     }
