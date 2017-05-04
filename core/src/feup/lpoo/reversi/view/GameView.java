@@ -2,28 +2,19 @@ package feup.lpoo.reversi.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
 
 import feup.lpoo.reversi.Reversi;
-import feup.lpoo.reversi.view.entities.BoardGroup;
-import feup.lpoo.reversi.view.entities.CellActor;
+import feup.lpoo.reversi.model.GameModel;
+import feup.lpoo.reversi.model.MoveModel;
+import feup.lpoo.reversi.view.entities.BoardView;
+import feup.lpoo.reversi.view.entities.CellView;
 
 /**
  * Created by antonioalmeida on 02/05/2017.
@@ -31,6 +22,7 @@ import feup.lpoo.reversi.view.entities.CellActor;
 
 public class GameView extends ScreenAdapter {
     private Reversi game;
+    private GameModel gameInstance;
 
     private Stage stage;
     private Table table;
@@ -40,10 +32,12 @@ public class GameView extends ScreenAdapter {
 
     public GameView(Reversi game) {
         this.game = game;
+        gameInstance = gameInstance.getInstance();
         stage = new Stage(game.getViewport(), game.getBatch());
 
         addTitle();
         addBoard();
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -69,8 +63,7 @@ public class GameView extends ScreenAdapter {
     }
 
     private void addBoard() {
-        board = new BoardGroup();
+        board = new BoardView();
         table.add(board).center().padTop(576);
     }
-
 }

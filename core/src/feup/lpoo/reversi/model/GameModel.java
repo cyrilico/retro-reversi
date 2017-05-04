@@ -16,13 +16,18 @@ public class GameModel {
     //The unique instance of this class
     private static GameModel gameInstance;
 
-    //List of moves during the game
+    //List of moves made during the game
     private static ArrayList<MoveModel> movesList;
+
+    //Current valid moves
+    private ArrayList<MoveModel> currentMoves;
 
     private BoardModel gameBoard;
 
-    //True if Player 1, False if Player 2
-    private boolean turn;
+    private PlayerModel player1;
+    private PlayerModel player2;
+
+    private boolean turn; // true if player1, pla
 
     private GameModel() {
         // Initialize board board
@@ -31,8 +36,11 @@ public class GameModel {
         // init move list
         movesList = new ArrayList<MoveModel>();
 
-        // Player 1 plays first default
+        player1 = new UserModel(BLACK_PIECE);
+        player2 = new UserModel(WHITE_PIECE);
+
         turn = true;
+        currentMoves = getValidMoves(getCurrentPlayer());
     }
 
     public static GameModel getInstance() {
@@ -42,8 +50,9 @@ public class GameModel {
         return gameInstance;
     }
 
-    public ArrayList<MoveModel> getValidMoves(char piece) {
+    public ArrayList<MoveModel> getValidMoves(PlayerModel player) {
         ArrayList<MoveModel> result =  new ArrayList<MoveModel>();
+        char piece = player.getPiece();
 
         for(int y = 0; y < BOARD_SIZE; y++) {
             for(int x = 0; x < BOARD_SIZE; x++) {
@@ -57,6 +66,22 @@ public class GameModel {
         return result;
     }
 
+    public boolean hasValidMoves(PlayerModel player) {
+        if(currentMoves.size() > 0)
+            return true;
+
+        return false;
+    }
+
+    //Returns -1 if not a valid move, returns the index in the currentMoves otherwise
+    public int isValidMove(int x, int y) {
+        for(int i = 0; i < currentMoves.size(); i++)
+            if(currentMoves.get(i).getX() == x && currentMoves.get(i).getY() == y)
+                return i;
+
+        return -1;
+    }
+
     public void makeMove(MoveModel move) {
         gameBoard.setPieceAt(move.getX(), move.getY(), move.getPiece());
 
@@ -66,8 +91,42 @@ public class GameModel {
         movesList.add(move);
     }
 
+    public void updateGame() {
+        MoveModel toMake = getCurrentPlayer().getMove();
+
+        makeMove(toMake);
+
+        updateTurn();
+        currentMoves = getValidMoves(getCurrentPlayer());
+
+        System.out.println(getCurrentBoard());
+    }
+
+    public PlayerModel getCurrentPlayer() {
+        if(turn)
+            return player1;
+
+        return player2;
+    }
+
+    public PlayerModel getNonCurrentPlayer() {
+        if(turn)
+            return player2;
+
+        return player1;
+    }
+
+    public void updateTurn() {
+        if(hasValidMoves(getNonCurrentPlayer()))
+            turn = !turn;
+    }
+
     public BoardModel getGameBoard() {
         return gameBoard;
+    }
+
+    public ArrayList<MoveModel> getCurrentMoves() {
+        return currentMoves;
     }
 
     public String getCurrentBoard() {
@@ -84,8 +143,8 @@ public class GameModel {
         return result;
     }
 
-    public ArrayList<String> getMovesList() {
-        return (ArrayList<String>) movesList.clone();
+    public ArrayList<MoveModel> getMovesList() {
+        return (ArrayList<MoveModel>) movesList.clone();
     }
 
 

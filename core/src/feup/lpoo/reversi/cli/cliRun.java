@@ -15,7 +15,7 @@ public class cliRun {
     public cliRun() {
         game = game.getInstance();
 
-        ArrayList<MoveModel> cenas = game.getValidMoves('B');
+        ArrayList<MoveModel> cenas = game.getValidMoves(game.getCurrentPlayer());
 
         System.out.println(cenas.size());
         System.out.println(game.getCurrentBoard());
@@ -30,7 +30,8 @@ public class cliRun {
             System.out.println("Changed X:" + elem[0] + " Y:" + elem[1]);
         }
 
-        game.makeMove(cenas.get(0));
+        game.getCurrentPlayer().setMove(cenas.get(0));
+        game.updateGame();
         System.out.println(game.getCurrentBoard());
     }
 
