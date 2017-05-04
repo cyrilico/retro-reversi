@@ -17,7 +17,7 @@ public class GameModel {
     private static GameModel gameInstance;
 
     //List of moves during the game
-    private static ArrayList<String> movesList;
+    private static ArrayList<MoveModel> movesList;
 
     private BoardModel gameBoard;
 
@@ -25,7 +25,14 @@ public class GameModel {
     private boolean turn;
 
     private GameModel() {
-        init();
+        // Initialize board board
+        gameBoard = new BoardModel();
+
+        // init move list
+        movesList = new ArrayList<MoveModel>();
+
+        // Player 1 plays first default
+        turn = true;
     }
 
     public static GameModel getInstance() {
@@ -35,16 +42,28 @@ public class GameModel {
         return gameInstance;
     }
 
-    /** Initialize the game */
-    private void init() {
-        // Initialize board board
-        gameBoard = gameBoard.getInstance();
+    public ArrayList<MoveModel> getValidMoves(char piece) {
+        ArrayList<MoveModel> result =  new ArrayList<MoveModel>();
 
-        // init move list
-        movesList = new ArrayList<String>();
+        for(int y = 0; y < BOARD_SIZE; y++) {
+            for(int x = 0; x < BOARD_SIZE; x++) {
+                MoveModel temp = gameBoard.getValidMove(x,y,piece);
 
-        // Player 1 plays first default
-        turn = true;
+                if(temp != null)
+                    result.add(temp);
+            }
+        }
+
+        return result;
+    }
+
+    public void makeMove(MoveModel move) {
+        gameBoard.setPieceAt(move.getX(), move.getY(), move.getPiece());
+
+        for(Integer[] pos : move.getChangedPositions())
+            gameBoard.rotatePiece(pos[0], pos[1]);
+
+        movesList.add(move);
     }
 
     public BoardModel getGameBoard() {

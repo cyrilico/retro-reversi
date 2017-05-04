@@ -1,6 +1,8 @@
 package feup.lpoo.reversi.model;
 
-import com.badlogic.gdx.Game;
+
+import java.util.ArrayList;
+
 
 /**
  * Created by antonioalmeida on 02/05/2017.
@@ -20,20 +22,7 @@ public class BoardModel {
             {1,1}
     }; //8 possible directions to test
 
-    private BoardModel boardInstance;
-
-    private BoardModel() {
-        init();
-    }
-
-    public BoardModel getInstance() {
-        if(boardInstance == null)
-            boardInstance = new BoardModel();
-
-        return boardInstance;
-    }
-
-    private void init() {
+    public BoardModel() {
         matrix = generateMatrix(GameModel.BOARD_SIZE, GameModel.BOARD_SIZE);
     }
 
@@ -66,19 +55,29 @@ public class BoardModel {
             setPieceAt(x,y, GameModel.BLACK_PIECE);
     }
 
-    public boolean isValidMove(int x, int y, char piece) {
+    public MoveModel getValidMove(int x, int y, char piece) {
 
         if(getPieceAt(x,y) != GameModel.EMPTY_PIECE)
-            return false;
+            return null;
 
+        MoveModel result = new MoveModel(x,y,piece);
+
+        boolean isValidMove = false;
         for(int i = 0; i < directions.length; i++)
-            if(checkValidDirection(x, y, piece, directions[i]))
-                return true;
+            if(checkValidDirection(result, directions[i]))
+                isValidMove = true;
 
-        return false;
+        if(isValidMove)
+            return result;
+
+        return null;
     }
 
-    public boolean checkValidDirection(int x, int y, char piece, int[] direction) {
+    public boolean checkValidDirection(MoveModel move, int[] direction) {
+        char piece = move.getPiece();
+        int x = move.getX();
+        int y = move.getY();
+
         char oppositePiece = (piece == GameModel.BLACK_PIECE) ? GameModel.WHITE_PIECE : GameModel.BLACK_PIECE;
 
         boolean hasOppPieceBetween = false;
@@ -86,13 +85,23 @@ public class BoardModel {
 
         char currentPiece = piece;
 
+        ArrayList<Integer[]> changedPositions = new ArrayList<Integer[]>();
+
         int index = 1;
         while(currentPiece != GameModel.EMPTY_PIECE) {
-            currentPiece = getPieceAt(x + index * direction[0], y + index * direction[1]);
+            int currentX = x + index * direction[0];
+            int currentY = y + index * direction[1];
+
+            currentPiece = getPieceAt(currentX, currentY);
 
             if(currentPiece == piece && hasOppPieceBetween) {
-                validDirection = true; break;
+                validDirection = true;
+                move.addChangedPositions(changedPositions);
+                break;
             }
+
+            Integer[] currentPos = {currentX, currentY};
+            changedPositions.add(currentPos);
 
             if(currentPiece == oppositePiece)
                 hasOppPieceBetween = true;
@@ -123,6 +132,11 @@ public class BoardModel {
                 line[i] = GameModel.EMPTY_PIECE;
             }
         }
+
+        temp[3][3] = GameModel.WHITE_PIECE;
+        temp[3][4] = GameModel.BLACK_PIECE;
+        temp[4][3] = GameModel.BLACK_PIECE;
+        temp[4][4] = GameModel.WHITE_PIECE;
 
         return temp;
     }

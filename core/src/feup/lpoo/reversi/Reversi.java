@@ -30,7 +30,7 @@ public class Reversi extends Game {
 	public void create () {
 		batch = new SpriteBatch();
         assetManager = new AssetManager();
-		viewport = new ExtendViewport(480, 854);
+		viewport = new ExtendViewport(512, 854);
 		atlas = new TextureAtlas("reversi-cyan/reversi-cyan.atlas");
 		skin = new Skin(Gdx.files.internal("reversi-cyan/reversi-cyan.json"), atlas);
 
