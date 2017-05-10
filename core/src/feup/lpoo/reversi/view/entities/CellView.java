@@ -8,6 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import feup.lpoo.reversi.model.GameModel;
 import feup.lpoo.reversi.view.GameView;
 
@@ -21,9 +24,24 @@ public class CellView extends Actor {
 
     private static final Texture angry = new Texture(Gdx.files.internal("angry.png"));
     private static final Texture blush = new Texture(Gdx.files.internal("blush.png"));
+    private static final Texture gem = new Texture(Gdx.files.internal("gem.png"));
+
+    private static Map<Character, Texture> ICONS = new HashMap<Character, Texture>();
+
+    static {
+        ICONS.put('B', angry);
+        ICONS.put('W', blush);
+        ICONS.put('X', gem);
+        ICONS.put('-', null);
+    }
+
+    private Texture getIcon(char piece) {
+        Texture result = ICONS.get(piece);
+        return result;
+    }
 
     private final Texture color;
-    private Texture piece;
+    private Texture icon;
 
     //The coordinates relative to it's parent that the cell is drawn
     private int actorX;
@@ -70,14 +88,9 @@ public class CellView extends Actor {
     }
 
     public void updatePiece() {
-        char currentPiece = GameModel.getInstance().getGameBoard().getPieceAt(boardX,boardY);
-
-        if(currentPiece == 'B') //Replace with enums later (make getMethods for BoardModel or make enums public?
-            piece = angry;
-        else if(currentPiece == 'W')
-            piece = blush;
-        else
-            piece = null;
+        char currentPiece = GameModel.getInstance().getPieceAt(boardX,boardY);
+        icon = getIcon(currentPiece);
+        System.out.println(currentPiece);
     }
 
     @Override
@@ -89,7 +102,7 @@ public class CellView extends Actor {
             nMovesCell = nMovesTotal;
         }
 
-        if(piece != null)
-            batch.draw(piece,actorX,actorY);
+        if(icon != null)
+            batch.draw(icon, actorX, actorY);
     }
 }

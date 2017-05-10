@@ -25,9 +25,14 @@ public class GameView extends ScreenAdapter {
     private GameModel gameInstance;
 
     private Stage stage;
-    private Table table;
+    private Table hud;
+    private Table boardTable;
 
-    private Label mainTitle;
+    private Label player1;
+    private Label score1;
+    private Label player2;
+    private Label score2;
+
     private Group board;
 
     public GameView(Reversi game) {
@@ -35,7 +40,7 @@ public class GameView extends ScreenAdapter {
         gameInstance = gameInstance.getInstance();
         stage = new Stage(game.getViewport(), game.getBatch());
 
-        addTitle();
+        addLabels();
         addBoard();
         Gdx.input.setInputProcessor(stage);
     }
@@ -49,21 +54,34 @@ public class GameView extends ScreenAdapter {
         stage.draw();
     }
 
-    private void addTitle() {
-        mainTitle = new Label("Game View", game.getSkin());
-        mainTitle.setFontScale(2);
+    private void addLabels() {
+        player1 = new Label("Score", game.getSkin());
+        player2 = new Label("Score", game.getSkin());
+        score1 = new Label("100", game.getSkin());
+        score2 = new Label("100", game.getSkin());
 
-        table = new Table();
-        stage.addActor(table);
+        player1.setFontScale(1);
+        player2.setFontScale(1);
 
-        table.setFillParent(true);
-        table.top();
-        table.add(mainTitle).expandX().padTop(50);
-        table.row();
+        hud = new Table();
+        hud.debugAll();
+        stage.addActor(hud);
+
+        hud.setFillParent(true);
+        hud.top();
+        hud.add(player1).expandX().padTop(50);
+        hud.add(player2).expandX().padTop(50);
+        hud.row();
+        hud.add(score1).expandX().padTop(25);
+        hud.add(score2).expandX().padTop(25);
     }
 
     private void addBoard() {
+        boardTable = new Table();
+        boardTable.setFillParent(true);
+        stage.addActor(boardTable);
         board = new BoardView();
-        table.add(board).center().padTop(576);
+
+        boardTable.add(board).center().expandY();
     }
 }

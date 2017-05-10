@@ -11,6 +11,7 @@ public class GameModel {
     protected static final char EMPTY_PIECE = '-';
     protected static final char BLACK_PIECE = 'B';
     protected static final char WHITE_PIECE = 'W';
+    protected static final char SUGGESTION_PIECE = 'X';
     protected static final int BOARD_SIZE = 8;
 
     //The unique instance of this class
@@ -41,6 +42,7 @@ public class GameModel {
 
         turn = true;
         currentMoves = getValidMoves(getCurrentPlayer());
+        gameBoard.setSuggestions(currentMoves);
     }
 
     public static GameModel getInstance() {
@@ -98,8 +100,7 @@ public class GameModel {
 
         updateTurn();
         currentMoves = getValidMoves(getCurrentPlayer());
-
-        System.out.println(getCurrentBoard());
+        gameBoard.setSuggestions(currentMoves);
     }
 
     public PlayerModel getCurrentPlayer() {
@@ -119,6 +120,17 @@ public class GameModel {
     public void updateTurn() {
         if(hasValidMoves(getNonCurrentPlayer()))
             turn = !turn;
+    }
+
+    //Returns piece at given positions, considering both gameBoard's matrixes
+    public char getPieceAt(int x, int y) {
+
+        char temp = gameBoard.getPieceAt(x,y);
+
+        if(temp == GameModel.EMPTY_PIECE)
+            return gameBoard.getSuggestionAt(x,y);
+
+        return temp;
     }
 
     public BoardModel getGameBoard() {

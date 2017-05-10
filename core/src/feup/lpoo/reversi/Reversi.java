@@ -33,6 +33,8 @@ public class Reversi extends Game {
 		viewport = new ExtendViewport(512, 854);
 		atlas = new TextureAtlas("reversi-cyan/reversi-cyan.atlas");
 		skin = new Skin(Gdx.files.internal("reversi-cyan/reversi-cyan.json"), atlas);
+		Gdx.graphics.setContinuousRendering(true);
+		Gdx.graphics.requestRendering();
 
 		setScreen(new MainMenuView(this));
 	}
@@ -45,6 +47,7 @@ public class Reversi extends Game {
 	@Override
 	public void resize(int width, int height) {
 		viewport.update(width, height, true);
+		Gdx.graphics.requestRendering();
 	}
 	
 	@Override

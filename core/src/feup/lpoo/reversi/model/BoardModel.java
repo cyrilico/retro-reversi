@@ -1,6 +1,8 @@
 package feup.lpoo.reversi.model;
 
 
+import com.badlogic.gdx.Game;
+
 import java.util.ArrayList;
 
 
@@ -9,7 +11,8 @@ import java.util.ArrayList;
  */
 
 public class BoardModel {
-    private char[][] matrix;
+    private char[][] board;
+    private char[][] suggestions;
 
     private static final int[][] directions = {
             {-1,-1},
@@ -23,12 +26,13 @@ public class BoardModel {
     }; //8 possible directions to test
 
     public BoardModel() {
-        matrix = generateMatrix(GameModel.BOARD_SIZE, GameModel.BOARD_SIZE);
+        board = generateMatrix(GameModel.BOARD_SIZE, GameModel.BOARD_SIZE);
+        suggestions = generateSuggestions(GameModel.BOARD_SIZE, GameModel.BOARD_SIZE);
     }
 
     public void setPieceAt(int x, int y, char piece) {
         if(x < GameModel.BOARD_SIZE && y < GameModel.BOARD_SIZE)
-            matrix[y][x] = piece;
+            board[y][x] = piece;
     }
 
     public boolean validPosition(int x, int y) {
@@ -40,7 +44,14 @@ public class BoardModel {
 
     public char getPieceAt(int x, int y) {
         if(validPosition(x,y))
-            return matrix[y][x];
+            return board[y][x];
+
+        return GameModel.EMPTY_PIECE;
+    }
+
+    public char getSuggestionAt(int x, int y) {
+        if (validPosition(x, y))
+            return suggestions[y][x];
 
         return GameModel.EMPTY_PIECE;
     }
@@ -113,19 +124,36 @@ public class BoardModel {
         return validDirection;
     }
 
+    public void setSuggestions(ArrayList<MoveModel> moves) {
+        suggestions = generateSuggestions(GameModel.BOARD_SIZE, GameModel.BOARD_SIZE);
+        for(MoveModel elem : moves)
+            suggestions[elem.getY()][elem.getX()] = GameModel.SUGGESTION_PIECE;
+    }
+
     public char[][] getCurrentBoard() {
         char[][] temp = new char[GameModel.BOARD_SIZE][GameModel.BOARD_SIZE];
 
         int index = 0;
 
-        for(char[] line : matrix)
+        for(char[] line : board)
+            temp[index++] = (char[])line.clone();
+
+        return temp;
+    }
+
+    public char[][] getCurrentSuggestions() {
+        char[][] temp = new char[GameModel.BOARD_SIZE][GameModel.BOARD_SIZE];
+
+        int index = 0;
+
+        for(char[] line : suggestions)
             temp[index++] = (char[])line.clone();
 
         return temp;
     }
 
     private char[][] generateMatrix(int width, int height) {
-        char [][] temp = new char[height][width];
+        char[][] temp = new char[height][width];
 
         for (char[] line : temp) {
             for (int i = 0; i < line.length; i++) {
@@ -137,6 +165,18 @@ public class BoardModel {
         temp[3][4] = GameModel.BLACK_PIECE;
         temp[4][3] = GameModel.BLACK_PIECE;
         temp[4][4] = GameModel.WHITE_PIECE;
+
+        return temp;
+    }
+
+    private char[][] generateSuggestions(int width, int height) {
+        char[][] temp = new char[height][width];
+
+        for (char[] line : temp) {
+            for (int i = 0; i < line.length; i++) {
+                line[i] = GameModel.EMPTY_PIECE;
+            }
+        }
 
         return temp;
     }
