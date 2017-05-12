@@ -1,5 +1,6 @@
 package feup.lpoo.reversi.view;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -33,7 +34,7 @@ public class GameView extends ScreenAdapter {
     private Label player2;
     private Label score2;
 
-    private Group board;
+    private BoardView board;
 
     public GameView(Reversi game) {
         this.game = game;
@@ -47,6 +48,8 @@ public class GameView extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
+        update(delta);
+
         // Clear the screen
         Gdx.gl.glClearColor(Reversi.BACKGROUND_COLOR.r, Reversi.BACKGROUND_COLOR.g, Reversi.BACKGROUND_COLOR.b, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
@@ -55,13 +58,10 @@ public class GameView extends ScreenAdapter {
     }
 
     private void addLabels() {
-        player1 = new Label("Score", game.getSkin());
-        player2 = new Label("Score", game.getSkin());
-        score1 = new Label("100", game.getSkin());
-        score2 = new Label("100", game.getSkin());
-
-        player1.setFontScale(1);
-        player2.setFontScale(1);
+        player1 = new Label("Angry", game.getSkin());
+        player2 = new Label("Blush", game.getSkin());
+        score1 = new Label(String.format("%02d", GameModel.getInstance().getPlayer1Points()), game.getSkin());
+        score2 = new Label(String.format("%02d", GameModel.getInstance().getPlayer2Points()), game.getSkin());
 
         hud = new Table();
         hud.debugAll();
@@ -83,5 +83,16 @@ public class GameView extends ScreenAdapter {
         board = new BoardView();
 
         boardTable.add(board).center().expandY();
+    }
+
+    public void update(float dt) {
+        //TO DO: make Hud class add it to the stage, so we can simply call stage.act() on the render method instead of using this method
+        board.act(dt);
+        updateLabels();
+    }
+
+    private void updateLabels() {
+        score1.setText(String.format("%02d", GameModel.getInstance().getPlayer1Points()));
+        score2.setText(String.format("%02d", GameModel.getInstance().getPlayer2Points()));
     }
 }

@@ -12,6 +12,10 @@ public interface PlayerModel {
 
     public void setMoveIndex(int index);
 
+    public void setPoints(int points);
+
     public char getPiece();
+
+    public int getPoints();
 
 }

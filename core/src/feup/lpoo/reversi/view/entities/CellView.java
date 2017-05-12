@@ -51,10 +51,6 @@ public class CellView extends Actor {
     private int boardX;
     private int boardY;
 
-    //Variables to handle multiple cells piece updating
-    private static int nMovesTotal = 0;
-    private int nMovesCell = 0;
-
     public CellView(int color, int x, int y, int boardX, int boardY) {
         if(color == 0)
             this.color = white;
@@ -67,7 +63,7 @@ public class CellView extends Actor {
 
         this.boardX = boardX;
         this.boardY = boardY;
-        updatePiece();
+        update();
         addListeners();
     }
 
@@ -80,14 +76,13 @@ public class CellView extends Actor {
                 if(index != -1) {
                     GameModel.getInstance().getCurrentPlayer().setMoveIndex(index);
                     GameModel.getInstance().updateGame();
-                    nMovesTotal++; //All cells get notified a change was made
                 }
                 return true;
             }
         });
     }
 
-    public void updatePiece() {
+    public void update() {
         char currentPiece = GameModel.getInstance().getPieceAt(boardX,boardY);
         icon = getIcon(currentPiece);
         System.out.println(currentPiece);
@@ -96,11 +91,6 @@ public class CellView extends Actor {
     @Override
     public void draw(Batch batch, float alpha) {
         batch.draw(color,actorX,actorY);
-
-        if(nMovesCell != nMovesTotal) {
-            updatePiece();
-            nMovesCell = nMovesTotal;
-        }
 
         if(icon != null)
             batch.draw(icon, actorX, actorY);

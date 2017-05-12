@@ -124,6 +124,18 @@ public class BoardModel {
         return validDirection;
     }
 
+    public int getCurrentPoints(char piece) {
+        int result = 0;
+
+        for(char[] line : board) {
+            for(char elem : line)
+                if(elem == piece)
+                    result++;
+        }
+
+        return result;
+    }
+
     public void setSuggestions(ArrayList<MoveModel> moves) {
         suggestions = generateSuggestions(GameModel.BOARD_SIZE, GameModel.BOARD_SIZE);
         for(MoveModel elem : moves)

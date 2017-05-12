@@ -99,8 +99,17 @@ public class GameModel {
         makeMove(toMake);
 
         updateTurn();
+        updatePoints();
         currentMoves = getValidMoves(getCurrentPlayer());
         gameBoard.setSuggestions(currentMoves);
+    }
+
+    public void updatePoints() {
+        int p1 = gameBoard.getCurrentPoints(player1.getPiece());
+        int p2 = gameBoard.getCurrentPoints(player2.getPiece());
+
+        player1.setPoints(p1);
+        player2.setPoints(p2);
     }
 
     public PlayerModel getCurrentPlayer() {
@@ -159,5 +168,11 @@ public class GameModel {
         return (ArrayList<MoveModel>) movesList.clone();
     }
 
+    public int getPlayer1Points() {
+        return player1.getPoints();
+    }
 
+    public int getPlayer2Points() {
+        return player2.getPoints();
+    }
 }

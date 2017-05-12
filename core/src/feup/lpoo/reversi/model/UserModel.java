@@ -5,8 +5,9 @@ package feup.lpoo.reversi.model;
  */
 
 public class UserModel implements PlayerModel {
-    char piece;
-    MoveModel move;
+    private char piece;
+    private MoveModel move;
+    private int points;
 
     public UserModel(char piece) {
         this.piece = piece;
@@ -28,7 +29,17 @@ public class UserModel implements PlayerModel {
     }
 
     @Override
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    @Override
     public char getPiece() {
         return piece;
+    }
+
+    @Override
+    public int getPoints() {
+        return points;
     }
 }
