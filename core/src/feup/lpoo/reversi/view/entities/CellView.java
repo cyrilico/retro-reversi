@@ -1,6 +1,5 @@
 package feup.lpoo.reversi.view.entities;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -11,8 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import java.util.HashMap;
 import java.util.Map;
 
-import feup.lpoo.reversi.model.GameModel;
-import feup.lpoo.reversi.view.GameView;
+import feup.lpoo.reversi.presenter.CellPresenter;
 
 /**
  * Created by antonioalmeida on 02/05/2017.
@@ -27,6 +25,8 @@ public class CellView extends Actor {
     private static final Texture gem = new Texture(Gdx.files.internal("gem.png"));
 
     private static Map<Character, Texture> ICONS = new HashMap<Character, Texture>();
+
+    private CellPresenter presenter;
 
     static {
         ICONS.put('B', angry);
@@ -47,10 +47,6 @@ public class CellView extends Actor {
     private int actorX;
     private int actorY;
 
-    //The position it represents on the board
-    private int boardX;
-    private int boardY;
-
     public CellView(int color, int x, int y, int boardX, int boardY) {
         if(color == 0)
             this.color = white;
@@ -61,8 +57,7 @@ public class CellView extends Actor {
         actorY = y;
         setBounds(actorX, actorY, black.getWidth(), black.getHeight());
 
-        this.boardX = boardX;
-        this.boardY = boardY;
+        presenter = new CellPresenter(boardX, boardY);
         update();
         addListeners();
     }
@@ -70,22 +65,15 @@ public class CellView extends Actor {
     public void addListeners() {
         addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //This part needs to be thoroughly rethinked
-
-                int index = GameModel.getInstance().isValidMove(boardX, boardY);
-                if(index != -1) {
-                    GameModel.getInstance().getCurrentPlayer().setMoveIndex(index);
-                    GameModel.getInstance().updateGame();
-                }
+                presenter.handleInput();
                 return true;
             }
         });
     }
 
     public void update() {
-        char currentPiece = GameModel.getInstance().getPieceAt(boardX,boardY);
+        char currentPiece = presenter.getCurrentPiece();
         icon = getIcon(currentPiece);
-        System.out.println(currentPiece);
     }
 
     @Override

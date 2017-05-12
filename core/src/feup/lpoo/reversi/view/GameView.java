@@ -1,21 +1,16 @@
 package feup.lpoo.reversi.view;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import feup.lpoo.reversi.Reversi;
+import feup.lpoo.reversi.presenter.GamePresenter;
 import feup.lpoo.reversi.model.GameModel;
-import feup.lpoo.reversi.model.MoveModel;
 import feup.lpoo.reversi.view.entities.BoardView;
-import feup.lpoo.reversi.view.entities.CellView;
 
 /**
  * Created by antonioalmeida on 02/05/2017.
@@ -23,7 +18,7 @@ import feup.lpoo.reversi.view.entities.CellView;
 
 public class GameView extends ScreenAdapter {
     private Reversi game;
-    private GameModel gameInstance;
+    private GamePresenter presenter;
 
     private Stage stage;
     private Table hud;
@@ -37,8 +32,8 @@ public class GameView extends ScreenAdapter {
     private BoardView board;
 
     public GameView(Reversi game) {
+        presenter = new GamePresenter();
         this.game = game;
-        gameInstance = gameInstance.getInstance();
         stage = new Stage(game.getViewport(), game.getBatch());
 
         addLabels();
@@ -60,8 +55,8 @@ public class GameView extends ScreenAdapter {
     private void addLabels() {
         player1 = new Label("Angry", game.getSkin());
         player2 = new Label("Blush", game.getSkin());
-        score1 = new Label(String.format("%02d", GameModel.getInstance().getPlayer1Points()), game.getSkin());
-        score2 = new Label(String.format("%02d", GameModel.getInstance().getPlayer2Points()), game.getSkin());
+        score1 = new Label("00", game.getSkin());
+        score2 = new Label("00", game.getSkin());
 
         hud = new Table();
         hud.debugAll();
@@ -92,7 +87,7 @@ public class GameView extends ScreenAdapter {
     }
 
     private void updateLabels() {
-        score1.setText(String.format("%02d", GameModel.getInstance().getPlayer1Points()));
-        score2.setText(String.format("%02d", GameModel.getInstance().getPlayer2Points()));
+        score1.setText(presenter.getPlayer1Points());
+        score2.setText(presenter.getPlayer2Points());
     }
 }
