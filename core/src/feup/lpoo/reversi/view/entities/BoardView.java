@@ -13,7 +13,7 @@ public class BoardView extends Group {
 
         for(int y = 0; y < 8; y++) {
             for(int x = 0; x < 8; x++) {
-                Actor cell = new CellView((x +y) % 2, 64 * x - 256, 64 * y - 256, x, 7 - y) ;
+                Actor cell = new CellView(64 * x - 256, 64 * y - 256, x, 7 - y) ;
                 addActor(cell);
             }
         }

@@ -24,9 +24,7 @@ public class GameView extends ScreenAdapter {
     private Table hud;
     private Table boardTable;
 
-    private Label player1;
     private Label score1;
-    private Label player2;
     private Label score2;
 
     private BoardView board;
@@ -53,10 +51,8 @@ public class GameView extends ScreenAdapter {
     }
 
     private void addLabels() {
-        player1 = new Label("Angry", game.getSkin());
-        player2 = new Label("Blush", game.getSkin());
-        score1 = new Label("00", game.getSkin());
-        score2 = new Label("00", game.getSkin());
+        score1 = new Label("Black: 00", game.getSkin());
+        score2 = new Label("White: 00", game.getSkin());
 
         hud = new Table();
         hud.debugAll();
@@ -64,11 +60,9 @@ public class GameView extends ScreenAdapter {
 
         hud.setFillParent(true);
         hud.top();
-        hud.add(player1).expandX().padTop(50);
-        hud.add(player2).expandX().padTop(50);
+        hud.add(score1).expandX().padTop(75);
+        hud.add(score2).expandX().padTop(75);
         hud.row();
-        hud.add(score1).expandX().padTop(25);
-        hud.add(score2).expandX().padTop(25);
     }
 
     private void addBoard() {
