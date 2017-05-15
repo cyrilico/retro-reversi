@@ -1,8 +1,6 @@
 package feup.lpoo.reversi.model;
 
 
-import com.badlogic.gdx.Game;
-
 import java.util.ArrayList;
 
 
@@ -10,7 +8,7 @@ import java.util.ArrayList;
  * Created by antonioalmeida on 02/05/2017.
  */
 
-public class BoardModel {
+public class BoardModel implements Cloneable {
     private char[][] board;
     private char[][] suggestions;
 
@@ -191,6 +189,24 @@ public class BoardModel {
         }
 
         return temp;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        BoardModel temp = (BoardModel) super.clone();
+
+        temp.setBoard(getCurrentBoard());
+        temp.setSuggestions(getCurrentSuggestions());
+
+        return temp;
+    }
+
+    public void setBoard(char[][] board) {
+        this.board = board;
+    }
+
+    public void setSuggestions(char[][] suggestions) {
+        this.suggestions = suggestions;
     }
 }
 

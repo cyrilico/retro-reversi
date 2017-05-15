@@ -15,7 +15,7 @@ public class CellPresenter {
         this.y = y;
     }
 
-    public void handleInput() {
+    public void handleInput() throws CloneNotSupportedException {
         int move = getValidMove();
 
         if(move != -1) {
@@ -24,12 +24,13 @@ public class CellPresenter {
         }
     }
 
-    public int getValidMove() {
+    public int getValidMove() throws CloneNotSupportedException {
         return GameModel.getInstance().isValidMove(x, y);
     }
 
     public char getCurrentPiece() {
-        char piece = GameModel.getInstance().getPieceAt(x,y);
+        char piece = 0;
+        piece = GameModel.getInstance().getPieceAt(x,y);
 
         return piece;
     }

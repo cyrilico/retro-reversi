@@ -58,7 +58,11 @@ public class CellView extends Actor {
     public void addListeners() {
         addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                presenter.handleInput();
+                try {
+                    presenter.handleInput();
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
                 return true;
             }
         });

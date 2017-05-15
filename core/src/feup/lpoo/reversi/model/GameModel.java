@@ -1,6 +1,9 @@
 package feup.lpoo.reversi.model;
 
+import com.badlogic.gdx.Game;
+
 import java.util.ArrayList;
+import java.util.concurrent.SynchronousQueue;
 
 /**
  * Created by antonioalmeida on 02/05/2017.
@@ -25,6 +28,9 @@ public class GameModel {
 
     private BoardModel gameBoard;
 
+    //Saves previous game state
+    private GameCareTaker caretaker;
+
     private PlayerModel player1;
     private PlayerModel player2;
 
@@ -40,6 +46,8 @@ public class GameModel {
         player1 = new UserModel(BLACK_PIECE);
         player2 = new UserModel(WHITE_PIECE);
 
+        caretaker = new GameCareTaker();
+
         turn = true;
         currentMoves = getValidMoves(getCurrentPlayer());
         gameBoard.setSuggestions(currentMoves);
@@ -50,6 +58,10 @@ public class GameModel {
             gameInstance = new GameModel();
 
         return gameInstance;
+    }
+
+    public static void resetGame() {
+        gameInstance = new GameModel();
     }
 
     public ArrayList<MoveModel> getValidMoves(PlayerModel player) {
@@ -93,7 +105,7 @@ public class GameModel {
         movesList.add(move);
     }
 
-    public void updateGame() {
+    public void updateGame() throws CloneNotSupportedException {
         MoveModel toMake = getCurrentPlayer().getMove();
 
         makeMove(toMake);
@@ -102,6 +114,7 @@ public class GameModel {
         updatePoints();
         currentMoves = getValidMoves(getCurrentPlayer());
         gameBoard.setSuggestions(currentMoves);
+        caretaker.add(saveState());
     }
 
     public void updatePoints() {
@@ -174,5 +187,29 @@ public class GameModel {
 
     public int getPlayer2Points() {
         return player2.getPoints();
+    }
+
+    public GameMemento saveState() throws CloneNotSupportedException {
+        BoardModel temp = (BoardModel) gameBoard.clone();
+        return new GameMemento(temp, turn);
+    }
+
+    public void setPreviousState(GameMemento state) throws CloneNotSupportedException {
+        gameBoard = (BoardModel) state.getBoard().clone();
+        turn = state.getTurn();
+        currentMoves = getValidMoves(getCurrentPlayer());
+    }
+
+    public boolean undoMove() throws CloneNotSupportedException {
+        if(caretaker.getSize() == 0)
+            return false;
+
+        caretaker.removeLast();
+
+        if(caretaker.getSize() == 0)
+            return false;
+
+        setPreviousState(caretaker.getLast());
+        return true;
     }
 }

@@ -3,9 +3,12 @@ package feup.lpoo.reversi.view;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import feup.lpoo.reversi.Reversi;
 import feup.lpoo.reversi.presenter.GamePresenter;
@@ -29,6 +32,8 @@ public class GameView extends ScreenAdapter {
 
     private BoardView board;
 
+    private TextButton undo;
+
     public GameView(Reversi game) {
         presenter = new GamePresenter();
         this.game = game;
@@ -36,12 +41,13 @@ public class GameView extends ScreenAdapter {
 
         addLabels();
         addBoard();
+        addListeners();
         Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void render(float delta) {
-        update(delta);
+            update(delta);
 
         // Clear the screen
         Gdx.gl.glClearColor(Reversi.BACKGROUND_COLOR.r, Reversi.BACKGROUND_COLOR.g, Reversi.BACKGROUND_COLOR.b, 1);
@@ -51,8 +57,9 @@ public class GameView extends ScreenAdapter {
     }
 
     private void addLabels() {
-        score1 = new Label("Black: 00", game.getSkin());
-        score2 = new Label("White: 00", game.getSkin());
+        score1 = new Label("Black: 02", game.getSkin());
+        score2 = new Label("White: 02", game.getSkin());
+        undo = new TextButton("Undo", game.getSkin());
 
         hud = new Table();
         hud.debugAll();
@@ -63,6 +70,7 @@ public class GameView extends ScreenAdapter {
         hud.add(score1).expandX().padTop(75);
         hud.add(score2).expandX().padTop(75);
         hud.row();
+        hud.add(undo).padTop(25);
     }
 
     private void addBoard() {
@@ -83,5 +91,19 @@ public class GameView extends ScreenAdapter {
     private void updateLabels() {
         score1.setText(presenter.getPlayer1Points());
         score2.setText(presenter.getPlayer2Points());
+    }
+
+
+    private void addListeners() {
+
+        undo.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                presenter.undoMove();
+                return true;
+            }
+        });
+
+
     }
 }

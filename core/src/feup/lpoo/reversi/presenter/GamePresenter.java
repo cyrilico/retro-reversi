@@ -21,4 +21,12 @@ public class GamePresenter {
         return result;
     }
 
+    public void undoMove() {
+        try {
+            if(!GameModel.getInstance().undoMove())
+                GameModel.resetGame();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+    }
 }
