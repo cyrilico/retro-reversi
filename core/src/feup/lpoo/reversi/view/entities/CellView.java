@@ -41,7 +41,7 @@ public class CellView extends Actor {
 
     private Texture icon;
 
-    //The coordinates relative to it's parent that the cell is drawn
+    //The coordinates relative to the cell's parent
     private int actorX;
     private int actorY;
 

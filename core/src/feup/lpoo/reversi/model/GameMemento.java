@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 public class GameMemento {
     private BoardModel board;
-    private boolean turn;
+    private TurnState turn;
 
-    public GameMemento(BoardModel board, boolean turn) {
+    public GameMemento(BoardModel board, TurnState turn) {
         this.board = board;
         this.turn = turn;
     }
@@ -19,7 +19,7 @@ public class GameMemento {
         return board;
     }
 
-    public boolean getTurn() {
+    public TurnState getTurn() {
        return turn;
     }
 }

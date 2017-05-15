@@ -11,6 +11,7 @@ public class UserModel implements PlayerModel {
 
     public UserModel(char piece) {
         this.piece = piece;
+        points = 2;
     }
 
     @Override

@@ -12,12 +12,12 @@ public class GamePresenter {
     public GamePresenter() { }
 
     public String getPlayer1Points() {
-        String result = "Black: " + String.format("%02d", GameModel.getInstance().getPlayer1Points());
+        String result = "Black: " + String.format("%02d", GameModel.getInstance().getBlackPoints());
         return result;
     }
 
     public String getPlayer2Points() {
-        String result = "White: " + String.format("%02d", GameModel.getInstance().getPlayer2Points());
+        String result = "White: " + String.format("%02d", GameModel.getInstance().getWhitePoints());
         return result;
     }
 

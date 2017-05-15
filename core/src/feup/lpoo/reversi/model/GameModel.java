@@ -1,9 +1,6 @@
 package feup.lpoo.reversi.model;
 
-import com.badlogic.gdx.Game;
-
 import java.util.ArrayList;
-import java.util.concurrent.SynchronousQueue;
 
 /**
  * Created by antonioalmeida on 02/05/2017.
@@ -17,13 +14,29 @@ public class GameModel {
     protected static final char SUGGESTION_PIECE = 'X';
     protected static final int BOARD_SIZE = 8;
 
-    //The unique instance of this class
+    /**
+     * Instance of TurnState enumeration that stores current turn state
+     */
+    private TurnState turn;
+
+    /**
+     * Instance of GameState enumeration that stores current turn state
+     */
+    private GameState state;
+
+    /**
+     * The unique instance of this class
+     */
     private static GameModel gameInstance;
 
-    //List of moves made during the game
+    /**
+    * List of moves made during the game
+    */
     private static ArrayList<MoveModel> movesList;
 
-    //Current valid moves
+    /**
+    * Current valid moves (updated on every turn)
+    */
     private ArrayList<MoveModel> currentMoves;
 
     private BoardModel gameBoard;
@@ -31,24 +44,21 @@ public class GameModel {
     //Saves previous game state
     private GameCareTaker caretaker;
 
-    private PlayerModel player1;
-    private PlayerModel player2;
-
-    private boolean turn; // true if player1, pla
+    private PlayerModel blackPlayer;
+    private PlayerModel whitePlayer;
 
     private GameModel() {
-        // Initialize board board
         gameBoard = new BoardModel();
-
-        // init move list
         movesList = new ArrayList<MoveModel>();
 
-        player1 = new UserModel(BLACK_PIECE);
-        player2 = new UserModel(WHITE_PIECE);
+        blackPlayer = new UserModel(BLACK_PIECE);
+        whitePlayer = new UserModel(WHITE_PIECE);
 
         caretaker = new GameCareTaker();
 
-        turn = true;
+        turn = TurnState.BLACK;
+        state = GameState.RUNNING;
+
         currentMoves = getValidMoves(getCurrentPlayer());
         gameBoard.setSuggestions(currentMoves);
     }
@@ -80,13 +90,6 @@ public class GameModel {
         return result;
     }
 
-    public boolean hasValidMoves(PlayerModel player) {
-        if(currentMoves.size() > 0)
-            return true;
-
-        return false;
-    }
-
     //Returns -1 if not a valid move, returns the index in the currentMoves otherwise
     public int isValidMove(int x, int y) {
         for(int i = 0; i < currentMoves.size(); i++)
@@ -105,58 +108,59 @@ public class GameModel {
         movesList.add(move);
     }
 
-    public void updateGame() throws CloneNotSupportedException {
-        MoveModel toMake = getCurrentPlayer().getMove();
+    public boolean updateGame() throws CloneNotSupportedException {
+        if(isOver())
+            return false;
 
+        MoveModel toMake = getCurrentPlayer().getMove();
         makeMove(toMake);
 
         updateTurn();
         updatePoints();
+        updateGameState();
         currentMoves = getValidMoves(getCurrentPlayer());
         gameBoard.setSuggestions(currentMoves);
         caretaker.add(saveState());
+        return true;
     }
 
     public void updatePoints() {
-        int p1 = gameBoard.getCurrentPoints(player1.getPiece());
-        int p2 = gameBoard.getCurrentPoints(player2.getPiece());
+        int p1 = gameBoard.getCurrentPoints(blackPlayer.getPiece());
+        int p2 = gameBoard.getCurrentPoints(whitePlayer.getPiece());
 
-        player1.setPoints(p1);
-        player2.setPoints(p2);
+        blackPlayer.setPoints(p1);
+        whitePlayer.setPoints(p2);
     }
 
-    public PlayerModel getCurrentPlayer() {
-        if(turn)
-            return player1;
+    public void updateGameState() {
+        int black = blackPlayer.getPoints();
+        int white = whitePlayer.getPoints();
 
-        return player2;
-    }
-
-    public PlayerModel getNonCurrentPlayer() {
-        if(turn)
-            return player2;
-
-        return player1;
+        if((black + white) == 64)
+            state = (black > white) ? GameState.BLACK_WON : GameState.WHITE_WON;
+        else if(black == 0)
+            state = GameState.WHITE_WON;
+        else if(white == 0)
+            state = GameState.BLACK_WON;
+        else //Useful for cases when game is over and user makes an undo
+            state = GameState.RUNNING;
     }
 
     public void updateTurn() {
-        if(hasValidMoves(getNonCurrentPlayer()))
-            turn = !turn;
+        ArrayList<MoveModel> possibleMoves = getValidMoves(getNonCurrentPlayer());
+
+        if(possibleMoves.size() > 0)
+            turn = (turn == TurnState.BLACK ? TurnState.WHITE : TurnState.BLACK);
     }
 
-    //Returns piece at given positions, considering both gameBoard's matrixes
+    //Returns piece at given position, considering both gameBoard's matrices
     public char getPieceAt(int x, int y) {
-
         char temp = gameBoard.getPieceAt(x,y);
 
         if(temp == GameModel.EMPTY_PIECE)
             return gameBoard.getSuggestionAt(x,y);
 
         return temp;
-    }
-
-    public BoardModel getGameBoard() {
-        return gameBoard;
     }
 
     public ArrayList<MoveModel> getCurrentMoves() {
@@ -177,16 +181,34 @@ public class GameModel {
         return result;
     }
 
+    public PlayerModel getCurrentPlayer() {
+        if(turn == TurnState.BLACK)
+            return blackPlayer;
+
+        return whitePlayer;
+    }
+
+    public PlayerModel getNonCurrentPlayer() {
+        if(turn == TurnState.BLACK)
+            return whitePlayer;
+
+        return blackPlayer;
+    }
+
     public ArrayList<MoveModel> getMovesList() {
         return (ArrayList<MoveModel>) movesList.clone();
     }
 
-    public int getPlayer1Points() {
-        return player1.getPoints();
+    public int getBlackPoints() {
+        return blackPlayer.getPoints();
     }
 
-    public int getPlayer2Points() {
-        return player2.getPoints();
+    public int getWhitePoints() {
+        return whitePlayer.getPoints();
+    }
+
+    public boolean isOver() {
+        return state != GameState.RUNNING;
     }
 
     public GameMemento saveState() throws CloneNotSupportedException {
@@ -198,6 +220,8 @@ public class GameModel {
         gameBoard = (BoardModel) state.getBoard().clone();
         turn = state.getTurn();
         currentMoves = getValidMoves(getCurrentPlayer());
+        updatePoints();
+        updateGameState();
     }
 
     public boolean undoMove() throws CloneNotSupportedException {

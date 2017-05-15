@@ -28,6 +28,7 @@ public class MainMenuView extends ScreenAdapter {
 
     private TextButton singlePlayer;
     private TextButton multiPlayer;
+    private TextButton options;
 
     //Labels
     private Label mainTitle;
@@ -69,12 +70,15 @@ public class MainMenuView extends ScreenAdapter {
         buttonTable.bottom();
         buttonTable.setFillParent(true);
 
-        singlePlayer = new TextButton("Single Player", game.getSkin());
-        multiPlayer = new TextButton("Multi Player", game.getSkin());
+        singlePlayer = new TextButton("\nSingle Player\n", game.getSkin());
+        multiPlayer = new TextButton("\nMulti Player\n", game.getSkin());
+        options = new TextButton("\n  Options  \n", game.getSkin());
 
-        buttonTable.add(singlePlayer).center().padBottom(20);
+        buttonTable.add(singlePlayer).center().padBottom(40);
         buttonTable.row();
-        buttonTable.add(multiPlayer).center().padBottom(50);
+        buttonTable.add(multiPlayer).center().padBottom(40);
+        buttonTable.row();
+        buttonTable.add(options).center().padBottom(40);
 
         stage.addActor(buttonTable);
     }

@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import feup.lpoo.reversi.Reversi;
 import feup.lpoo.reversi.presenter.GamePresenter;
-import feup.lpoo.reversi.model.GameModel;
 import feup.lpoo.reversi.view.entities.BoardView;
 
 /**
@@ -24,8 +23,10 @@ public class GameView extends ScreenAdapter {
     private GamePresenter presenter;
 
     private Stage stage;
+
     private Table hud;
     private Table boardTable;
+    private Table undoTable;
 
     private Label score1;
     private Label score2;
@@ -41,13 +42,13 @@ public class GameView extends ScreenAdapter {
 
         addLabels();
         addBoard();
+        addUndo();
         addListeners();
-        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void render(float delta) {
-            update(delta);
+        update(delta);
 
         // Clear the screen
         Gdx.gl.glClearColor(Reversi.BACKGROUND_COLOR.r, Reversi.BACKGROUND_COLOR.g, Reversi.BACKGROUND_COLOR.b, 1);
@@ -59,7 +60,6 @@ public class GameView extends ScreenAdapter {
     private void addLabels() {
         score1 = new Label("Black: 02", game.getSkin());
         score2 = new Label("White: 02", game.getSkin());
-        undo = new TextButton("Undo", game.getSkin());
 
         hud = new Table();
         hud.debugAll();
@@ -70,7 +70,6 @@ public class GameView extends ScreenAdapter {
         hud.add(score1).expandX().padTop(75);
         hud.add(score2).expandX().padTop(75);
         hud.row();
-        hud.add(undo).padTop(25);
     }
 
     private void addBoard() {
@@ -78,24 +77,29 @@ public class GameView extends ScreenAdapter {
         boardTable.setFillParent(true);
         stage.addActor(boardTable);
         board = new BoardView();
-
         boardTable.add(board).center().expandY();
+    }
+
+    private void addUndo() {
+        undoTable = new Table();
+        undo = new TextButton("Undo", game.getSkin());
+        undoTable.setFillParent(true);
+        undoTable.bottom().add(undo).expandX().padBottom(50);
+        stage.addActor(undoTable);
     }
 
     public void update(float dt) {
         //TO DO: make Hud class add it to the stage, so we can simply call stage.act() on the render method instead of using this method
         board.act(dt);
-        updateLabels();
+        updateScore();
     }
 
-    private void updateLabels() {
+    private void updateScore() {
         score1.setText(presenter.getPlayer1Points());
         score2.setText(presenter.getPlayer2Points());
     }
 
-
     private void addListeners() {
-
         undo.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -103,7 +107,7 @@ public class GameView extends ScreenAdapter {
                 return true;
             }
         });
-
-
+        Gdx.input.setInputProcessor(stage);
     }
+
 }
