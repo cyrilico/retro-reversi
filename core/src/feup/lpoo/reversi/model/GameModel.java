@@ -25,11 +25,6 @@ public class GameModel {
     private GameState state;
 
     /**
-     * The unique instance of this class
-     */
-    private static GameModel gameInstance;
-
-    /**
     * List of moves made during the game
     */
     private static ArrayList<MoveModel> movesList;
@@ -47,12 +42,12 @@ public class GameModel {
     private PlayerModel blackPlayer;
     private PlayerModel whitePlayer;
 
-    private GameModel() {
+    public GameModel(PlayerModel black, PlayerModel white) {
         gameBoard = new BoardModel();
         movesList = new ArrayList<MoveModel>();
 
-        blackPlayer = new UserModel(BLACK_PIECE);
-        whitePlayer = new UserModel(WHITE_PIECE);
+        blackPlayer = black;
+        whitePlayer = white;
 
         caretaker = new GameCareTaker();
 
@@ -61,17 +56,6 @@ public class GameModel {
 
         currentMoves = getValidMoves(getCurrentPlayer());
         gameBoard.setSuggestions(currentMoves);
-    }
-
-    public static GameModel getInstance() {
-        if (gameInstance == null)
-            gameInstance = new GameModel();
-
-        return gameInstance;
-    }
-
-    public static void resetGame() {
-        gameInstance = new GameModel();
     }
 
     public ArrayList<MoveModel> getValidMoves(PlayerModel player) {
@@ -112,7 +96,7 @@ public class GameModel {
         if(isOver())
             return false;
 
-        MoveModel toMake = getCurrentPlayer().getMove();
+        MoveModel toMake = currentMoves.get(getCurrentPlayer().getMoveIndex());
         makeMove(toMake);
 
         updateTurn();

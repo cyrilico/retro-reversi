@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import java.util.HashMap;
 import java.util.Map;
 
-import feup.lpoo.reversi.presenter.CellPresenter;
+import feup.lpoo.reversi.presenter.GamePresenter;
 
 /**
  * Created by antonioalmeida on 02/05/2017.
@@ -25,7 +25,7 @@ public class CellView extends Actor {
 
     private static Map<Character, Texture> ICONS = new HashMap<Character, Texture>();
 
-    private CellPresenter presenter;
+    private GamePresenter presenter;
 
     static {
         ICONS.put('B', black);
@@ -45,12 +45,17 @@ public class CellView extends Actor {
     private int actorX;
     private int actorY;
 
-    public CellView(int x, int y, int boardX, int boardY) {
+    private int boardX;
+    private int boardY;
+
+    public CellView(GamePresenter presenter, int x, int y, int boardX, int boardY) {
+        this.presenter = presenter;
         actorX = x;
         actorY = y;
+        this.boardX = boardX;
+        this.boardY = boardY;
         setBounds(actorX, actorY, tile.getWidth(), tile.getHeight());
 
-        presenter = new CellPresenter(boardX, boardY);
         update();
         addListeners();
     }
@@ -59,7 +64,7 @@ public class CellView extends Actor {
         addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 try {
-                    presenter.handleInput();
+                    presenter.handleInput(boardX, boardY);
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }
@@ -69,7 +74,7 @@ public class CellView extends Actor {
     }
 
     public void update() {
-        char currentPiece = presenter.getCurrentPiece();
+        char currentPiece = presenter.getCurrentPiece(boardX, boardY);
         icon = getIcon(currentPiece);
     }
 

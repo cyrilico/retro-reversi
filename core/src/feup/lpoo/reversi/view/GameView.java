@@ -76,7 +76,7 @@ public class GameView extends ScreenAdapter {
         boardTable = new Table();
         boardTable.setFillParent(true);
         stage.addActor(boardTable);
-        board = new BoardView();
+        board = new BoardView(presenter);
         boardTable.add(board).center().expandY();
     }
 

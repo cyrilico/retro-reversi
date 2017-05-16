@@ -4,18 +4,27 @@ package feup.lpoo.reversi.model;
  * Created by antonioalmeida on 04/05/2017.
  */
 
-public interface PlayerModel {
+public abstract class PlayerModel {
+    protected int points;
+    protected int moveIndex;
+    protected char piece;
 
-    public MoveModel getMove();
+    public abstract void setMoveIndex(int index);
 
-    public void setMove(MoveModel move);
+    public void setPoints(int points) {
+        this.points = points;
+    }
 
-    public void setMoveIndex(int index);
+    public int getMoveIndex() {
+        return moveIndex;
+    }
 
-    public void setPoints(int points);
+    public char getPiece() {
+        return piece;
+    }
 
-    public char getPiece();
-
-    public int getPoints();
+    public int getPoints() {
+        return points;
+    }
 
 }
