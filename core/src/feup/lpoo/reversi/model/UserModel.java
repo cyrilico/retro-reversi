@@ -7,8 +7,7 @@ package feup.lpoo.reversi.model;
 public class UserModel extends PlayerModel {
 
     public UserModel(char piece) {
-        this.piece = piece;
-        points = 2;
+        super(piece);
     }
 
     public void setMoveIndex(int index) {

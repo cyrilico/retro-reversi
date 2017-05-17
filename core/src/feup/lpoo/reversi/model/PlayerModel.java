@@ -8,6 +8,12 @@ public abstract class PlayerModel {
     protected int points;
     protected int moveIndex;
     protected char piece;
+    protected boolean ready;
+
+    public PlayerModel(char piece) {
+        points = 2;
+        this.piece = piece;
+    }
 
     public abstract void setMoveIndex(int index);
 
@@ -25,6 +31,18 @@ public abstract class PlayerModel {
 
     public int getPoints() {
         return points;
+    }
+
+    public void setReady() {
+        ready = true;
+    }
+
+    public void resetReady() {
+        ready = false;
+    }
+
+    public boolean isReady() {
+        return ready;
     }
 
 }

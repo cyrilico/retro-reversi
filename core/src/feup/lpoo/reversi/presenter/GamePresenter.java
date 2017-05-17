@@ -14,20 +14,22 @@ public class GamePresenter {
     private GameModel game;
     private PlayerModel blackPlayer;
     private PlayerModel whitePlayer;
+    private int type;
 
-    public GamePresenter() {
-        blackPlayer = new UserModel('B'); //Replace with macros
-        whitePlayer = new AIModel('W'); //Replace with macros
+    public GamePresenter(int type) {
+        this.type = type;
+
+        resetPlayers();
         game = new GameModel(blackPlayer, whitePlayer);
     }
 
     public String getPlayer1Points() {
-        String result = "Black: " + String.format("%02d", game.getBlackPoints());
+        String result = String.format("%02d", game.getBlackPoints());
         return result;
     }
 
     public String getPlayer2Points() {
-        String result = "White: " + String.format("%02d", game.getWhitePoints());
+        String result = String.format("%02d", game.getWhitePoints());
         return result;
     }
 
@@ -36,7 +38,18 @@ public class GamePresenter {
 
         if(move != -1) {
             game.getCurrentPlayer().setMoveIndex(move);
-            game.updateGame();
+            game.getCurrentPlayer().setReady();
+        }
+    }
+
+    public void updateGame() {
+        if(game.getCurrentPlayer().isReady()) {
+            game.getCurrentPlayer().resetReady();
+            try {
+                game.updateGame();
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -51,11 +64,29 @@ public class GamePresenter {
         return piece;
     }
 
+    public void resetPlayers() {
+        if(type == 0) {
+            blackPlayer = new UserModel('B'); //Replace with macros
+            whitePlayer = new UserModel('W'); //Replace with macros
+        }
+        else {
+            blackPlayer = new UserModel('B'); //Replace with macros
+            whitePlayer = new AIModel('W'); //Replace with macros
+        }
+    }
+
+    public boolean isBlackTurn() {
+        return game.getCurrentPlayer() == blackPlayer;
+    }
+
+    public boolean isWhiteTurn() {
+        return game.getCurrentPlayer() == whitePlayer;
+    }
+
     public void undoMove() {
         try {
             if(!game.undoMove()) {
-                blackPlayer = new UserModel('B'); //Replace with macros
-                whitePlayer = new AIModel('W'); //Replace with macros
+                resetPlayers();
                 game = new GameModel(blackPlayer, whitePlayer);
             }
         } catch (CloneNotSupportedException e) {

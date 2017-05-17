@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -31,10 +32,11 @@ public class Reversi extends Game {
 		batch = new SpriteBatch();
         assetManager = new AssetManager();
 		viewport = new ExtendViewport(512, 854);
+
 		atlas = new TextureAtlas("reversi-cyan/reversi-cyan.atlas");
 		skin = new Skin(Gdx.files.internal("reversi-cyan/reversi-cyan.json"), atlas);
-		Gdx.graphics.setContinuousRendering(true);
-		Gdx.graphics.requestRendering();
+
+		loadAssets();
 
 		setScreen(new MainMenuView(this));
 	}
@@ -47,12 +49,23 @@ public class Reversi extends Game {
 	@Override
 	public void resize(int width, int height) {
 		viewport.update(width, height, true);
-		Gdx.graphics.requestRendering();
 	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
+        assetManager.dispose();
+        atlas.dispose();
+		skin.dispose();
+	}
+
+	private void loadAssets() {
+		assetManager.load("tile.png", Texture.class);
+		assetManager.load("white.png", Texture.class);
+		assetManager.load("black.png", Texture.class);
+		assetManager.load("hint.png", Texture.class);
+		assetManager.load("paddle.png", Texture.class);
+		assetManager.finishLoading();
 	}
 
 	public Viewport getViewport() {
