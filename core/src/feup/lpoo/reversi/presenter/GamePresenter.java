@@ -2,6 +2,7 @@ package feup.lpoo.reversi.presenter;
 
 import feup.lpoo.reversi.model.AIModel;
 import feup.lpoo.reversi.model.GameModel;
+import feup.lpoo.reversi.model.MoveModel;
 import feup.lpoo.reversi.model.PlayerModel;
 import feup.lpoo.reversi.model.UserModel;
 
@@ -11,6 +12,7 @@ import feup.lpoo.reversi.model.UserModel;
 
 public class GamePresenter {
 
+    private AIPresenter AI;
     private GameModel game;
     private PlayerModel blackPlayer;
     private PlayerModel whitePlayer;
@@ -21,6 +23,7 @@ public class GamePresenter {
 
         resetPlayers();
         game = new GameModel(blackPlayer, whitePlayer);
+        AI = new AIPresenter(game);
     }
 
     public String getPlayer1Points() {
@@ -34,10 +37,10 @@ public class GamePresenter {
     }
 
     public void handleInput(int x, int y) throws CloneNotSupportedException {
-        int move = getValidMove(x, y);
+        MoveModel move = getValidMove(x, y);
 
-        if(move != -1) {
-            game.getCurrentPlayer().setMoveIndex(move);
+        if(move != null) {
+            game.getCurrentPlayer().setMove(move);
             game.getCurrentPlayer().setReady();
         }
     }
@@ -53,7 +56,7 @@ public class GamePresenter {
         }
     }
 
-    public int getValidMove(int x, int y) throws CloneNotSupportedException {
+    public MoveModel getValidMove(int x, int y) throws CloneNotSupportedException {
         return game.isValidMove(x, y);
     }
 
@@ -71,7 +74,7 @@ public class GamePresenter {
         }
         else {
             blackPlayer = new UserModel('B'); //Replace with macros
-            whitePlayer = new AIModel('W'); //Replace with macros
+            whitePlayer = new AIModel('W', AI); //Replace with macros
         }
     }
 

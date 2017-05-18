@@ -64,6 +64,21 @@ public class BoardModel implements Cloneable {
             setPieceAt(x,y, GameModel.BLACK_PIECE);
     }
 
+    public ArrayList<MoveModel> getValidMoves(char piece) {
+        ArrayList<MoveModel> result = new ArrayList<MoveModel>();
+
+        for (int y = 0; y < GameModel.BOARD_SIZE; y++) {
+            for (int x = 0; x < GameModel.BOARD_SIZE; x++) {
+                MoveModel temp = getValidMove(x, y, piece);
+
+                if (temp != null)
+                    result.add(temp);
+            }
+        }
+
+        return result;
+    }
+
     public MoveModel getValidMove(int x, int y, char piece) {
 
         if(getPieceAt(x,y) != GameModel.EMPTY_PIECE)

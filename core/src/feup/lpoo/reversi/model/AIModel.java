@@ -1,21 +1,22 @@
 package feup.lpoo.reversi.model;
 
+import feup.lpoo.reversi.presenter.AIPresenter;
+
 /**
  * Created by antonioalmeida on 16/05/2017.
  */
 
 public class AIModel extends PlayerModel {
-    public AIModel(char piece) {
-        super(piece);
-    }
+    private AIPresenter presenter;
 
-    @Override
-    public void setMoveIndex(int index) {
-        moveIndex = 0;
+    public AIModel(char piece, AIPresenter presenter) {
+        super(piece);
+        this.presenter = presenter;
     }
 
     @Override
     public boolean isReady() {
+        move = presenter.findMove(piece);
         return true;
     }
 }

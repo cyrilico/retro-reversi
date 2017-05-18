@@ -70,8 +70,8 @@ public class MainMenuView extends ScreenAdapter {
         buttonTable.bottom();
         buttonTable.setFillParent(true);
 
-        singlePlayer = new TextButton("\nSingle Player\n", game.getSkin());
-        multiPlayer = new TextButton("\nMulti Player\n", game.getSkin());
+        singlePlayer = new TextButton("\n  Single Player  \n", game.getSkin());
+        multiPlayer = new TextButton("\n  Multi Player  \n", game.getSkin());
         options = new TextButton("\n  Options  \n", game.getSkin());
 
         buttonTable.add(singlePlayer).center().padBottom(40);

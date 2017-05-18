@@ -33,9 +33,11 @@ public class Reversi extends Game {
         assetManager = new AssetManager();
 		viewport = new ExtendViewport(512, 854);
 
-		atlas = new TextureAtlas("reversi-cyan/reversi-cyan.atlas");
-		skin = new Skin(Gdx.files.internal("reversi-cyan/reversi-cyan.json"), atlas);
+		//atlas = new TextureAtlas("reversi-cyan/reversi-cyan.atlas");
+		//skin = new Skin(Gdx.files.internal("reversi-cyan/reversi-cyan.json"), atlas);
 
+		atlas = new TextureAtlas("retro-test/retro-test.atlas");
+		skin = new Skin(Gdx.files.internal("retro-test/retro-test.json"), atlas);
 		loadAssets();
 
 		setScreen(new MainMenuView(this));

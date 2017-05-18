@@ -6,7 +6,7 @@ package feup.lpoo.reversi.model;
 
 public abstract class PlayerModel {
     protected int points;
-    protected int moveIndex;
+    protected MoveModel move;
     protected char piece;
     protected boolean ready;
 
@@ -15,14 +15,16 @@ public abstract class PlayerModel {
         this.piece = piece;
     }
 
-    public abstract void setMoveIndex(int index);
+    public void setMove(MoveModel move) {
+        this.move = move;
+    }
 
     public void setPoints(int points) {
         this.points = points;
     }
 
-    public int getMoveIndex() {
-        return moveIndex;
+    public MoveModel getMove() {
+        return move;
     }
 
     public char getPiece() {

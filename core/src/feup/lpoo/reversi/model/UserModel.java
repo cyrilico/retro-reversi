@@ -10,7 +10,4 @@ public class UserModel extends PlayerModel {
         super(piece);
     }
 
-    public void setMoveIndex(int index) {
-        moveIndex = index;
-    }
 }

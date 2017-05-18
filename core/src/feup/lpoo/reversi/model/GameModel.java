@@ -59,28 +59,18 @@ public class GameModel {
     }
 
     public ArrayList<MoveModel> getValidMoves(PlayerModel player) {
-        ArrayList<MoveModel> result =  new ArrayList<MoveModel>();
-        char piece = player.getPiece();
-
-        for(int y = 0; y < BOARD_SIZE; y++) {
-            for(int x = 0; x < BOARD_SIZE; x++) {
-                MoveModel temp = gameBoard.getValidMove(x,y,piece);
-
-                if(temp != null)
-                    result.add(temp);
-            }
-        }
+        ArrayList<MoveModel> result = gameBoard.getValidMoves(player.getPiece());
 
         return result;
     }
 
-    //Returns -1 if not a valid move, returns the index in the currentMoves otherwise
-    public int isValidMove(int x, int y) {
+    //Returns null if not a valid move, returns the index in the currentMoves otherwise
+    public MoveModel isValidMove(int x, int y) {
         for(int i = 0; i < currentMoves.size(); i++)
             if(currentMoves.get(i).getX() == x && currentMoves.get(i).getY() == y)
-                return i;
+                return currentMoves.get(i);
 
-        return -1;
+        return null;
     }
 
     public void makeMove(MoveModel move) {
@@ -96,7 +86,7 @@ public class GameModel {
         if(isOver())
             return false;
 
-        MoveModel toMake = currentMoves.get(getCurrentPlayer().getMoveIndex());
+        MoveModel toMake = getCurrentPlayer().getMove();
         makeMove(toMake);
 
         updateTurn();
@@ -163,6 +153,10 @@ public class GameModel {
         }
 
         return result;
+    }
+
+    public BoardModel getGameBoard() {
+        return gameBoard;
     }
 
     public PlayerModel getCurrentPlayer() {
