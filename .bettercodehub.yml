@@ -2,7 +2,7 @@ exclude:
 - /android/src/feup/lpoo/reversi/AndroidLauncher.java
 - /desktop/src/feup/lpoo/reversi/desktop/DesktopLauncher.java
 - /html/.*
-component_depth: 5
+component_depth: 6
 languages:
 - java
 - javascript
