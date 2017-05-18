@@ -1,0 +1,8 @@
+exclude:
+- /android/src/feup/lpoo/reversi/AndroidLauncher.java
+- /desktop/src/feup/lpoo/reversi/desktop/DesktopLauncher.java
+- /html/.*
+component_depth: 1
+languages:
+- java
+- javascript
