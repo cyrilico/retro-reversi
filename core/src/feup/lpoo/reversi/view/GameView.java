@@ -80,10 +80,9 @@ public class GameView extends ScreenAdapter {
         paddleTable = new Table();
         paddleTable.setFillParent(true);
         paddleTable.top();
-        paddleTable.debugAll();
         stage.addActor(paddleTable);
-        paddleTable.add(paddle1).expandX().padTop(75);
-        paddleTable.add(paddle2).expandX().padTop(75);
+        paddleTable.add(paddle1).expandX().padTop(70);
+        paddleTable.add(paddle2).expandX().padTop(70);
     }
 
     private void addLabels() {
@@ -91,7 +90,6 @@ public class GameView extends ScreenAdapter {
         score2 = new Label("02", game.getSkin());
 
         hud = new Table();
-        hud.debugAll();
         stage.addActor(hud);
 
         hud.setFillParent(true);

@@ -54,13 +54,13 @@ public class MainMenuView extends ScreenAdapter {
     }
 
     private void addTitle() {
-        mainTitle = new Label("Reversi", game.getSkin());
+        mainTitle = new Label("  Retro \nReversi", game.getSkin());
         mainTitle.setFontScale(2);
 
         titleTable = new Table();
         titleTable.setFillParent(true);
         titleTable.top();
-        titleTable.add(mainTitle).expandX().padTop(50);
+        titleTable.add(mainTitle).expandX().padTop(75);
 
         stage.addActor(titleTable);
     }

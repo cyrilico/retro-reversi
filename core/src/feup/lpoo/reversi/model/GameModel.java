@@ -65,7 +65,7 @@ public class GameModel {
     }
 
     //Returns null if not a valid move, returns the index in the currentMoves otherwise
-    public MoveModel isValidMove(int x, int y) {
+    public MoveModel getValidMove(int x, int y) {
         for(int i = 0; i < currentMoves.size(); i++)
             if(currentMoves.get(i).getX() == x && currentMoves.get(i).getY() == y)
                 return currentMoves.get(i);

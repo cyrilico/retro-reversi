@@ -56,7 +56,7 @@ public class CellView extends Actor {
         this.boardY = boardY;
         setBounds(actorX, actorY, tile.getWidth(), tile.getHeight());
 
-        update();
+        act(0);
         addListeners();
     }
 
@@ -73,7 +73,8 @@ public class CellView extends Actor {
         });
     }
 
-    public void update() {
+    @Override
+    public void act(float dt) {
         char currentPiece = presenter.getCurrentPiece(boardX, boardY);
         icon = getIcon(currentPiece);
     }

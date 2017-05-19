@@ -16,9 +16,12 @@ public class AIPresenter {
     AIStrategy strategy;
 
 
-    public AIPresenter(GameModel game) {
-        this.game = game;
+    public AIPresenter() {
         strategy = new NoobStrategy();
+    }
+
+    public void setGame(GameModel game) {
+        this.game = game;
     }
 
     public MoveModel findMove(char piece) {

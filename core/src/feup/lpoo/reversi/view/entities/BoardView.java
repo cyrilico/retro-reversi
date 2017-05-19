@@ -22,10 +22,4 @@ public class BoardView extends Group {
 
     }
 
-    @Override
-    public void act(float dt) {
-        for(Actor elem : this.getChildren()) {
-            ((CellView) elem).update();
-        }
-    }
 }

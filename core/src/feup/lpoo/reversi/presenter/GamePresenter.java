@@ -21,9 +21,10 @@ public class GamePresenter {
     public GamePresenter(int type) {
         this.type = type;
 
+        AI = new AIPresenter();
         resetPlayers();
         game = new GameModel(blackPlayer, whitePlayer);
-        AI = new AIPresenter(game);
+        AI.setGame(game);
     }
 
     public String getPlayer1Points() {
@@ -37,7 +38,7 @@ public class GamePresenter {
     }
 
     public void handleInput(int x, int y) throws CloneNotSupportedException {
-        MoveModel move = getValidMove(x, y);
+        MoveModel move = game.getValidMove(x, y);
 
         if(move != null) {
             game.getCurrentPlayer().setMove(move);
@@ -56,10 +57,6 @@ public class GamePresenter {
         }
     }
 
-    public MoveModel getValidMove(int x, int y) throws CloneNotSupportedException {
-        return game.isValidMove(x, y);
-    }
-
     public char getCurrentPiece(int x, int y) {
         char piece = 0;
         piece = game.getPieceAt(x,y);
@@ -68,14 +65,11 @@ public class GamePresenter {
     }
 
     public void resetPlayers() {
-        if(type == 0) {
-            blackPlayer = new UserModel('B'); //Replace with macros
+        blackPlayer = new UserModel('B');
+        if(type == 0)
             whitePlayer = new UserModel('W'); //Replace with macros
-        }
-        else {
-            blackPlayer = new UserModel('B'); //Replace with macros
+        else
             whitePlayer = new AIModel('W', AI); //Replace with macros
-        }
     }
 
     public boolean isBlackTurn() {
