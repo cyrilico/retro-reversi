@@ -1,11 +1,7 @@
 package feup.lpoo.reversi.presenter;
 
-import com.badlogic.gdx.Game;
-
-import feup.lpoo.reversi.model.BoardModel;
 import feup.lpoo.reversi.model.GameModel;
 import feup.lpoo.reversi.model.MoveModel;
-import feup.lpoo.reversi.presenter.strategies.NoobStrategy;
 
 /**
  * Created by antonioalmeida on 18/05/2017.
@@ -13,11 +9,11 @@ import feup.lpoo.reversi.presenter.strategies.NoobStrategy;
 
 public class AIPresenter {
     GameModel game;
-    AIStrategy strategy;
+    AIMoveStrategy strategy;
 
 
-    public AIPresenter() {
-        strategy = new NoobStrategy();
+    public AIPresenter(AIMoveStrategy strategyChosen){
+        this.strategy = strategyChosen;
     }
 
     public void setGame(GameModel game) {
@@ -25,9 +21,7 @@ public class AIPresenter {
     }
 
     public MoveModel findMove(char piece) {
-        System.out.println("Cenas");
-        System.out.println(game.getGameBoard().getCurrentPoints(piece));
-        MoveModel move = strategy.findMove(game.getGameBoard(), piece);
+       MoveModel move = strategy.findMove(game.getGameBoard(), piece);
 
        return move;
     }

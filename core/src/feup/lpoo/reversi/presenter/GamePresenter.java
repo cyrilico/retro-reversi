@@ -18,10 +18,10 @@ public class GamePresenter {
     private PlayerModel whitePlayer;
     private int type;
 
-    public GamePresenter(int type) {
+    public GamePresenter(int type, AIMoveStrategy strategyChosen) {
         this.type = type;
 
-        AI = new AIPresenter();
+        AI = new AIPresenter(strategyChosen);
         resetPlayers();
         game = new GameModel(blackPlayer, whitePlayer);
         AI.setGame(game);
@@ -47,21 +47,24 @@ public class GamePresenter {
     }
 
     public void updateGame() {
-        if(game.getCurrentPlayer().isReady()) {
-            game.getCurrentPlayer().resetReady();
-            try {
-                game.updateGame();
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
+        if(!game.isOver()) {
+            if (game.getCurrentPlayer().isReady()) {
+                game.getCurrentPlayer().resetReady();
+                try {
+                    game.updateGame();
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
-    public char getCurrentPiece(int x, int y) {
-        char piece = 0;
-        piece = game.getPieceAt(x,y);
+    public boolean gameOver() {
+        return game.isOver();
+    }
 
-        return piece;
+    public char getCurrentPiece(int x, int y) {
+        return game.getPieceAt(x,y);
     }
 
     public void resetPlayers() {

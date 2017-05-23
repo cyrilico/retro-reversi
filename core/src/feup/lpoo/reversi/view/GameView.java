@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
 import feup.lpoo.reversi.Reversi;
+import feup.lpoo.reversi.presenter.AIMoveStrategy;
 import feup.lpoo.reversi.presenter.GamePresenter;
 import feup.lpoo.reversi.view.entities.BoardView;
 
@@ -44,8 +45,8 @@ public class GameView extends ScreenAdapter {
 
     private TextButton undo;
 
-    public GameView(Reversi game, int type) {
-        presenter = new GamePresenter(type);
+    public GameView(Reversi game, int type, AIMoveStrategy strategyChosen) {
+        presenter = new GamePresenter(type, strategyChosen);
         this.game = game;
         stage = new Stage(game.getViewport(), game.getBatch());
 
@@ -118,10 +119,14 @@ public class GameView extends ScreenAdapter {
     }
 
     public void update(float dt) {
+        if(!Gdx.graphics.isContinuousRendering())
+            Gdx.graphics.requestRendering();
         presenter.updateGame();
         board.act(dt);
         updateScore();
         updateTurn();
+        if(presenter.gameOver())
+            Gdx.graphics.setContinuousRendering(false);
     }
 
     private void updateScore() {

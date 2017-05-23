@@ -3,37 +3,36 @@ package feup.lpoo.reversi.view;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-
 import feup.lpoo.reversi.Reversi;
+import feup.lpoo.reversi.presenter.CalculatedMoveStrategy;
+import feup.lpoo.reversi.presenter.ImmediateMoveStrategy;
+import feup.lpoo.reversi.presenter.RandomMoveStrategy;
 
 /**
- * Created by antonioalmeida on 01/05/2017.
+ * Created by antonioalmeida on 22/05/2017.
  */
 
-public class MainMenuView extends ScreenAdapter {
+public class DifficultyMenuView extends ScreenAdapter {
     private Reversi game;
 
     private Stage stage;
     private Table buttonTable;
     private Table titleTable;
 
-    private TextButton singlePlayer;
-    private TextButton multiPlayer;
-    private TextButton options;
+    private TextButton randomAIButton;
+    private TextButton immediateAIButton;
+    private TextButton calculatedAIButton;
 
     //Labels
     private Label mainTitle;
 
-    public MainMenuView(Reversi game) {
+    public DifficultyMenuView(Reversi game) {
         this.game = game;
         stage = new Stage(game.getViewport(), game.getBatch());
 
@@ -54,7 +53,7 @@ public class MainMenuView extends ScreenAdapter {
     }
 
     private void addTitle() {
-        mainTitle = new Label("  Retro \nReversi", game.getSkin());
+        mainTitle = new Label("  AI \nDifficulty", game.getSkin());
         mainTitle.setFontScale(2);
 
         titleTable = new Table();
@@ -70,37 +69,42 @@ public class MainMenuView extends ScreenAdapter {
         buttonTable.bottom();
         buttonTable.setFillParent(true);
 
-        singlePlayer = new TextButton("\n  Single Player  \n", game.getSkin());
-        multiPlayer = new TextButton("\n  Multi Player  \n", game.getSkin());
-        options = new TextButton("\n  Options  \n", game.getSkin());
+        randomAIButton = new TextButton("\n  Random  \n", game.getSkin());
+        immediateAIButton = new TextButton("\n  Immediate  \n", game.getSkin());
+        calculatedAIButton = new TextButton("\n  Calculated  \n", game.getSkin());
 
-        buttonTable.add(singlePlayer).center().padBottom(40);
+        buttonTable.add(randomAIButton).center().padBottom(40);
         buttonTable.row();
-        buttonTable.add(multiPlayer).center().padBottom(40);
+        buttonTable.add(immediateAIButton).center().padBottom(40);
         buttonTable.row();
-        buttonTable.add(options).center().padBottom(40);
+        buttonTable.add(calculatedAIButton).center().padBottom(40);
 
         stage.addActor(buttonTable);
     }
 
     private void addListeners() {
-
-        singlePlayer.addListener(new ClickListener(){
+        randomAIButton.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new DifficultyMenuView(game));
+                game.setScreen(new GameView(game, 1, new RandomMoveStrategy()));
                 return true;
             }
         });
 
-        multiPlayer.addListener(new ClickListener(){
+        immediateAIButton.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new GameView(game, 0, null));
+                game.setScreen(new GameView(game, 1, new ImmediateMoveStrategy()));
                 return true;
             }
         });
 
-
+        calculatedAIButton.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(new GameView(game, 1, new CalculatedMoveStrategy()));
+                return true;
+            }
+        });
     }
 }

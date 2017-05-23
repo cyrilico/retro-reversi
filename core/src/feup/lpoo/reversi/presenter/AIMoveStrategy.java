@@ -4,9 +4,10 @@ import feup.lpoo.reversi.model.BoardModel;
 import feup.lpoo.reversi.model.MoveModel;
 
 /**
- * Created by antonioalmeida on 18/05/2017.
+ * Created by cyrilico on 22-05-2017.
  */
 
-public interface AIStrategy {
+public interface AIMoveStrategy {
     MoveModel findMove(BoardModel board, char piece);
 }
+
