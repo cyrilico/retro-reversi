@@ -13,9 +13,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import feup.lpoo.reversi.model.PlayerModel;
 import feup.lpoo.reversi.view.MainMenuView;
 
 public class Reversi extends Game {
+
+	private PlayServices playServices;
+
 	private SpriteBatch batch;
 	private AssetManager assetManager;
 	private Viewport viewport;
@@ -26,6 +30,10 @@ public class Reversi extends Game {
 	public static Color BACKGROUND_COLOR = new Color(0.38f, 0.50f, 0.56f, 1);
 	public static Color PRIMARY_COLOR = new Color(88, 164, 176, 255);
 	public static Color SECONDARY_COLOR = new Color(255, 164, 0, 255);
+
+	public Reversi(PlayServices ps) {
+		this.playServices = ps;
+	}
 
 	@Override
 	public void create () {
@@ -84,5 +92,9 @@ public class Reversi extends Game {
 
 	public SpriteBatch getBatch() {
 		return batch;
+	}
+
+	public PlayServices getPlayServices() {
+		return playServices;
 	}
 }

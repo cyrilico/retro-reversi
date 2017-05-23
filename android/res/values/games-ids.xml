@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Google Play game services IDs.
+Save this file as res/values/games-ids.xml in your project.
+-->
+<resources>
+    <string name="package_name">feup.lpoo.reversi</string>
+    <string name="achievement_easy_to_learn_hard_to_master">CgkIr4ucwO0dEAIQAQ</string>
+    <string name="achievement_baby_steps">CgkIr4ucwO0dEAIQAg</string>
+    <string name="achievement_an_actual_breakthrough">CgkIr4ucwO0dEAIQAw</string>
+    <string name="achievement_uh_come_again">CgkIr4ucwO0dEAIQBA</string>
+    <string name="achievement_this_game_is_cool">CgkIr4ucwO0dEAIQBQ</string>
+    <string name="leaderboard_easy">CgkIr4ucwO0dEAIQBw</string>
+    <string name="leaderboard_medium">CgkIr4ucwO0dEAIQCA</string>
+    <string name="leaderboard_hard">CgkIr4ucwO0dEAIQCQ</string>
+    <string name="event_games_played">CgkIr4ucwO0dEAIQBg</string>
+</resources>

@@ -19,7 +19,7 @@ android {
     }
     defaultConfig {
         applicationId "feup.lpoo.reversi"
-        minSdkVersion 9
+        minSdkVersion 15
         targetSdkVersion 25
     }
 }

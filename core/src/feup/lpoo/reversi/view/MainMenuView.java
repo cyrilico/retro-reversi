@@ -41,6 +41,8 @@ public class MainMenuView extends ScreenAdapter {
         addButtons();
         addListeners();
 
+        game.getPlayServices().signIn();
+
         Gdx.input.setInputProcessor(stage);
     }
 
