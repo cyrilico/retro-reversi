@@ -14,7 +14,7 @@ public class CalculatedMoveStrategy implements AIMoveStrategy {
     private int maxDepth;
 
     public CalculatedMoveStrategy() { //TODO: Add depth as constructor argument? (Allows for an extra difficulty with (much) more move depth analysis)
-        maxDepth = 5;
+        maxDepth = 3;
     }
 
     @Override
