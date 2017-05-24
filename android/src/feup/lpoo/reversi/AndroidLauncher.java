@@ -87,9 +87,30 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 	}
 
 	@Override
+	public void matchCompleted(boolean victory) {
+		Games.Achievements.unlock(gameHelper.getApiClient(),
+				getString(R.string.achievement_your_first_match));
+		Games.Achievements.unlock(gameHelper.getApiClient(),
+				getString(R.string.achievement_5_matches));
+		Games.Achievements.unlock(gameHelper.getApiClient(),
+				getString(R.string.achievement_25_matches));
+		Games.Achievements.unlock(gameHelper.getApiClient(),
+				getString(R.string.achievement_50_matches));
+
+		if(victory) {
+			Games.Achievements.unlock(gameHelper.getApiClient(),
+					getString(R.string.achievement_10_wins));
+			Games.Achievements.unlock(gameHelper.getApiClient(),
+					getString(R.string.achievement_25_wins));
+			Games.Achievements.unlock(gameHelper.getApiClient(),
+					getString(R.string.achievement_50_wins));
+		}
+	}
+
+	@Override
 	public void unlockAchievement() {
 		Games.Achievements.unlock(gameHelper.getApiClient(),
-				getString(R.string.achievement_easy_to_learn_hard_to_master));
+				getString(R.string.achievement_your_first_match));
 	}
 
 	@Override

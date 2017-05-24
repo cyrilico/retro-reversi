@@ -9,6 +9,7 @@ public interface PlayServices {
         public void signOut();
         public void rateGame();
         public void unlockAchievement();
+        public void matchCompleted(boolean victory);
         public void submitScore(int highScore);
         public void showAchievements();
         public void showScore();

@@ -76,7 +76,7 @@ project(":android") {
         compile project(":BaseGameUtils")
     }
 }
-
+/*
 project(":html") {
     apply plugin: "gwt"
     apply plugin: "war"
@@ -92,6 +92,7 @@ project(":html") {
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion:sources"
     }
 }
+*/
 
 project(":core") {
     apply plugin: "java"

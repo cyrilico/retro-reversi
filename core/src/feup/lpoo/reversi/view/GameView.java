@@ -23,14 +23,12 @@ import feup.lpoo.reversi.view.entities.BoardView;
  */
 
 public class GameView extends ScreenAdapter {
-    private Reversi game;
     private GamePresenter presenter;
 
     private GameStage stage;
 
     public GameView(Reversi game, int type, AIMoveStrategy strategyChosen) {
-        presenter = new GamePresenter(type, strategyChosen);
-        this.game = game;
+        presenter = new GamePresenter(type, strategyChosen, game);
         stage = new GameStage(game, presenter);
     }
 

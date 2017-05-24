@@ -1,5 +1,6 @@
 package feup.lpoo.reversi.presenter;
 
+import feup.lpoo.reversi.Reversi;
 import feup.lpoo.reversi.model.AIModel;
 import feup.lpoo.reversi.model.GameModel;
 import feup.lpoo.reversi.model.MoveModel;
@@ -11,6 +12,7 @@ import feup.lpoo.reversi.model.UserModel;
  */
 
 public class GamePresenter {
+    private Reversi reversi;
     private AIPresenter AI;
     private GameModel game;
     private PlayerModel blackPlayer;
@@ -18,7 +20,8 @@ public class GamePresenter {
     private int type;
     AIMoveStrategy strategy;
 
-    public GamePresenter(int type, AIMoveStrategy strategyChosen) {
+    public GamePresenter(int type, AIMoveStrategy strategyChosen, Reversi reversi) {
+        this.reversi = reversi;
         this.type = type;
         this.strategy = strategyChosen;
 
@@ -83,6 +86,21 @@ public class GamePresenter {
 
     public boolean gameOver() {
         return game.isOver();
+    }
+
+    public void updateAchievements() {
+        boolean victory = userWon();
+        reversi.getPlayServices().matchCompleted(victory);
+    }
+
+    public boolean userWon() {
+        int black = game.getBlackPoints();
+        int white = game.getWhitePoints();
+
+        if(black > white)
+            return true;
+
+        return false;
     }
 
     public char getCurrentPiece(int x, int y) {

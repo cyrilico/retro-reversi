@@ -129,6 +129,7 @@ public class GameStage extends Stage {
     }
 
     private void gameOver() {
+        presenter.updateAchievements();
         undo.setVisible(false);
         gameOverTable.setVisible(true);
         winnerTable.setVisible(true);
