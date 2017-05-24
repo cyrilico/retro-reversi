@@ -10,7 +10,7 @@ public interface PlayServices {
         public void rateGame();
         public void unlockAchievement();
         public void submitScore(int highScore);
-        public void showAchievement();
+        public void showAchievements();
         public void showScore();
         public boolean isSignedIn();
 }

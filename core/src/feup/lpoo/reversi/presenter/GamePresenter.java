@@ -11,17 +11,25 @@ import feup.lpoo.reversi.model.UserModel;
  */
 
 public class GamePresenter {
-
     private AIPresenter AI;
     private GameModel game;
     private PlayerModel blackPlayer;
     private PlayerModel whitePlayer;
     private int type;
+    AIMoveStrategy strategy;
 
     public GamePresenter(int type, AIMoveStrategy strategyChosen) {
         this.type = type;
+        this.strategy = strategyChosen;
 
         AI = new AIPresenter(strategyChosen);
+        resetPlayers();
+        game = new GameModel(blackPlayer, whitePlayer);
+        AI.setGame(game);
+    }
+
+    public void restartGame() {
+        AI = new AIPresenter(strategy);
         resetPlayers();
         game = new GameModel(blackPlayer, whitePlayer);
         AI.setGame(game);
@@ -34,6 +42,20 @@ public class GamePresenter {
 
     public String getPlayer2Points() {
         String result = String.format("%02d", game.getWhitePoints());
+        return result;
+    }
+
+    public String getResult() {
+        int black = game.getBlackPoints();
+        int white = game.getWhitePoints();
+
+        String result;
+        if(black > white)
+            result =  "Black wins!";
+        else if(white > black)
+            result =  "White wins!";
+        else
+            result = "It's a tie!";
         return result;
     }
 

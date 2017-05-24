@@ -100,9 +100,9 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 	}
 
 	@Override
-	public void showAchievement() {
+	public void showAchievements() {
 		if (isSignedIn())
-			startActivityForResult(Games.Achievements.getAchievementsIntent(gameHelper.getApiClient()), requestCode);
+			startActivityForResult(Games.Achievements.getAchievementsIntent(gameHelper.getApiClient()), 5001);
 		else
 			signIn();
 	}
@@ -117,8 +117,7 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 	}
 
 	@Override
-	public boolean isSignedIn()
-	{
+	public boolean isSignedIn() {
 		return gameHelper.isSignedIn();
 	}
 }

@@ -53,13 +53,13 @@ public class DifficultyMenuView extends ScreenAdapter {
     }
 
     private void addTitle() {
-        mainTitle = new Label("  AI \nDifficulty", game.getSkin());
+        mainTitle = new Label("    Choose \nDifficulty", game.getSkin());
         mainTitle.setFontScale(2);
 
         titleTable = new Table();
         titleTable.setFillParent(true);
         titleTable.top();
-        titleTable.add(mainTitle).expandX().padTop(75);
+        titleTable.add(mainTitle).center().padTop(120);
 
         stage.addActor(titleTable);
     }
@@ -69,9 +69,9 @@ public class DifficultyMenuView extends ScreenAdapter {
         buttonTable.bottom();
         buttonTable.setFillParent(true);
 
-        randomAIButton = new TextButton("\n  Random  \n", game.getSkin());
-        immediateAIButton = new TextButton("\n  Immediate  \n", game.getSkin());
-        calculatedAIButton = new TextButton("\n  Calculated  \n", game.getSkin());
+        randomAIButton = new TextButton("\n  Easy  \n", game.getSkin());
+        immediateAIButton = new TextButton("\n  Medium  \n", game.getSkin());
+        calculatedAIButton = new TextButton("\n  Hard  \n", game.getSkin());
 
         buttonTable.add(randomAIButton).center().padBottom(40);
         buttonTable.row();

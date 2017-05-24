@@ -26,36 +26,12 @@ public class GameView extends ScreenAdapter {
     private Reversi game;
     private GamePresenter presenter;
 
-    private Stage stage;
-
-    private Table hud;
-    private Table paddleTable;
-    private Table boardTable;
-    private Table undoTable;
-
-    private Image blackIcon;
-    private Image whiteIcon;
-    private Image paddle1;
-    private Image paddle2;
-
-    private Label score1;
-    private Label score2;
-
-    private BoardView board;
-
-    private TextButton undo;
+    private GameStage stage;
 
     public GameView(Reversi game, int type, AIMoveStrategy strategyChosen) {
         presenter = new GamePresenter(type, strategyChosen);
         this.game = game;
-        stage = new Stage(game.getViewport(), game.getBatch());
-
-        addPaddles();
-        addIcons();
-        addLabels();
-        addBoard();
-        addUndo();
-        addListeners();
+        stage = new GameStage(game, presenter);
     }
 
     @Override
@@ -69,85 +45,8 @@ public class GameView extends ScreenAdapter {
         stage.draw();
     }
 
-    private void addIcons() {
-        blackIcon = new Image(game.getAssetManager().get("black.png", Texture.class));
-        whiteIcon = new Image(game.getAssetManager().get("white.png", Texture.class));
-    }
-
-    private void addPaddles() {
-        paddle1 = new Image(game.getAssetManager().get("paddle.png", Texture.class));
-        paddle2 = new Image(game.getAssetManager().get("paddle.png", Texture.class));
-
-        paddleTable = new Table();
-        paddleTable.setFillParent(true);
-        paddleTable.top();
-        stage.addActor(paddleTable);
-        paddleTable.add(paddle1).expandX().padTop(70);
-        paddleTable.add(paddle2).expandX().padTop(70);
-    }
-
-    private void addLabels() {
-        score1 = new Label("02", game.getSkin());
-        score2 = new Label("02", game.getSkin());
-
-        hud = new Table();
-        stage.addActor(hud);
-
-        hud.setFillParent(true);
-        hud.top();
-        hud.add(blackIcon).expandX().padTop(75).align(Align.right).padRight(5);
-        hud.add(score1).expandX().padTop(75).align(Align.left).padLeft(5);
-        hud.add(whiteIcon).expandX().padTop(75).align(Align.right).padRight(5);
-        hud.add(score2).expandX().padTop(75).align(Align.left).padLeft(5);
-        hud.row();
-    }
-
-    private void addBoard() {
-        boardTable = new Table();
-        boardTable.setFillParent(true);
-        stage.addActor(boardTable);
-        board = new BoardView(presenter);
-        boardTable.add(board).center().expandY();
-    }
-
-    private void addUndo() {
-        undoTable = new Table();
-        undo = new TextButton("Undo", game.getSkin());
-        undoTable.setFillParent(true);
-        undoTable.bottom().add(undo).expandX().padBottom(50);
-        stage.addActor(undoTable);
-    }
-
     public void update(float dt) {
-        if(!Gdx.graphics.isContinuousRendering())
-            Gdx.graphics.requestRendering();
         presenter.updateGame();
-        board.act(dt);
-        updateScore();
-        updateTurn();
-        if(presenter.gameOver())
-            Gdx.graphics.setContinuousRendering(false);
+        stage.act(dt);
     }
-
-    private void updateScore() {
-        score1.setText(presenter.getPlayer1Points());
-        score2.setText(presenter.getPlayer2Points());
-    }
-
-    private void updateTurn() {
-        paddle1.setVisible(presenter.isBlackTurn());
-        paddle2.setVisible(presenter.isWhiteTurn());
-    }
-
-    private void addListeners() {
-        undo.addListener(new ClickListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                presenter.undoMove();
-                return true;
-            }
-        });
-        Gdx.input.setInputProcessor(stage);
-    }
-
 }
