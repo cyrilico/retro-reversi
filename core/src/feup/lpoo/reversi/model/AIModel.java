@@ -1,6 +1,6 @@
 package feup.lpoo.reversi.model;
 
-import feup.lpoo.reversi.presenter.AIPresenter;
+import feup.lpoo.reversi.presenter.ai.AIPresenter;
 
 /**
  * Created by antonioalmeida on 16/05/2017.

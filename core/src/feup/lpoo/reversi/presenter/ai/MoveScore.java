@@ -1,4 +1,4 @@
-package feup.lpoo.reversi.presenter;
+package feup.lpoo.reversi.presenter.ai;
 
 import feup.lpoo.reversi.model.MoveModel;
 

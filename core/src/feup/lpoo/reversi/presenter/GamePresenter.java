@@ -6,44 +6,34 @@ import feup.lpoo.reversi.model.GameModel;
 import feup.lpoo.reversi.model.MoveModel;
 import feup.lpoo.reversi.model.PlayerModel;
 import feup.lpoo.reversi.model.UserModel;
+import feup.lpoo.reversi.presenter.ai.AIPresenter;
+import feup.lpoo.reversi.presenter.ai.AIMoveStrategy;
 
 /**
  * Created by antonioalmeida on 12/05/2017.
  */
 
-public class GamePresenter {
-    private Reversi reversi;
+public abstract class GamePresenter {
+    protected Reversi reversi;
     private AIPresenter AI;
-    private GameModel game;
-    private PlayerModel blackPlayer;
-    private PlayerModel whitePlayer;
+    protected GameModel game;
+    protected PlayerModel blackPlayer;
+    protected PlayerModel whitePlayer;
     private int type;
-    AIMoveStrategy strategy;
+    private AIMoveStrategy strategy;
 
-    public GamePresenter(int type, AIMoveStrategy strategyChosen, Reversi reversi) {
+    public GamePresenter(Reversi reversi) {
         this.reversi = reversi;
-        this.type = type;
-        this.strategy = strategyChosen;
-
-        AI = new AIPresenter(strategyChosen);
-        resetPlayers();
-        game = new GameModel(blackPlayer, whitePlayer);
-        AI.setGame(game);
     }
 
-    public void restartGame() {
-        AI = new AIPresenter(strategy);
-        resetPlayers();
-        game = new GameModel(blackPlayer, whitePlayer);
-        AI.setGame(game);
-    }
+    public abstract void restartGame();
 
-    public String getPlayer1Points() {
+    public String getBlackPoints() {
         String result = String.format("%02d", game.getBlackPoints());
         return result;
     }
 
-    public String getPlayer2Points() {
+    public String getWhitePoints() {
         String result = String.format("%02d", game.getWhitePoints());
         return result;
     }
@@ -71,7 +61,7 @@ public class GamePresenter {
         }
     }
 
-    public void updateGame() {
+    public boolean updateGame() {
         if(!game.isOver()) {
             if (game.getCurrentPlayer().isReady()) {
                 game.getCurrentPlayer().resetReady();
@@ -81,39 +71,23 @@ public class GamePresenter {
                     e.printStackTrace();
                 }
             }
+            return true;
         }
+
+        return false;
     }
 
     public boolean gameOver() {
         return game.isOver();
     }
 
-    public void updateAchievements() {
-        boolean victory = userWon();
-        reversi.getPlayServices().matchCompleted(victory);
-    }
-
-    public boolean userWon() {
-        int black = game.getBlackPoints();
-        int white = game.getWhitePoints();
-
-        if(black > white)
-            return true;
-
-        return false;
-    }
+    public abstract void updateAchievements();
 
     public char getCurrentPiece(int x, int y) {
         return game.getPieceAt(x,y);
     }
 
-    public void resetPlayers() {
-        blackPlayer = new UserModel('B');
-        if(type == 0)
-            whitePlayer = new UserModel('W'); //Replace with macros
-        else
-            whitePlayer = new AIModel('W', AI); //Replace with macros
-    }
+    public abstract void initPlayers();
 
     public boolean isBlackTurn() {
         return game.getCurrentPlayer() == blackPlayer;
@@ -123,14 +97,5 @@ public class GamePresenter {
         return game.getCurrentPlayer() == whitePlayer;
     }
 
-    public void undoMove() {
-        try {
-            if(!game.undoMove()) {
-                resetPlayers();
-                game = new GameModel(blackPlayer, whitePlayer);
-            }
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-    }
+    public abstract void undoMove();
 }

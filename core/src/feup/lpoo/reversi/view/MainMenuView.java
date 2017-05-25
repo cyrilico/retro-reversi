@@ -100,7 +100,8 @@ public class MainMenuView extends ScreenAdapter {
         multiPlayer.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new GameView(game, 0, null));
+                GameInfo info = new GameInfo(false);
+                game.setScreen(new GameView(game, info));
                 return true;
             }
         });

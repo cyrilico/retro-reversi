@@ -202,14 +202,15 @@ public class GameModel {
         updateGameState();
     }
 
-    public boolean undoMove() throws CloneNotSupportedException {
+    public boolean undoMove(int n) throws CloneNotSupportedException {
         if(caretaker.getSize() == 0)
             return false;
 
-        caretaker.removeLast();
-
-        if(caretaker.getSize() == 0)
-            return false;
+        for(int i = 0; i < n; i++) {
+            caretaker.removeLast();
+            if (caretaker.getSize() == 0)
+                return false;
+        }
 
         setPreviousState(caretaker.getLast());
         return true;

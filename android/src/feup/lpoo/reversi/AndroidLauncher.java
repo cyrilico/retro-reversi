@@ -90,20 +90,20 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 	public void matchCompleted(boolean victory) {
 		Games.Achievements.unlock(gameHelper.getApiClient(),
 				getString(R.string.achievement_your_first_match));
-		Games.Achievements.unlock(gameHelper.getApiClient(),
-				getString(R.string.achievement_5_matches));
-		Games.Achievements.unlock(gameHelper.getApiClient(),
-				getString(R.string.achievement_25_matches));
-		Games.Achievements.unlock(gameHelper.getApiClient(),
-				getString(R.string.achievement_50_matches));
+		Games.Achievements.increment(gameHelper.getApiClient(),
+				getString(R.string.achievement_5_matches), 1);
+		Games.Achievements.increment(gameHelper.getApiClient(),
+				getString(R.string.achievement_25_matches), 1);
+		Games.Achievements.increment(gameHelper.getApiClient(),
+				getString(R.string.achievement_50_matches), 1);
 
 		if(victory) {
-			Games.Achievements.unlock(gameHelper.getApiClient(),
-					getString(R.string.achievement_10_wins));
-			Games.Achievements.unlock(gameHelper.getApiClient(),
-					getString(R.string.achievement_25_wins));
-			Games.Achievements.unlock(gameHelper.getApiClient(),
-					getString(R.string.achievement_50_wins));
+			Games.Achievements.increment(gameHelper.getApiClient(),
+					getString(R.string.achievement_10_wins), 1);
+			Games.Achievements.increment(gameHelper.getApiClient(),
+					getString(R.string.achievement_25_wins), 1);
+			Games.Achievements.increment(gameHelper.getApiClient(),
+					getString(R.string.achievement_50_wins), 1);
 		}
 	}
 

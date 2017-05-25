@@ -47,8 +47,11 @@ public class GameStage extends Stage {
 
     private Label winner;
 
+    private boolean gameOver; //To ensure that gameOver() only runs once per game
+
     public GameStage(Reversi game, GamePresenter presenter) {
         super(game.getViewport(), game.getBatch());
+        gameOver = false;
         this.game = game;
         this.presenter = presenter;
         initElements();
@@ -129,14 +132,17 @@ public class GameStage extends Stage {
     }
 
     private void gameOver() {
-        presenter.updateAchievements();
-        undo.setVisible(false);
-        gameOverTable.setVisible(true);
-        winnerTable.setVisible(true);
-        showResult();
+        if(!gameOver) {
+            presenter.updateAchievements();
+            undo.setVisible(false);
+            gameOverTable.setVisible(true);
+            winnerTable.setVisible(true);
+            showResult();
+        }
     }
 
     private void restartGame() {
+        gameOver = false;
         presenter.restartGame();
         undo.setVisible(true);
         gameOverTable.setVisible(false);
@@ -150,16 +156,19 @@ public class GameStage extends Stage {
 
     @Override
     public void act(float dt) {
+        presenter.updateGame();
         updateScore();
         updateTurn();
         board.act(dt);
-        if(presenter.gameOver())
+        if(presenter.gameOver()) {
             gameOver();
+            gameOver = true;
+        }
     }
 
     private void updateScore() {
-        score1.setText(presenter.getPlayer1Points());
-        score2.setText(presenter.getPlayer2Points());
+        score1.setText(presenter.getBlackPoints());
+        score2.setText(presenter.getWhitePoints());
     }
 
     private void updateTurn() {
@@ -193,6 +202,4 @@ public class GameStage extends Stage {
         });
         Gdx.input.setInputProcessor(this);
     }
-
-
 }

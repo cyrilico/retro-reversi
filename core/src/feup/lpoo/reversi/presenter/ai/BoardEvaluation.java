@@ -1,4 +1,4 @@
-package feup.lpoo.reversi.presenter;
+package feup.lpoo.reversi.presenter.ai;
 
 import java.util.ArrayList;
 import java.util.PriorityQueue;

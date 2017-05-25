@@ -1,7 +1,6 @@
-package feup.lpoo.reversi.presenter;
+package feup.lpoo.reversi.presenter.ai;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import feup.lpoo.reversi.model.BoardModel;
 import feup.lpoo.reversi.model.MoveModel;
@@ -10,7 +9,7 @@ import feup.lpoo.reversi.model.MoveModel;
  * Created by cyrilico on 23-05-2017.
  */
 
-public class CalculatedMoveStrategy implements AIMoveStrategy {
+public class CalculatedMoveStrategy implements feup.lpoo.reversi.presenter.ai.AIMoveStrategy {
     private int maxDepth;
 
     public CalculatedMoveStrategy() { //TODO: Add depth as constructor argument? (Allows for an extra difficulty with (much) more move depth analysis)
@@ -27,7 +26,7 @@ public class CalculatedMoveStrategy implements AIMoveStrategy {
         ArrayList<MoveModel> currentValidModes = board.getValidMoves(piece);
 
         if (depth == 0)
-            return new MoveScore(null, BoardEvaluation.evaluateBoard(board.getCurrentBoard(), piece));
+            return new MoveScore(null, feup.lpoo.reversi.presenter.ai.BoardEvaluation.evaluateBoard(board.getCurrentBoard(), piece));
 
         int currentScore;
         int bestScore = Integer.MIN_VALUE;
