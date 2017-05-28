@@ -37,13 +37,6 @@ public class LocalMultiplayerGamePresenter extends GamePresenter {
 
     @Override
     public void undoMove() {
-        try {
-            if(!game.undoMove(1)) {
-                initPlayers();
-                game = new GameModel(blackPlayer, whitePlayer);
-            }
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
+        game.undoMove(1);
     }
 }

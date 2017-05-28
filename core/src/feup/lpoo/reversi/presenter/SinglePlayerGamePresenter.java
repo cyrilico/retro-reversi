@@ -67,14 +67,7 @@ public class SinglePlayerGamePresenter extends GamePresenter {
 
     @Override
     public void undoMove() {
-        try {
-            if(!game.undoMove(2)) {
-                initPlayers();
-                game = new GameModel(blackPlayer, whitePlayer);
-            }
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
+        game.undoMove(2);
     }
 
 }

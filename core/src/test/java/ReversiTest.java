@@ -242,4 +242,136 @@ public class ReversiTest {
         for(Integer[] coordinates : piecesToRotate4)
             assertTrue(game.getPieceAt(coordinates[0], coordinates[1]) == 'W');
     }
+
+    @Test
+    public void assertCorrectScoreUpdate(){
+        UserModel player1 = new UserModel('B');
+        UserModel player2 = new UserModel('W');
+        GameModel game = new GameModel(player1, player2);
+        MoveModel nextMove;
+
+        assertTrue(game.getBlackPoints() == 2 && game.getWhitePoints() == 2); //In the starting position
+
+        char[][] situation1 = {
+                {'-','-','-','B','-','-','-','-'},
+                {'-','-','-','W','B','-','-','-'},
+                {'-','-','-','-','W','-','-','-'},
+                {'-','W','W','-','W','W','W','B'},
+                {'-','-','B','W','W','-','-','-'},
+                {'-','W','-','-','-','B','-','-'},
+                {'B','-','-','B','-','-','-','-'},
+                {'-','-','-','-','-','-','-','-'}
+        };
+
+        game.getGameBoard().setBoard(situation1);
+
+        nextMove = game.getGameBoard().getValidMove(3, 3, 'B');
+        player1.setMove(nextMove);
+        game.updateGame();
+
+        assertTrue(game.getBlackPoints() == 12 && game.getWhitePoints() == 6);
+
+        nextMove = game.getGameBoard().getValidMove(6, 4, 'W');
+        player2.setMove(nextMove);
+        game.updateGame();
+
+        assertTrue(game.getBlackPoints() == 11 && game.getWhitePoints() == 8);
+
+        char[][] situation2 = {
+                {'-','-','B','B','B','-','-','W'},
+                {'-','-','B','-','B','-','W','W'},
+                {'-','W','B','B','B','W','W','B'},
+                {'-','-','W','B','W','W','W','-'},
+                {'-','-','B','B','B','-','-','-'},
+                {'-','-','B','B','W','B','W','-'},
+                {'-','-','-','-','-','-','B','-'},
+                {'-','-','-','-','-','-','-','-'}
+        };
+
+        game.getGameBoard().setBoard(situation2);
+
+        nextMove = game.getGameBoard().getValidMove(7, 3, 'B');
+        player1.setMove(nextMove);
+        game.updateGame();
+
+        assertTrue(game.getBlackPoints() == 21 && game.getWhitePoints() == 9);
+
+        char[][] situation3 = {
+                {'W','W','W','W','W','W','W','W'},
+                {'W','W','W','W','W','W','W','W'},
+                {'W','W','W','W','W','W','W','W'},
+                {'W','W','W','W','W','W','W','W'},
+                {'W','B','W','W','W','W','W','W'},
+                {'W','W','B','W','W','W','W','W'},
+                {'W','W','W','-','W','W','W','W'},
+                {'W','W','W','W','-','W','W','W'},
+        };
+
+        game.getGameBoard().setBoard(situation3);
+
+        nextMove = game.getGameBoard().getValidMove(3, 6, 'W');
+        player2.setMove(nextMove);
+        game.updateGame();
+
+        assertTrue(game.getBlackPoints() == 0 && game.getWhitePoints() == 63); //TODO: After adjusting rules in game logic, make sure it is 64 due to wipeout
+        assertTrue(game.isOver());
+    }
+
+    @Test
+    public void assertCorrectPlayUndo(){
+        UserModel player1 = new UserModel('B');
+        UserModel player2 = new UserModel('W');
+        GameModel game = new GameModel(player1, player2);
+        char[][] currBoard;
+        MoveModel nextMove;
+
+        char[][] initialBoard = game.getGameBoard().getCurrentBoard();
+
+        nextMove = game.getGameBoard().getValidMove(3, 2, 'B');
+        player1.setMove(nextMove);
+        game.updateGame();
+
+        char[][] boardAfterFirstMove = game.getGameBoard().getCurrentBoard(); //White's turn
+
+        nextMove = game.getGameBoard().getValidMove(4, 2, 'W');
+        player2.setMove(nextMove);
+        game.updateGame();
+
+        char[][] boardAfterSecondMove = game.getGameBoard().getCurrentBoard(); //Black's turn
+
+        nextMove = game.getGameBoard().getValidMove(5, 1, 'B');
+        player1.setMove(nextMove);
+        game.updateGame();
+
+        assertTrue(game.getCurrentPlayer() == player2); //Assure it's white's turn
+
+        //Go back 1 play
+        game.undoMove(1);
+        currBoard = game.getGameBoard().getCurrentBoard();
+        for(int i = 0; i < 8; i++)
+            assertArrayEquals(currBoard[i], boardAfterSecondMove[i]);
+        assertTrue(game.getCurrentPlayer() == player1);
+
+        //Make another play to compensate the one we just went back from
+        nextMove = game.getGameBoard().getValidMove(5, 5, 'B');
+        player1.setMove(nextMove);
+        game.updateGame();
+
+        assertTrue(game.getCurrentPlayer() == player2);
+
+        //Go back even further
+        game.undoMove(2);
+        currBoard = game.getGameBoard().getCurrentBoard();
+        for(int i = 0; i < 8; i++)
+            assertArrayEquals(currBoard[i], boardAfterFirstMove[i]);
+        assertTrue(game.getCurrentPlayer() == player2);
+
+        game.undoMove(2); //Back to the initial state
+        currBoard = game.getGameBoard().getCurrentBoard();
+
+        for(int i = 0; i < 8; i++)
+            assertArrayEquals(currBoard[i], initialBoard[i]);
+
+        assertTrue(game.getCurrentPlayer() == player1);
+    }
 }

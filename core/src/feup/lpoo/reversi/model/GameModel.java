@@ -56,6 +56,7 @@ public class GameModel {
 
         currentMoves = getValidMoves(getCurrentPlayer());
         gameBoard.setSuggestions(currentMoves);
+        caretaker.add(saveState());
     }
 
     public ArrayList<MoveModel> getValidMoves(PlayerModel player) {
@@ -207,17 +208,20 @@ public class GameModel {
         updateGameState();
     }
 
-    public boolean undoMove(int n) throws CloneNotSupportedException {
-        if(caretaker.getSize() == 0)
-            return false;
+    public void undoMove(int n) {
+        if(caretaker.getSize() == 1)
+            return;
 
         for(int i = 0; i < n; i++) {
             caretaker.removeLast();
-            if (caretaker.getSize() == 0)
-                return false;
+            if (caretaker.getSize() == 1)
+                break;
         }
 
-        setPreviousState(caretaker.getLast());
-        return true;
+        try {
+            setPreviousState(caretaker.getLast());
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
     }
 }
