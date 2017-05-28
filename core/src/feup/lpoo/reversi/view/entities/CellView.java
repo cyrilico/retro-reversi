@@ -72,7 +72,6 @@ public class CellView extends Actor {
     private int boardY;
 
     private float stateTime = 0;
-    private boolean isBlack;
 
     public CellView(GamePresenter presenter, int x, int y, int boardX, int boardY) {
         this.presenter = presenter;
@@ -102,15 +101,15 @@ public class CellView extends Actor {
     public void act(float dt) {
         char currentPiece = presenter.getCurrentPiece(boardX, boardY);
 
+        if(animation != 0)
+            stateTime += dt;
+
         if(previousPiece == 'B' && currentPiece == 'W') {
             animation = 1;
         }
         else if(previousPiece == 'W' && currentPiece == 'B') {
             animation = 2;
         }
-
-        if(animation != 0)
-            stateTime += dt;
 
         icon = getIcon(currentPiece);
         previousPiece = currentPiece;
@@ -124,7 +123,7 @@ public class CellView extends Actor {
        // TextureRegion currentFrame = blackAnimation.getKeyFrame(stateTime, true);
         TextureRegion currentFrame = null;
 
-        if(icon != null)
+        if(icon != null && animation == 0)
             batch.draw(icon, actorX, actorY);
 
         if(animation == 1)

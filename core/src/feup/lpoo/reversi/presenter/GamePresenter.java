@@ -1,13 +1,9 @@
 package feup.lpoo.reversi.presenter;
 
 import feup.lpoo.reversi.Reversi;
-import feup.lpoo.reversi.model.AIModel;
 import feup.lpoo.reversi.model.GameModel;
 import feup.lpoo.reversi.model.MoveModel;
 import feup.lpoo.reversi.model.PlayerModel;
-import feup.lpoo.reversi.model.UserModel;
-import feup.lpoo.reversi.presenter.ai.AIPresenter;
-import feup.lpoo.reversi.presenter.ai.AIMoveStrategy;
 
 /**
  * Created by antonioalmeida on 12/05/2017.
@@ -15,12 +11,9 @@ import feup.lpoo.reversi.presenter.ai.AIMoveStrategy;
 
 public abstract class GamePresenter {
     protected Reversi reversi;
-    private AIPresenter AI;
     protected GameModel game;
     protected PlayerModel blackPlayer;
     protected PlayerModel whitePlayer;
-    private int type;
-    private AIMoveStrategy strategy;
 
     public GamePresenter(Reversi reversi) {
         this.reversi = reversi;
