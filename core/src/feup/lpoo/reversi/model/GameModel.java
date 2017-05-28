@@ -82,7 +82,7 @@ public class GameModel {
         movesList.add(move);
     }
 
-    public boolean updateGame() throws CloneNotSupportedException {
+    public boolean updateGame(){
         if(isOver())
             return false;
 
@@ -189,8 +189,13 @@ public class GameModel {
         return state != GameState.RUNNING;
     }
 
-    public GameMemento saveState() throws CloneNotSupportedException {
-        BoardModel temp = (BoardModel) gameBoard.clone();
+    public GameMemento saveState() {
+        BoardModel temp = null;
+        try {
+            temp = (BoardModel) gameBoard.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
         return new GameMemento(temp, turn);
     }
 

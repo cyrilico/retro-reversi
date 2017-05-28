@@ -65,11 +65,7 @@ public abstract class GamePresenter {
         if(!game.isOver()) {
             if (game.getCurrentPlayer().isReady()) {
                 game.getCurrentPlayer().resetReady();
-                try {
-                    game.updateGame();
-                } catch (CloneNotSupportedException e) {
-                    e.printStackTrace();
-                }
+                game.updateGame();
             }
             return true;
         }
