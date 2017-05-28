@@ -1,4 +1,5 @@
 exclude:
+- /BaseGameUtils/src/main/java/com/google/example/games/basegameutils/.*
 - /android/src/feup/lpoo/reversi/AndroidLauncher.java
 - /desktop/src/feup/lpoo/reversi/desktop/DesktopLauncher.java
 - /html/.*
