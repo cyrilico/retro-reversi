@@ -39,4 +39,11 @@ public class MoveModel {
     public ArrayList<Integer[]> getChangedPositions() {
         return changedPositions;
     }
+
+    @Override
+    public boolean equals(Object otherMove){
+        if(otherMove == null || !(otherMove instanceof MoveModel)) return false;
+        MoveModel otherMoveCasted = ((MoveModel)otherMove);
+        return x == otherMoveCasted.getX() && y == otherMoveCasted.getY() && piece == otherMoveCasted.getPiece();
+    }
 }
