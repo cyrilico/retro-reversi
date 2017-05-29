@@ -46,8 +46,6 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 	public static final String TAG = "Retro Reversi";
 	private AlertDialog mAlertDialog;
 
-	private android.widget.ProgressBar spinner;
-
 	// Current turn-based match
 	private TurnBasedMatch mTurnBasedMatch;
 
@@ -65,12 +63,8 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
 		gameHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-
-		spinner = (android.widget.ProgressBar) findViewById(R.id.progressBar);
-        spinner.setVisibility(View.GONE);
 
 		reversi = new Reversi(this);
 		initialize(reversi, config);
@@ -497,12 +491,10 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 	}
 
 	public void showSpinner() {
-		spinner.setVisibility(View.VISIBLE);
 		//findViewById(R.id.progressLayout).setVisibility(View.VISIBLE);
 	}
 
 	public void dismissSpinner() {
-		spinner.setVisibility(View.GONE);
 		//findViewById(R.id.progressLayout).setVisibility(View.GONE);
 	}
 
