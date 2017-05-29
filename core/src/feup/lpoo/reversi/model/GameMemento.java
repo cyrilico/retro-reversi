@@ -1,6 +1,8 @@
 package feup.lpoo.reversi.model;
 
-public class GameMemento {
+import java.io.Serializable;
+
+public class GameMemento implements Serializable {
     private BoardModel board;
     private TurnState turn;
 

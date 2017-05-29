@@ -1,8 +1,9 @@
 package feup.lpoo.reversi.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GameCareTaker {
+public class GameCareTaker implements Serializable {
     private ArrayList<GameMemento> mementoList = new ArrayList<GameMemento>();
 
     public void add(GameMemento state) {

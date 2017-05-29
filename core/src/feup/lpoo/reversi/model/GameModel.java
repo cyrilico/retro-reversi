@@ -27,11 +27,6 @@ public class GameModel implements Serializable{
     private GameState state;
 
     /**
-    * List of moves made during the game
-    */
-    private static ArrayList<MoveModel> movesList;
-
-    /**
     * Current valid moves (updated on every turn)
     */
     private ArrayList<MoveModel> currentMoves;
@@ -39,14 +34,13 @@ public class GameModel implements Serializable{
     private BoardModel gameBoard;
 
     //Saves previous game state
-    private transient GameCareTaker caretaker;
+    private GameCareTaker caretaker;
 
     private PlayerModel blackPlayer;
     private PlayerModel whitePlayer;
 
     public GameModel(PlayerModel black, PlayerModel white) {
         gameBoard = new BoardModel();
-        movesList = new ArrayList<MoveModel>();
 
         blackPlayer = black;
         whitePlayer = white;
@@ -81,8 +75,6 @@ public class GameModel implements Serializable{
 
         for(Integer[] pos : move.getChangedPositions())
             gameBoard.rotatePiece(pos[0], pos[1]);
-
-        movesList.add(move);
     }
 
     public boolean updateGame(){
@@ -174,10 +166,6 @@ public class GameModel implements Serializable{
             return whitePlayer;
 
         return blackPlayer;
-    }
-
-    public ArrayList<MoveModel> getMovesList() {
-        return (ArrayList<MoveModel>) movesList.clone();
     }
 
     public int getBlackPoints() {
