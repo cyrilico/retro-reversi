@@ -15,7 +15,7 @@ public class OnlineMultiplayerGamePresenter extends GamePresenter {
         super(reversi);
         initPlayers();
         //game = new GameModel(blackPlayer, whitePlayer);
-        GameModel temp =reversi.getPlayServices().getMatchData();
+        GameModel temp = reversi.getPlayServices().getMatchData();
 
         if(temp != null)
             game = temp;
@@ -42,7 +42,6 @@ public class OnlineMultiplayerGamePresenter extends GamePresenter {
 
     @Override
     public void undoMove() {
-        System.out.println(data);
         reversi.getPlayServices().takeTurn(game);
     }
 }

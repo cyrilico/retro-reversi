@@ -334,6 +334,7 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 			case TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN:
 				mTurnData = GameModel.convertFromByteArray(mMatch.getData());
 				showWarning("Alas...", "It's your turn.");
+				reversi.setOnlineMatchScreen();
 				//setGameplayUI();
 				return;
 			case TurnBasedMatch.MATCH_TURN_STATUS_THEIR_TURN:
