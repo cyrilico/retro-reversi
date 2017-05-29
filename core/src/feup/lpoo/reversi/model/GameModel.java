@@ -1,7 +1,9 @@
 package feup.lpoo.reversi.model;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -241,5 +243,29 @@ public class GameModel implements Serializable{
             e.printStackTrace();
         }
         return out.toByteArray();
+    }
+
+    public GameModel convertFromByteArray(byte[] data){
+        ByteArrayInputStream in = new ByteArrayInputStream(data);
+        ObjectInputStream is;
+        try{
+            is = new ObjectInputStream(in);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            return null;
+        }
+        GameModel result;
+        try{
+            result = (GameModel)is.readObject();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return result;
     }
 }

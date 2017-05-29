@@ -20,7 +20,7 @@ public class Reversi extends Game {
 	private PlayServices playServices;
 
 	private SpriteBatch batch;
-	private AssetManager assetManager;
+	public static AssetManager assetManager;
 	private Viewport viewport;
 
 	private Skin skin;
@@ -81,6 +81,8 @@ public class Reversi extends Game {
 		assetManager.load("black.png", Texture.class);
 		assetManager.load("hint.png", Texture.class);
 		assetManager.load("paddle.png", Texture.class);
+		assetManager.load("rotation/black-rotation.png", Texture.class);
+		assetManager.load("rotation/white-rotation.png", Texture.class);
 		assetManager.finishLoading();
 	}
 

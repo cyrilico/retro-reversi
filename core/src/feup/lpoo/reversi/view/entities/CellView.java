@@ -1,10 +1,8 @@
 package feup.lpoo.reversi.view.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -13,45 +11,34 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import java.util.HashMap;
 import java.util.Map;
 
+import feup.lpoo.reversi.Reversi;
 import feup.lpoo.reversi.presenter.GamePresenter;
 
 public class CellView extends Actor {
-    private static Texture regionBlack = new Texture("rotation/black-rotation.png");
-    private static Texture regionWhite = new Texture("rotation/white-rotation.png");
+    private Texture regionBlack = Reversi.assetManager.get("rotation/black-rotation.png");
+    private Texture regionWhite = Reversi.assetManager.get("rotation/white-rotation.png");
 
-    private static TextureRegion[][] blackFramesTmp = TextureRegion.split(regionBlack, 64, 64);
-    private static TextureRegion[][] whiteFramesTmp = TextureRegion.split(regionWhite, 64, 64);
+    private TextureRegion[][] blackFramesTmp = TextureRegion.split(regionBlack, 64, 64);
+    private TextureRegion[][] whiteFramesTmp = TextureRegion.split(regionWhite, 64, 64);
 
-    private static TextureRegion[] blackFrames = new TextureRegion[7];
-    private static TextureRegion[] whiteFrames = new TextureRegion[7];
+    private TextureRegion[] blackFrames = new TextureRegion[7];
+    private TextureRegion[] whiteFrames = new TextureRegion[7];
 
-    private static Animation<TextureRegion> blackAnimation;
-    private static Animation<TextureRegion> whiteAnimation;
+    private Animation<TextureRegion> blackAnimation;
+    private Animation<TextureRegion> whiteAnimation;
 
-    private static final Texture tile = new Texture(Gdx.files.internal("tile.png"));
+    private final Texture tile = Reversi.assetManager.get("tile.png");
 
-    private static final Texture black = new Texture(Gdx.files.internal("black.png"));
-    private static final Texture white = new Texture(Gdx.files.internal("white.png"));
-    private static final Texture suggestion = new Texture(Gdx.files.internal("hint.png"));
+    private final Texture black = Reversi.assetManager.get("black.png");
+    private final Texture white = Reversi.assetManager.get("white.png");
+    private final Texture suggestion = Reversi.assetManager.get("hint.png");
 
-    private static Map<Character, Texture> ICONS = new HashMap<Character, Texture>();
+    private Map<Character, Texture> ICONS = new HashMap<Character, Texture>();
 
     private GamePresenter presenter;
 
     private char previousPiece;
     private int animation;
-
-    static {
-        ICONS.put('B', black);
-        ICONS.put('W', white);
-        ICONS.put('X', suggestion);
-        ICONS.put('-', null);
-
-        System.arraycopy(blackFramesTmp[0], 0, blackFrames, 0, 7);
-        System.arraycopy(whiteFramesTmp[0], 0, whiteFrames, 0, 7);
-        blackAnimation = new Animation<TextureRegion>(0.09f, blackFrames);
-        whiteAnimation = new Animation<TextureRegion>(0.09f, whiteFrames);
-    }
 
     private Texture getIcon(char piece) {
         Texture result = ICONS.get(piece);
@@ -78,6 +65,16 @@ public class CellView extends Actor {
         setBounds(actorX, actorY, tile.getWidth(), tile.getHeight());
         previousPiece = presenter.getCurrentPiece(boardX, boardY);
         addListeners();
+
+        ICONS.put('B', black);
+        ICONS.put('W', white);
+        ICONS.put('X', suggestion);
+        ICONS.put('-', null);
+
+        System.arraycopy(blackFramesTmp[0], 0, blackFrames, 0, 7);
+        System.arraycopy(whiteFramesTmp[0], 0, whiteFrames, 0, 7);
+        blackAnimation = new Animation<TextureRegion>(0.09f, blackFrames);
+        whiteAnimation = new Animation<TextureRegion>(0.09f, whiteFrames);
     }
 
     public void addListeners() {
