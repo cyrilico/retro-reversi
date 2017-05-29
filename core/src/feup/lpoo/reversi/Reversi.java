@@ -14,6 +14,8 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import feup.lpoo.reversi.model.PlayerModel;
+import feup.lpoo.reversi.view.GameInfo;
+import feup.lpoo.reversi.view.GameView;
 import feup.lpoo.reversi.view.MainMenuView;
 
 public class Reversi extends Game {
@@ -67,6 +69,11 @@ public class Reversi extends Game {
         assetManager.dispose();
         atlas.dispose();
 		skin.dispose();
+	}
+
+	public void setOnlineMatchScreen() {
+		GameInfo info = new GameInfo(false, true);
+		setScreen(new GameView(this, info));
 	}
 
 	private void loadAssets() {

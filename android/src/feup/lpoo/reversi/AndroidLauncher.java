@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -13,11 +14,15 @@ import android.widget.Toast;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesStatusCodes;
+import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.Multiplayer;
+import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
+import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchUpdateReceivedListener;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer;
@@ -27,8 +32,9 @@ import java.util.ArrayList;
 
 import feup.lpoo.reversi.model.GameModel;
 
-public class AndroidLauncher extends AndroidApplication implements GameHelper.GameHelperListener, PlayServices {
+public class AndroidLauncher extends AndroidApplication implements GameHelper.GameHelperListener, PlayServices, GoogleApiClient.ConnectionCallbacks, OnTurnBasedMatchUpdateReceivedListener, OnInvitationReceivedListener {
 	private GameHelper gameHelper;
+	private Reversi reversi;
     private int requestCode = -1;
 
 	// For our intents
@@ -38,6 +44,9 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 
 	public static final String TAG = "Retro Reversi";
 	private AlertDialog mAlertDialog;
+
+	// Current turn-based match
+	private TurnBasedMatch mTurnBasedMatch;
 
 	// Should I be showing the turn API?
 	public boolean isDoingTurn = false;
@@ -55,7 +64,9 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 		super.onCreate(savedInstanceState);
 		gameHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		initialize(new Reversi(this), config);
+
+		reversi = new Reversi(this);
+		initialize(reversi, config);
 		gameHelper.setup(this);
 	}
 
@@ -74,7 +85,25 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		gameHelper.onActivityResult(requestCode, resultCode, data);
-		System.out.println("CenasFixes");
+
+		if (requestCode == RC_LOOK_AT_MATCHES) {
+			// Returning from the 'Select Match' dialog
+
+			if (resultCode != Activity.RESULT_OK) {
+				// user canceled
+				return;
+			}
+
+			TurnBasedMatch match = data
+					.getParcelableExtra(Multiplayer.EXTRA_TURN_BASED_MATCH);
+
+			if (match != null) {
+				updateMatch(match);
+				reversi.setOnlineMatchScreen();
+			}
+
+			Log.d(TAG, "Match = " + match);
+		}
 	}
 
 	@Override
@@ -493,5 +522,69 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 
 		// show it
 		mAlertDialog.show();
+	}
+
+	@Override
+	public void onConnected(Bundle connectionHint) {
+		Log.d(TAG, "onConnected(): Connection successful");
+
+		// Retrieve the TurnBasedMatch from the connectionHint
+		if (connectionHint != null) {
+			mTurnBasedMatch = connectionHint.getParcelable(Multiplayer.EXTRA_TURN_BASED_MATCH);
+
+			if (mTurnBasedMatch != null) {
+				if (gameHelper.getApiClient() == null || !gameHelper.getApiClient().isConnected()) {
+					Log.d(TAG, "Warning: accessing TurnBasedMatch when not connected");
+				}
+
+				updateMatch(mTurnBasedMatch);
+				return;
+			}
+		}
+
+
+		// As a demonstration, we are registering this activity as a handler for
+		// invitation and match events.
+
+		// This is *NOT* required; if you do not register a handler for
+		// invitation events, you will get standard notifications instead.
+		// Standard notifications may be preferable behavior in many cases.
+		Games.Invitations.registerInvitationListener(gameHelper.getApiClient(), this);
+
+		// Likewise, we are registering the optional MatchUpdateListener, which
+		// will replace notifications you would get otherwise. You do *NOT* have
+		// to register a MatchUpdateListener.
+		Games.TurnBasedMultiplayer.registerMatchUpdateListener(gameHelper.getApiClient(), this);
+	}
+
+	@Override
+	public void onConnectionSuspended(int i) {
+
+	}
+
+	@Override
+	public void onTurnBasedMatchReceived(TurnBasedMatch match) {
+		Toast.makeText(this, "A match was updated.", Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void onTurnBasedMatchRemoved(String matchId) {
+		Toast.makeText(this, "A match was removed.", Toast.LENGTH_SHORT).show();
+
+	}
+
+	// Handle notification events.
+	@Override
+	public void onInvitationReceived(Invitation invitation) {
+		Toast.makeText(
+				this,
+				"An invitation has arrived from "
+						+ invitation.getInviter().getDisplayName(), Toast.LENGTH_SHORT)
+				.show();
+	}
+
+	@Override
+	public void onInvitationRemoved(String invitationId) {
+		Toast.makeText(this, "An invitation was removed.", Toast.LENGTH_SHORT).show();
 	}
 }
