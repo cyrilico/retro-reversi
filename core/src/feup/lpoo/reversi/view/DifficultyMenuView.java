@@ -10,13 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import feup.lpoo.reversi.Reversi;
-import feup.lpoo.reversi.presenter.ai.CalculatedMoveStrategy;
-import feup.lpoo.reversi.presenter.ai.ImmediateMoveStrategy;
-import feup.lpoo.reversi.presenter.ai.RandomMoveStrategy;
-
-/**
- * Created by antonioalmeida on 22/05/2017.
- */
+import feup.lpoo.reversi.presenter.ai.EasyMoveStrategy;
+import feup.lpoo.reversi.presenter.ai.HardMoveStrategy;
+import feup.lpoo.reversi.presenter.ai.MediumMoveStrategy;
 
 public class DifficultyMenuView extends ScreenAdapter {
     private Reversi game;
@@ -86,7 +82,7 @@ public class DifficultyMenuView extends ScreenAdapter {
         randomAIButton.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                GameInfo info = new GameInfo(true, true, new RandomMoveStrategy());
+                GameInfo info = new GameInfo(true, true, new EasyMoveStrategy());
                 game.setScreen(new GameView(game, info));
                 return true;
             }
@@ -95,7 +91,7 @@ public class DifficultyMenuView extends ScreenAdapter {
         immediateAIButton.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                GameInfo info = new GameInfo(true, false, new ImmediateMoveStrategy());
+                GameInfo info = new GameInfo(true, false, new MediumMoveStrategy());
                 game.setScreen(new GameView(game, info));
                 return true;
             }
@@ -104,7 +100,7 @@ public class DifficultyMenuView extends ScreenAdapter {
         calculatedAIButton.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                GameInfo info = new GameInfo(true, true, new CalculatedMoveStrategy());
+                GameInfo info = new GameInfo(true, true, new HardMoveStrategy());
                 game.setScreen(new GameView(game, info));
                 return true;
             }

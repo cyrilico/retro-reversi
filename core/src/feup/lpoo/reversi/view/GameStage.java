@@ -15,10 +15,6 @@ import feup.lpoo.reversi.Reversi;
 import feup.lpoo.reversi.presenter.GamePresenter;
 import feup.lpoo.reversi.view.entities.BoardView;
 
-/**
- * Created by antonioalmeida on 23/05/2017.
- */
-
 public class GameStage extends Stage {
     private Reversi game;
     private GamePresenter presenter;

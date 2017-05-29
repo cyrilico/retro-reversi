@@ -7,14 +7,10 @@ import feup.lpoo.reversi.model.MoveModel;
 
 import java.util.Random;
 
-/**
- * Created by antonioalmeida on 18/05/2017.
- */
-
-public class RandomMoveStrategy implements feup.lpoo.reversi.presenter.ai.AIMoveStrategy {
+public class EasyMoveStrategy implements feup.lpoo.reversi.presenter.ai.AIMoveStrategy {
     private Random generator;
 
-    public RandomMoveStrategy() {
+    public EasyMoveStrategy() {
         generator = new Random();
     }
 

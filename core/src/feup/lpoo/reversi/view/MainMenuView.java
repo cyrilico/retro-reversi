@@ -12,10 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import feup.lpoo.reversi.Reversi;
 
-/**
- * Created by antonioalmeida on 01/05/2017.
- */
-
 public class MainMenuView extends ScreenAdapter {
     private Reversi game;
 

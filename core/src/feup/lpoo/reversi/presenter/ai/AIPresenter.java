@@ -3,10 +3,6 @@ package feup.lpoo.reversi.presenter.ai;
 import feup.lpoo.reversi.model.GameModel;
 import feup.lpoo.reversi.model.MoveModel;
 
-/**
- * Created by antonioalmeida on 18/05/2017.
- */
-
 public class AIPresenter {
     GameModel game;
     AIMoveStrategy strategy;

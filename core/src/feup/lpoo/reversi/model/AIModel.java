@@ -6,10 +6,6 @@ import java.util.concurrent.TimeUnit;
 
 import feup.lpoo.reversi.presenter.ai.AIPresenter;
 
-/**
- * Created by antonioalmeida on 16/05/2017.
- */
-
 public class AIModel extends PlayerModel {
     private AIPresenter presenter;
     private boolean calculating;

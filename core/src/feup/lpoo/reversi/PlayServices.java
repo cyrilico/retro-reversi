@@ -1,9 +1,5 @@
 package feup.lpoo.reversi;
 
-/**
- * Created by antonioalmeida on 23/05/2017.
- */
-
 public interface PlayServices {
         public void signIn();
         public void signOut();

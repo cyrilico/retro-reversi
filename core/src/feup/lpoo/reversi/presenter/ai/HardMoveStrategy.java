@@ -5,14 +5,10 @@ import java.util.ArrayList;
 import feup.lpoo.reversi.model.BoardModel;
 import feup.lpoo.reversi.model.MoveModel;
 
-/**
- * Created by cyrilico on 23-05-2017.
- */
-
-public class CalculatedMoveStrategy implements feup.lpoo.reversi.presenter.ai.AIMoveStrategy {
+public class HardMoveStrategy implements CalculatedAIMoveStrategy {
     private int maxDepth;
 
-    public CalculatedMoveStrategy() { //TODO: Add depth as constructor argument? (Allows for an extra difficulty with (much) more move depth analysis)
+    public HardMoveStrategy() { //TODO: Add depth as constructor argument? (Allows for an extra difficulty with (much) more move depth analysis)
         maxDepth = 3;
     }
 
@@ -21,12 +17,53 @@ public class CalculatedMoveStrategy implements feup.lpoo.reversi.presenter.ai.AI
         return negamax(board, maxDepth, piece).getMove();
     }
 
+    public int evaluateBoard(char[][] board, char piece) {
+        int score = 0;
+        for (int i = 0; i < 8; ++i) {
+            for (int j = 0; j < 8; ++j) {
+                if (board[i][j] == piece)
+                    score += BOARD_VALUE[i][j];
+                else if (board[i][j] != '-') //TODO: Replace macro
+                    score -= BOARD_VALUE[i][j];
+            }
+        }
+        return score;
+    }
+
+    class MoveScore implements Comparable<MoveScore>{
+        private MoveModel move;
+        private int score;
+
+        public MoveScore(MoveModel move, int score){
+            this.move = move;
+            this.score = score;
+        }
+
+        public int getScore(){
+            return score;
+        }
+
+        public MoveModel getMove(){
+            return move;
+        }
+
+        @Override
+        public int compareTo(MoveScore o) {
+            if(o.score > this.score)
+                return 1;
+            else if (o.score < this.score)
+                return -1;
+            else
+                return 0;
+        }
+    }
+
     private MoveScore negamax(BoardModel board, int depth, char piece){
         char oppPiece = (piece == 'B' ? 'W' : 'B');
         ArrayList<MoveModel> currentValidModes = board.getValidMoves(piece);
 
         if (depth == 0)
-            return new MoveScore(null, feup.lpoo.reversi.presenter.ai.BoardEvaluation.evaluateBoard(board.getCurrentBoard(), piece));
+            return new MoveScore(null, evaluateBoard(board.getCurrentBoard(), piece));
 
         int currentScore;
         int bestScore = Integer.MIN_VALUE;

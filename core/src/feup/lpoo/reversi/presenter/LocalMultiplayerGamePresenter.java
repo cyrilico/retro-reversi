@@ -6,10 +6,6 @@ import feup.lpoo.reversi.model.GameModel;
 import feup.lpoo.reversi.model.UserModel;
 import feup.lpoo.reversi.presenter.ai.AIPresenter;
 
-/**
- * Created by antonioalmeida on 25/05/2017.
- */
-
 public class LocalMultiplayerGamePresenter extends GamePresenter {
 
     public LocalMultiplayerGamePresenter(Reversi reversi) {

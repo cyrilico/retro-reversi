@@ -1,9 +1,5 @@
 package feup.lpoo.reversi.model;
 
-/**
- * Created by antonioalmeida on 04/05/2017.
- */
-
 public abstract class PlayerModel {
     protected int points;
     protected MoveModel move;

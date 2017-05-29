@@ -10,10 +10,6 @@ import feup.lpoo.reversi.presenter.SinglePlayerGamePresenter;
 import feup.lpoo.reversi.presenter.ai.AIMoveStrategy;
 import feup.lpoo.reversi.presenter.GamePresenter;
 
-/**
- * Created by antonioalmeida on 02/05/2017.
- */
-
 public class GameView extends ScreenAdapter {
     private GamePresenter presenter;
 

@@ -15,10 +15,6 @@ import java.util.Map;
 
 import feup.lpoo.reversi.presenter.GamePresenter;
 
-/**
- * Created by antonioalmeida on 02/05/2017.
- */
-
 public class CellView extends Actor {
     private static Texture regionBlack = new Texture("rotation/black-rotation.png");
     private static Texture regionWhite = new Texture("rotation/white-rotation.png");

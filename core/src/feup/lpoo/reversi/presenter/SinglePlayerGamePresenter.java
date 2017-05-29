@@ -7,10 +7,6 @@ import feup.lpoo.reversi.model.UserModel;
 import feup.lpoo.reversi.presenter.ai.AIMoveStrategy;
 import feup.lpoo.reversi.presenter.ai.AIPresenter;
 
-/**
- * Created by antonioalmeida on 25/05/2017.
- */
-
 public class SinglePlayerGamePresenter extends GamePresenter {
     private AIPresenter AI;
     private AIMoveStrategy strategy;

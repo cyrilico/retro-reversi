@@ -2,10 +2,6 @@ package feup.lpoo.reversi.view;
 
 import feup.lpoo.reversi.presenter.ai.AIMoveStrategy;
 
-/**
- * Created by antonioalmeida on 25/05/2017.
- */
-
 public class GameInfo {
     private boolean isSinglePlayer;
     private boolean isBlack;

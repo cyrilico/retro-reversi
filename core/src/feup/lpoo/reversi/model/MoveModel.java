@@ -2,10 +2,6 @@ package feup.lpoo.reversi.model;
 
 import java.util.ArrayList;
 
-/**
- * Created by antonioalmeida on 04/05/2017.
- */
-
 public class MoveModel {
     private int x;
     private int y;

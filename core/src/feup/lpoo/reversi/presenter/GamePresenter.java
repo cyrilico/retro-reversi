@@ -5,10 +5,6 @@ import feup.lpoo.reversi.model.GameModel;
 import feup.lpoo.reversi.model.MoveModel;
 import feup.lpoo.reversi.model.PlayerModel;
 
-/**
- * Created by antonioalmeida on 12/05/2017.
- */
-
 public abstract class GamePresenter {
     protected Reversi reversi;
     protected GameModel game;

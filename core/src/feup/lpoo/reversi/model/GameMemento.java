@@ -1,11 +1,5 @@
 package feup.lpoo.reversi.model;
 
-import java.util.ArrayList;
-
-/**
- * Created by antonioalmeida on 13/05/2017.
- */
-
 public class GameMemento {
     private BoardModel board;
     private TurnState turn;

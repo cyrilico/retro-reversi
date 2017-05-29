@@ -5,10 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 
 import feup.lpoo.reversi.presenter.GamePresenter;
 
-/**
- * Created by antonioalmeida on 02/05/2017.
- */
-
 public class BoardView extends Group {
 
     public BoardView(GamePresenter presenter) {

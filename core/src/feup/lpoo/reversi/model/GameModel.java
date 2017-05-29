@@ -2,10 +2,6 @@ package feup.lpoo.reversi.model;
 
 import java.util.ArrayList;
 
-/**
- * Created by antonioalmeida on 02/05/2017.
- */
-
 public class GameModel {
 
     protected static final char EMPTY_PIECE = '-';
