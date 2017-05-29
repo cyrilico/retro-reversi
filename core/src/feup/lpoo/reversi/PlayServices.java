@@ -10,4 +10,8 @@ public interface PlayServices {
         public void showAchievements();
         public void showScore();
         public boolean isSignedIn();
+        public void checkGames();
+        public void quickMatch();
+        public String getMatchData();
+        public void takeTurn(String data);
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 
 import feup.lpoo.reversi.Reversi;
 import feup.lpoo.reversi.presenter.LocalMultiplayerGamePresenter;
+import feup.lpoo.reversi.presenter.OnlineMultiplayerGamePresenter;
 import feup.lpoo.reversi.presenter.SinglePlayerGamePresenter;
 import feup.lpoo.reversi.presenter.ai.AIMoveStrategy;
 import feup.lpoo.reversi.presenter.GamePresenter;
@@ -18,6 +19,8 @@ public class GameView extends ScreenAdapter {
     public GameView(Reversi game, GameInfo info) {
         if(info.isSinglePlayer())
             presenter = new SinglePlayerGamePresenter(game, info.getStrategy(), info.userIsBlack());
+        else if(info.isOnline())
+            presenter = new OnlineMultiplayerGamePresenter(game);
         else
             presenter = new LocalMultiplayerGamePresenter(game);
 

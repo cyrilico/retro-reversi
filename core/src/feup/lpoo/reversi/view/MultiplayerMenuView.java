@@ -11,23 +11,29 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import feup.lpoo.reversi.Reversi;
+import feup.lpoo.reversi.presenter.ai.EasyMoveStrategy;
+import feup.lpoo.reversi.presenter.ai.HardMoveStrategy;
+import feup.lpoo.reversi.presenter.ai.MediumMoveStrategy;
 
-public class MainMenuView extends ScreenAdapter {
+/**
+ * Created by antonioalmeida on 29/05/2017.
+ */
+
+public class MultiplayerMenuView extends ScreenAdapter {
     private Reversi game;
 
     private Stage stage;
     private Table buttonTable;
     private Table titleTable;
 
-    private TextButton singlePlayer;
-    private TextButton multiPlayer;
-    private TextButton achievements;
-    private TextButton sign;
+    private TextButton localGameButton;
+    private TextButton onlineGameButton;
+    private TextButton checkGamesButton;
 
     //Labels
     private Label mainTitle;
 
-    public MainMenuView(Reversi game) {
+    public MultiplayerMenuView(Reversi game) {
         this.game = game;
         stage = new Stage(game.getViewport(), game.getBatch());
 
@@ -35,14 +41,11 @@ public class MainMenuView extends ScreenAdapter {
         addButtons();
         addListeners();
 
-        game.getPlayServices().signIn();
-
         Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void render(float delta) {
-
         // Clear the screen
         Gdx.gl.glClearColor(Reversi.BACKGROUND_COLOR.r, Reversi.BACKGROUND_COLOR.g, Reversi.BACKGROUND_COLOR.b, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
@@ -51,13 +54,13 @@ public class MainMenuView extends ScreenAdapter {
     }
 
     private void addTitle() {
-        mainTitle = new Label("  Retro \nReversi", game.getSkin());
-        mainTitle.setFontScale(2);
+        mainTitle = new Label("   Multiplayer   ", game.getSkin());
+        mainTitle.setFontScale(1);
 
         titleTable = new Table();
         titleTable.setFillParent(true);
         titleTable.top();
-        titleTable.add(mainTitle).expandX().padTop(100);
+        titleTable.add(mainTitle).center().padTop(120);
 
         stage.addActor(titleTable);
     }
@@ -67,66 +70,44 @@ public class MainMenuView extends ScreenAdapter {
         buttonTable.bottom();
         buttonTable.setFillParent(true);
 
-        singlePlayer = new TextButton("\n  Single Player  \n", game.getSkin());
-        multiPlayer = new TextButton("\n  Multi Player  \n", game.getSkin());
-        achievements = new TextButton("\n  Achievements  \n", game.getSkin());
-        sign = new TextButton("\n  Sign Out  \n", game.getSkin());
+        localGameButton = new TextButton("\n  Same Screen  \n", game.getSkin());
+        onlineGameButton = new TextButton("\n  Online  \n", game.getSkin());
+        checkGamesButton = new TextButton("\n  Check Games  \n", game.getSkin());
 
-        buttonTable.add(singlePlayer).center().padBottom(40);
+        buttonTable.add(localGameButton).center().padBottom(40);
         buttonTable.row();
-        buttonTable.add(multiPlayer).center().padBottom(40);
+        buttonTable.add(onlineGameButton).center().padBottom(40);
         buttonTable.row();
-        buttonTable.add(achievements).center().padBottom(40);
-        buttonTable.row();
-        buttonTable.add(sign).center().padBottom(40);
+        buttonTable.add(checkGamesButton).center().padBottom(40);
 
         stage.addActor(buttonTable);
     }
 
     private void addListeners() {
-
-        singlePlayer.addListener(new ClickListener(){
+        localGameButton.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new DifficultyMenuView(game));
+                GameInfo info = new GameInfo(false, false);
+                game.setScreen(new GameView(game, info));
                 return true;
             }
         });
 
-        multiPlayer.addListener(new ClickListener(){
+        onlineGameButton.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new MultiplayerMenuView(game));
+                GameInfo info = new GameInfo(false, true);
+                game.setScreen(new GameView(game, info));
                 return true;
             }
         });
 
-        achievements.addListener(new ClickListener(){
+        checkGamesButton.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if(game.getPlayServices().isSignedIn())
-                    game.getPlayServices().showAchievements();
-                else
-                    game.getPlayServices().signIn();
+                game.getPlayServices().checkGames();
                 return true;
             }
         });
-
-        sign.addListener(new ClickListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if(game.getPlayServices().isSignedIn()) {
-                    game.getPlayServices().signOut();
-                    sign.setText("\n  Sign In  \n");
-                }
-                else {
-                    game.getPlayServices().signIn();
-                    sign.setText("\n  Sign Out  \n");
-                }
-                return true;
-            }
-        });
-
-
     }
 }
