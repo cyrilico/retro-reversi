@@ -1,8 +1,9 @@
 package feup.lpoo.reversi.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MoveModel {
+public class MoveModel implements Serializable{
     private int x;
     private int y;
     private char piece;

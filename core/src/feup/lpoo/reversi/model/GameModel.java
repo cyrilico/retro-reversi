@@ -1,8 +1,12 @@
 package feup.lpoo.reversi.model;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GameModel {
+public class GameModel implements Serializable{
 
     protected static final char EMPTY_PIECE = '-';
     protected static final char BLACK_PIECE = 'B';
@@ -33,7 +37,7 @@ public class GameModel {
     private BoardModel gameBoard;
 
     //Saves previous game state
-    private GameCareTaker caretaker;
+    private transient GameCareTaker caretaker;
 
     private PlayerModel blackPlayer;
     private PlayerModel whitePlayer;
@@ -219,5 +223,23 @@ public class GameModel {
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
+    }
+
+    public byte[] convertToByteArray(){
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ObjectOutputStream os = null;
+        try{
+            os = new ObjectOutputStream(out);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        try {
+            os.writeObject(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return out.toByteArray();
     }
 }

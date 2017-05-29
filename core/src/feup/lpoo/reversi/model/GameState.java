@@ -1,5 +1,7 @@
 package feup.lpoo.reversi.model;
 
-public enum GameState {
+import java.io.Serializable;
+
+public enum GameState implements Serializable{
     RUNNING, BLACK_WON, WHITE_WON;
 }

@@ -1,6 +1,8 @@
 package feup.lpoo.reversi.model;
 
-public abstract class PlayerModel {
+import java.io.Serializable;
+
+public abstract class PlayerModel implements Serializable{
     protected int points;
     protected MoveModel move;
     protected char piece;

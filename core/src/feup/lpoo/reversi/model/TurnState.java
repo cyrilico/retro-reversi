@@ -1,6 +1,8 @@
 package feup.lpoo.reversi.model;
 
-public enum TurnState {
+import java.io.Serializable;
+
+public enum TurnState implements Serializable{
         BLACK, WHITE;
 }
 

@@ -5,10 +5,15 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
+
 import feup.lpoo.reversi.Reversi;
 import feup.lpoo.reversi.presenter.ai.EasyMoveStrategy;
 import feup.lpoo.reversi.presenter.ai.HardMoveStrategy;
@@ -20,10 +25,16 @@ public class DifficultyMenuView extends ScreenAdapter {
     private Stage stage;
     private Table buttonTable;
     private Table titleTable;
+    private Table pieceTable;
 
     private TextButton randomAIButton;
     private TextButton immediateAIButton;
     private TextButton calculatedAIButton;
+
+    private CheckBox blackCheckBox;
+    private CheckBox whiteCheckBox;
+
+    private ButtonGroup<CheckBox> pieceChoiceGroup;
 
     //Labels
     private Label mainTitle;
@@ -33,6 +44,7 @@ public class DifficultyMenuView extends ScreenAdapter {
         stage = new Stage(game.getViewport(), game.getBatch());
 
         addTitle();
+        addPieceChoice();
         addButtons();
         addListeners();
 
@@ -78,11 +90,37 @@ public class DifficultyMenuView extends ScreenAdapter {
         stage.addActor(buttonTable);
     }
 
+    private void addPieceChoice(){
+        pieceTable = new Table();
+        pieceTable.top();
+        pieceTable.setFillParent(true);
+
+        pieceChoiceGroup = new ButtonGroup<CheckBox>();
+        whiteCheckBox = new CheckBox("White", game.getSkin());
+        whiteCheckBox.setTransform(true);
+        whiteCheckBox.scaleBy(1);
+        blackCheckBox = new CheckBox("Black", game.getSkin());
+        blackCheckBox.setTransform(true);
+        blackCheckBox.scaleBy(1);
+        pieceChoiceGroup.add(whiteCheckBox);
+        pieceChoiceGroup.add(blackCheckBox);
+        pieceChoiceGroup.setMaxCheckCount(1);
+        pieceChoiceGroup.setMinCheckCount(1);
+        pieceChoiceGroup.setUncheckLast(true);
+        pieceChoiceGroup.setChecked("Black");
+
+        pieceTable.add(whiteCheckBox).center().padTop(325).row();
+        pieceTable.add(blackCheckBox).center().padTop(50);
+
+        stage.addActor(pieceTable);
+
+    }
+
     private void addListeners() {
         randomAIButton.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                GameInfo info = new GameInfo(true, true, new EasyMoveStrategy());
+                GameInfo info = new GameInfo(true, pieceChoiceGroup.getCheckedIndex() == 1, new EasyMoveStrategy());
                 game.setScreen(new GameView(game, info));
                 return true;
             }
@@ -91,7 +129,7 @@ public class DifficultyMenuView extends ScreenAdapter {
         immediateAIButton.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                GameInfo info = new GameInfo(true, false, new MediumMoveStrategy());
+                GameInfo info = new GameInfo(true, pieceChoiceGroup.getCheckedIndex() == 1, new MediumMoveStrategy());
                 game.setScreen(new GameView(game, info));
                 return true;
             }
@@ -100,7 +138,7 @@ public class DifficultyMenuView extends ScreenAdapter {
         calculatedAIButton.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                GameInfo info = new GameInfo(true, true, new HardMoveStrategy());
+                GameInfo info = new GameInfo(true, pieceChoiceGroup.getCheckedIndex() == 1, new HardMoveStrategy());
                 game.setScreen(new GameView(game, info));
                 return true;
             }

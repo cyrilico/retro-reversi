@@ -374,4 +374,14 @@ public class ReversiTest {
 
         assertTrue(game.getCurrentPlayer() == player1);
     }
+
+    @Test
+    public void assertByteArrayConversionSuccess(){
+        UserModel player1 = new UserModel('B');
+        UserModel player2 = new UserModel('W');
+        GameModel game = new GameModel(player1, player2);
+        byte[] stuff = game.convertToByteArray();
+
+        assertTrue(stuff.length != 0);
+    }
 }

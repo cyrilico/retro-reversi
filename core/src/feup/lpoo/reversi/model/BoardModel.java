@@ -1,9 +1,10 @@
 package feup.lpoo.reversi.model;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class BoardModel implements Cloneable {
+public class BoardModel implements Cloneable, Serializable {
     private char[][] board;
     private char[][] suggestions;
 

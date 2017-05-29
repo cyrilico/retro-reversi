@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import feup.lpoo.reversi.presenter.ai.AIPresenter;
 
-public class AIModel extends PlayerModel {
+public class AIModel extends PlayerModel{
     private AIPresenter presenter;
     private boolean calculating;
     private final ScheduledExecutorService scheduler;
