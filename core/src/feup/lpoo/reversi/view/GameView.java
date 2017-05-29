@@ -17,14 +17,18 @@ public class GameView extends ScreenAdapter {
     private GameStage stage;
 
     public GameView(Reversi game, GameInfo info) {
-        if(info.isSinglePlayer())
-            presenter = new SinglePlayerGamePresenter(game, info.getStrategy(), info.userIsBlack());
-        else if(info.isOnline())
+        if(info.isOnline()) {
             presenter = new OnlineMultiplayerGamePresenter(game);
-        else
-            presenter = new LocalMultiplayerGamePresenter(game);
+            stage = new OnlineGameStage(game, presenter);
+        }
+        else {
+            if(info.isSinglePlayer())
+                presenter = new SinglePlayerGamePresenter(game, info.getStrategy(), info.userIsBlack());
+            else
+                presenter = new LocalMultiplayerGamePresenter(game);
 
-        stage = new GameStage(game, presenter);
+            stage = new LocalGameStage(game, presenter);
+        }
     }
 
     @Override

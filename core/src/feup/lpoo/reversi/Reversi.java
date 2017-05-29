@@ -2,10 +2,9 @@ package feup.lpoo.reversi;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -13,13 +12,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import feup.lpoo.reversi.model.PlayerModel;
 import feup.lpoo.reversi.view.GameInfo;
 import feup.lpoo.reversi.view.GameView;
 import feup.lpoo.reversi.view.MainMenuView;
 
 public class Reversi extends Game {
-
 	private PlayServices playServices;
 
 	private SpriteBatch batch;
@@ -32,6 +29,8 @@ public class Reversi extends Game {
 	public static Color BACKGROUND_COLOR = new Color(0.38f, 0.50f, 0.56f, 1);
 	public static Color PRIMARY_COLOR = new Color(88, 164, 176, 255);
 	public static Color SECONDARY_COLOR = new Color(255, 164, 0, 255);
+
+	private Screen previousScreen;
 
 	public Reversi(PlayServices ps) {
 		this.playServices = ps;

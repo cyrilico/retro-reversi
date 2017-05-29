@@ -15,35 +15,32 @@ import feup.lpoo.reversi.Reversi;
 import feup.lpoo.reversi.presenter.GamePresenter;
 import feup.lpoo.reversi.view.entities.BoardView;
 
-public class GameStage extends Stage {
-    private Reversi game;
-    private GamePresenter presenter;
+public abstract class GameStage extends Stage {
+    protected Reversi game;
+    protected GamePresenter presenter;
 
-    private Table hud;
-    private Table paddleTable;
-    private Table boardTable;
-    private Table undoTable;
-    private Table gameOverTable;
-    private Table winnerTable;
+    protected Table hud;
+    protected Table paddleTable;
+    protected Table boardTable;
+    protected Table gameOverTable;
+    protected Table winnerTable;
 
-    private Image blackIcon;
-    private Image whiteIcon;
-    private Image paddle1;
-    private Image paddle2;
+    protected Image blackIcon;
+    protected Image whiteIcon;
+    protected Image paddle1;
+    protected Image paddle2;
 
-    private Label score1;
-    private Label score2;
+    protected Label score1;
+    protected Label score2;
 
-    private BoardView board;
+    protected BoardView board;
 
-    private TextButton undo;
+    protected TextButton restart;
+    protected TextButton back;
 
-    private TextButton restart;
-    private TextButton back;
+    protected Label winner;
 
-    private Label winner;
-
-    private boolean gameOver; //To ensure that gameOver() only runs once per game
+    protected boolean gameOver; //To ensure that gameOver() only runs once per game
 
     public GameStage(Reversi game, GamePresenter presenter) {
         super(game.getViewport(), game.getBatch());
@@ -56,7 +53,7 @@ public class GameStage extends Stage {
         addListeners();
     }
 
-    private void initElements() {
+    protected void initElements() {
         blackIcon = new Image(game.getAssetManager().get("black.png", Texture.class));
         whiteIcon = new Image(game.getAssetManager().get("white.png", Texture.class));
         paddle1 = new Image(game.getAssetManager().get("paddle.png", Texture.class));
@@ -64,17 +61,15 @@ public class GameStage extends Stage {
         score1 = new Label("02", game.getSkin());
         score2 = new Label("02", game.getSkin());
         board = new BoardView(presenter);
-        undo = new TextButton("Undo", game.getSkin());
         restart = new TextButton(" Restart ", game.getSkin());
         back = new TextButton(" Main Menu", game.getSkin());
         winner = new Label("", game.getSkin());
     }
 
-    private void initTables() {
+    protected void initTables() {
         paddleTable = new Table(); addPaddles();
         hud = new Table(); addHud();
         boardTable = new Table(); addBoard();
-        undoTable = new Table(); addUndo();
         gameOverTable = new Table();
         winnerTable = new Table(); addGameOverHud();
     }
@@ -101,11 +96,6 @@ public class GameStage extends Stage {
         boardTable.add(board).center().expandY();
     }
 
-    private void addUndo() {
-        undoTable.setFillParent(true);
-        undoTable.bottom().add(undo).expandX().padBottom(50);
-    }
-
     private void addGameOverHud() {
         gameOverTable.setVisible(false);
         gameOverTable.setFillParent(true);
@@ -118,29 +108,26 @@ public class GameStage extends Stage {
         winnerTable.bottom().add(winner).center().padBottom(130);
     }
 
-    private void addToStage() {
+    protected void addToStage() {
         addActor(paddleTable);
         addActor(hud);
         addActor(boardTable);
-        addActor(undoTable);
         addActor(gameOverTable);
         addActor(winnerTable);
     }
 
-    private void gameOver() {
+    protected void gameOver() {
         if(!gameOver) {
             presenter.updateAchievements();
-            undo.setVisible(false);
             gameOverTable.setVisible(true);
             winnerTable.setVisible(true);
             showResult();
         }
     }
 
-    private void restartGame() {
+    protected void restartGame() {
         gameOver = false;
         presenter.restartGame();
-        undo.setVisible(true);
         gameOverTable.setVisible(false);
         winnerTable.setVisible(false);
     }
@@ -172,15 +159,7 @@ public class GameStage extends Stage {
         paddle2.setVisible(presenter.isWhiteTurn());
     }
 
-    private void addListeners() {
-        undo.addListener(new ClickListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                presenter.undoMove();
-                return true;
-            }
-        });
-
+    protected void addListeners() {
         restart.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

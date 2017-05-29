@@ -96,6 +96,7 @@ public class MultiplayerMenuView extends ScreenAdapter {
         onlineGameButton.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                game.getPlayServices().quickMatch();
                 GameInfo info = new GameInfo(false, true);
                 game.setScreen(new GameView(game, info));
                 return true;

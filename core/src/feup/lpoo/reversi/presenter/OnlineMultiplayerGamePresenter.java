@@ -15,7 +15,6 @@ public class OnlineMultiplayerGamePresenter extends GamePresenter {
         super(reversi);
         initPlayers();
         game = new GameModel(blackPlayer, whitePlayer);
-        reversi.getPlayServices().quickMatch();
         data = reversi.getPlayServices().getMatchData();
     }
 
