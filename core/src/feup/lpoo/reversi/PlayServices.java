@@ -1,5 +1,7 @@
 package feup.lpoo.reversi;
 
+import feup.lpoo.reversi.model.GameModel;
+
 public interface PlayServices {
         public void signIn();
         public void signOut();
@@ -12,6 +14,6 @@ public interface PlayServices {
         public boolean isSignedIn();
         public void checkGames();
         public void quickMatch();
-        public String getMatchData();
-        public void takeTurn(String data);
+        public GameModel getMatchData();
+        public void takeTurn(GameModel data);
 }

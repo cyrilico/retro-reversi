@@ -245,7 +245,7 @@ public class GameModel implements Serializable{
         return out.toByteArray();
     }
 
-    public GameModel convertFromByteArray(byte[] data){
+    public static GameModel convertFromByteArray(byte[] data){
         ByteArrayInputStream in = new ByteArrayInputStream(data);
         ObjectInputStream is;
         try{

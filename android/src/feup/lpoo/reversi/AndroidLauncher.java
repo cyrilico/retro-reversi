@@ -32,6 +32,7 @@ import com.google.example.games.basegameutils.GameHelper;
 import java.util.ArrayList;
 
 import feup.lpoo.reversi.model.GameModel;
+import feup.lpoo.reversi.model.UserModel;
 
 public class AndroidLauncher extends AndroidApplication implements GameHelper.GameHelperListener, PlayServices, GoogleApiClient.ConnectionCallbacks, OnTurnBasedMatchUpdateReceivedListener, OnInvitationReceivedListener {
 	private GameHelper gameHelper;
@@ -58,7 +59,7 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 	// This is the current match data after being unpersisted.
 	// Do not retain references to match data once you have
 	// taken an action on the match, such as takeTurn()
-	public SkeletonTurn mTurnData;
+	public GameModel mTurnData;
 
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
@@ -158,7 +159,7 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 	@Override
 	public void matchCompleted(boolean victory) {
 		if(!isSignedIn())
-			signOut();
+			return;
 
 		Games.Achievements.unlock(gameHelper.getApiClient(),
 				getString(R.string.achievement_your_first_match));
@@ -245,26 +246,25 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 	}
 
 	@Override
-	public String getMatchData() {
+	public GameModel getMatchData() {
         if(mTurnData != null)
-        	return mTurnData.data;
+        	return mTurnData;
 
-		return "NULL";
+		return null;
 	}
 
 	@Override
-	public void takeTurn(String data) {
+	public void takeTurn(GameModel data) {
 		showSpinner();
 
 		String nextParticipantId = getNextParticipantId();
 		// Create the next turn
-		mTurnData.turnCounter += 1;
-		mTurnData.data = data;
+		mTurnData = data;
 
 		showSpinner();
 
 		Games.TurnBasedMultiplayer.takeTurn(gameHelper.getApiClient(), mMatch.getMatchId(),
-				mTurnData.persist(), nextParticipantId).setResultCallback(
+				mTurnData.convertToByteArray(), nextParticipantId).setResultCallback(
 				new ResultCallback<TurnBasedMultiplayer.UpdateMatchResult>() {
 					@Override
 					public void onResult(TurnBasedMultiplayer.UpdateMatchResult result) {
@@ -277,9 +277,7 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 
 	public void startMatch(TurnBasedMatch match) {
 		System.out.println("Started match");
-		mTurnData = new SkeletonTurn();
-		// Some basic turn data
-		mTurnData.data = "First turn";
+		mTurnData = new GameModel(new UserModel('B'), new UserModel('W'));
 
 		mMatch = match;
 
@@ -289,7 +287,7 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 		showSpinner();
 
 		Games.TurnBasedMultiplayer.takeTurn(gameHelper.getApiClient(), match.getMatchId(),
-				mTurnData.persist(), myParticipantId).setResultCallback(
+				mTurnData.convertToByteArray(), myParticipantId).setResultCallback(
 				new ResultCallback<TurnBasedMultiplayer.UpdateMatchResult>() {
 					@Override
 					public void onResult(TurnBasedMultiplayer.UpdateMatchResult result) {
@@ -334,7 +332,7 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 		// OK, it's active. Check on turn status.
 		switch (turnStatus) {
 			case TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN:
-				mTurnData = SkeletonTurn.unpersist(mMatch.getData());
+				mTurnData = GameModel.convertFromByteArray(mMatch.getData());
 				showWarning("Alas...", "It's your turn.");
 				//setGameplayUI();
 				return;
