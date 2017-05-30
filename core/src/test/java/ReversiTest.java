@@ -3,10 +3,13 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+import feup.lpoo.reversi.model.AIModel;
 import feup.lpoo.reversi.model.BoardModel;
 import feup.lpoo.reversi.model.GameModel;
 import feup.lpoo.reversi.model.MoveModel;
 import feup.lpoo.reversi.model.UserModel;
+import feup.lpoo.reversi.presenter.ai.AIPresenter;
+import feup.lpoo.reversi.presenter.ai.EasyMoveStrategy;
 
 public class ReversiTest {
     @Test
@@ -295,30 +298,10 @@ public class ReversiTest {
         game.updateGame();
 
         assertTrue(game.getBlackPoints() == 21 && game.getWhitePoints() == 9);
-
-        char[][] situation3 = {
-                {'W','W','W','W','W','W','W','W'},
-                {'W','W','W','W','W','W','W','W'},
-                {'W','W','W','W','W','W','W','W'},
-                {'W','W','W','W','W','W','W','W'},
-                {'W','B','W','W','W','W','W','W'},
-                {'W','W','B','W','W','W','W','W'},
-                {'W','W','W','-','W','W','W','W'},
-                {'W','W','W','W','-','W','W','W'},
-        };
-
-        game.getGameBoard().setBoard(situation3);
-
-        nextMove = game.getGameBoard().getValidMove(3, 6, 'W');
-        player2.setMove(nextMove);
-        game.updateGame();
-
-        assertTrue(game.getBlackPoints() == 0 && game.getWhitePoints() == 64);
-        assertTrue(game.isOver());
     }
 
     @Test
-    public void assertSpecialCaseGameOver(){
+    public void assertGameCompletionOnNoLegalMoves(){
         UserModel player1 = new UserModel('B');
         UserModel player2 = new UserModel('W');
         GameModel game = new GameModel(player1, player2);
@@ -340,6 +323,34 @@ public class ReversiTest {
         game.getGameBoard().setBoard(specialSituation);
 
         nextMove = game.getGameBoard().getValidMove(5, 5, 'B');
+        player1.setMove(nextMove);
+        game.updateGame();
+
+        assertTrue(game.getBlackPoints() == 64 && game.getWhitePoints() == 0);
+        assertTrue(game.isOver());
+    }
+    
+    @Test
+    public void assertCorrectGameCompletionOnWipeout(){
+        UserModel player1 = new UserModel('B');
+        UserModel player2 = new UserModel('W');
+        GameModel game = new GameModel(player1, player2);
+        MoveModel nextMove;
+        
+        char[][] situation = {
+                {'B','B','B','B','B','B','B','B'},
+                {'B','B','B','B','B','B','B','B'},
+                {'B','B','B','B','B','B','B','B'},
+                {'B','B','B','B','B','B','B','B'},
+                {'B','W','B','B','B','B','B','B'},
+                {'B','B','W','B','B','B','B','B'},
+                {'B','B','B','-','B','B','B','B'},
+                {'B','B','B','B','-','B','B','B'},
+        };
+
+        game.getGameBoard().setBoard(situation);
+
+        nextMove = game.getGameBoard().getValidMove(3, 6, 'B');
         player1.setMove(nextMove);
         game.updateGame();
 
@@ -414,4 +425,44 @@ public class ReversiTest {
 
         assertTrue(stuff.length != 0);
     }
+
+    @Test
+    public void assertByteArrayDecompressionSuccess(){
+        UserModel player1 = new UserModel('B');
+        UserModel player2 = new UserModel('W');
+        GameModel game = new GameModel(player1, player2);
+        byte[] data = game.convertToByteArray();
+
+        GameModel gameV2 = GameModel.convertFromByteArray(data);
+
+        assertTrue(game.getCurrentBoard().equals(gameV2.getCurrentBoard()));
+        assertTrue(game.getCurrentPlayer().getPiece() == gameV2.getCurrentPlayer().getPiece());
+    }
+
+    @Test(timeout=5000)
+    public void assertCorrectEasyAIMoveChoice(){
+        UserModel player1 = new UserModel('B');
+        AIPresenter player2Presenter = new AIPresenter(new EasyMoveStrategy());
+        AIModel player2 = new AIModel('W', player2Presenter);
+        GameModel game = new GameModel(player1, player2);
+        player2Presenter.setGame(game);
+
+        MoveModel nextMove;
+        ArrayList<MoveModel> validMovesATM;
+
+        nextMove = game.getGameBoard().getValidMove(2, 3, 'B');
+        player1.setMove(nextMove);
+        game.updateGame();
+
+        validMovesATM = game.getCurrentMoves();
+        while(!player2.isReady()) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        assertTrue(validMovesATM.indexOf(player2.getMove()) >= 0);
+    }
+
 }

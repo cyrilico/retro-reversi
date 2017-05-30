@@ -11,6 +11,7 @@ public abstract class PlayerModel implements Serializable{
     public PlayerModel(char piece) {
         points = 2;
         this.piece = piece;
+        ready = false;
     }
 
     public void setMove(MoveModel move) {
