@@ -27,7 +27,6 @@ public class LocalGameStage extends GameStage {
     private Table backButtonTable;
     private TextButton backButton;
     private Dialog exitDialog;
-    private boolean flaggedForRemoval = false;
 
     public LocalGameStage(Reversi game, GamePresenter presenter) {
         super(game, presenter);
@@ -45,27 +44,17 @@ public class LocalGameStage extends GameStage {
     }
 
     private void initExitDialog(){
-        exitDialog = new Dialog("Are you sure? You will lose the game's progress!", game.getSkin()){
+        exitDialog = new Dialog("Exit game confirmation", game.getSkin()) {
             @Override
-            protected void result(Object obj){
-                System.out.println("FUCK THIS DIALOG");
-                if(((Boolean)obj))
+            protected void result(Object object) {
+                if ((Boolean) object) {
                     game.setScreen(new MainMenuView(game));
-                else
-                    flaggedForRemoval = true;
+                }else
+                    hide(null); //Do NOT remove null argument
             }
         };
-        exitDialog.button("Yes", true);
-        exitDialog.button("No", false);
-    }
-
-    @Override
-    public void act(float dt){
-        super.act(dt);
-        if(flaggedForRemoval){
-            flaggedForRemoval = false;
-            exitDialog.hide();
-        }
+        //exitDialog.text("Are you sure you want to quit? You will lose current game progress");
+        exitDialog.button("Yes", true).button("No", false);
     }
 
     @Override
@@ -129,7 +118,6 @@ public class LocalGameStage extends GameStage {
         backButton.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("SHOWING DIALOG");
                 showExitDialog();
                 return true;
             }
