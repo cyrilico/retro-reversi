@@ -67,11 +67,10 @@ public class HardMoveStrategy implements CalculatedAIMoveStrategy {
 
         int currentScore;
         int bestScore = Integer.MIN_VALUE;
-        MoveModel bestMove;
+        MoveModel bestMove = null;
 
         if (currentValidModes.isEmpty())
             return new MoveScore(null, bestScore);
-        bestMove = currentValidModes.get(0);
 
         for(MoveModel move : currentValidModes){
             BoardModel newBoard = null;
@@ -80,7 +79,7 @@ public class HardMoveStrategy implements CalculatedAIMoveStrategy {
             }
             catch(CloneNotSupportedException e) {
                 System.out.println("RIP Board cloning");
-                System.exit(-1);
+                return null;
             }
 
             //Recursive call

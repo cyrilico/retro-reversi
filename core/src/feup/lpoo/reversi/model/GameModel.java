@@ -126,7 +126,7 @@ public class GameModel implements Serializable{
     }
 
     private void verifyWipeout() {
-        if(currentMoves.size() == 0) {
+        if(!isOver() && currentMoves.size() == 0) {
             int black = gameBoard.getCurrentPoints(blackPlayer.getPiece());
             int white = gameBoard.getCurrentPoints(whitePlayer.getPiece());
 

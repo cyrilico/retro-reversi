@@ -10,6 +10,7 @@ import feup.lpoo.reversi.model.MoveModel;
 import feup.lpoo.reversi.model.UserModel;
 import feup.lpoo.reversi.presenter.ai.AIPresenter;
 import feup.lpoo.reversi.presenter.ai.EasyMoveStrategy;
+import feup.lpoo.reversi.presenter.ai.MediumMoveStrategy;
 
 public class ReversiTest {
     @Test
@@ -457,7 +458,7 @@ public class ReversiTest {
         validMovesATM = game.getCurrentMoves();
         while(!player2.isReady()) {
             try {
-                Thread.sleep(500);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -465,4 +466,71 @@ public class ReversiTest {
         assertTrue(validMovesATM.indexOf(player2.getMove()) >= 0);
     }
 
+    @Test(timeout=5000)
+    public void assertCorrectMediumAIMoveChoice(){
+        UserModel player1 = new UserModel('B');
+        player1.setReady();
+        AIPresenter player2Presenter = new AIPresenter(new MediumMoveStrategy());
+        AIModel player2 = new AIModel('W', player2Presenter);
+        GameModel game = new GameModel(player1, player2);
+        player2Presenter.setGame(game);
+
+        MoveModel nextMove;
+
+        char[][] startingSituation = {
+                {'-','-','-','-','-','-','-','-'},
+                {'-','-','-','-','-','-','W','-'},
+                {'-','B','W','-','B','B','B','-'},
+                {'-','W','B','W','B','B','B','-'},
+                {'-','-','W','W','W','B','B','-'},
+                {'-','-','W','W','W','W','-','-'},
+                {'-','-','W','-','-','-','-','-'},
+                {'-','-','-','-','-','-','-','-'},
+        };
+
+        game.getGameBoard().setBoard(startingSituation);
+
+        nextMove = game.getGameBoard().getValidMove(5, 6, 'B');
+        if(player1.isReady())
+            player1.setMove(nextMove);
+        game.updateGame();
+
+        while(!player2.isReady()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        assertTrue(player2.getMove().equals(new MoveModel(0, 2, 'W')));
+
+        nextMove = game.getGameBoard().getValidMove(2, 7, 'B');
+        if(player1.isReady())
+            player1.setMove(nextMove);
+        game.updateGame();
+
+        while(!player2.isReady()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        player1.resetReady();
+
+        //Both moves have the same board coefficient so he could choose either
+        assertTrue(player2.getMove().equals(new MoveModel(7, 3, 'W')) ||
+                    player2.getMove().equals(new MoveModel(7, 4, 'W')));
+    }
+
+    @Test
+    public void assertCorrectHardAIMoveChoice(){
+
+    }
+
+    @Test
+    public void assertCorrectGameCompletionOnFullBoard(){
+
+    }
 }

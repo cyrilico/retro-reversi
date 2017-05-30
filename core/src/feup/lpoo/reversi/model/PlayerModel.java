@@ -9,7 +9,7 @@ public abstract class PlayerModel implements Serializable{
     protected boolean ready;
 
     public PlayerModel(char piece) {
-        points = 2;
+        setPoints(2);
         this.piece = piece;
         ready = false;
     }
