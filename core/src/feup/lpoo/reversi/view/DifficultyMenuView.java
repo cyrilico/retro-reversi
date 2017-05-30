@@ -26,10 +26,12 @@ public class DifficultyMenuView extends ScreenAdapter {
     private Table buttonTable;
     private Table titleTable;
     private Table pieceTable;
+    private Table backButtonTable;
 
     private TextButton randomAIButton;
     private TextButton immediateAIButton;
     private TextButton calculatedAIButton;
+    private TextButton backButton;
 
     private CheckBox blackCheckBox;
     private CheckBox whiteCheckBox;
@@ -45,7 +47,8 @@ public class DifficultyMenuView extends ScreenAdapter {
 
         addTitle();
         addPieceChoice();
-        addButtons();
+        addChoiceButtons();
+        addBackButton();
         addListeners();
 
         Gdx.input.setInputProcessor(stage);
@@ -72,7 +75,7 @@ public class DifficultyMenuView extends ScreenAdapter {
         stage.addActor(titleTable);
     }
 
-    private void addButtons() {
+    private void addChoiceButtons() {
         buttonTable = new Table();
         buttonTable.bottom();
         buttonTable.setFillParent(true);
@@ -88,6 +91,20 @@ public class DifficultyMenuView extends ScreenAdapter {
         buttonTable.add(calculatedAIButton).center().padBottom(40);
 
         stage.addActor(buttonTable);
+    }
+
+    private void addBackButton(){
+        backButtonTable = new Table();
+        backButtonTable.top();
+        backButtonTable.setFillParent(true);
+
+        backButton = new TextButton("\n BACK \n", game.getSkin());
+        backButton.setTransform(true);
+        backButton.setColor(Reversi.SECONDARY_COLOR);
+
+        backButtonTable.add(backButton).right();
+
+        stage.addActor(backButtonTable);
     }
 
     private void addPieceChoice(){
@@ -140,6 +157,14 @@ public class DifficultyMenuView extends ScreenAdapter {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 GameInfo info = new GameInfo(true, pieceChoiceGroup.getCheckedIndex() == 1, new HardMoveStrategy());
                 game.setScreen(new GameView(game, info));
+                return true;
+            }
+        });
+
+        backButton.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(new MainMenuView(game));
                 return true;
             }
         });

@@ -25,10 +25,12 @@ public class MultiplayerMenuView extends ScreenAdapter {
     private Stage stage;
     private Table buttonTable;
     private Table titleTable;
+    private Table backButtonTable;
 
     private TextButton localGameButton;
     private TextButton onlineGameButton;
     private TextButton checkGamesButton;
+    private TextButton backButton;
 
     //Labels
     private Label mainTitle;
@@ -38,7 +40,8 @@ public class MultiplayerMenuView extends ScreenAdapter {
         stage = new Stage(game.getViewport(), game.getBatch());
 
         addTitle();
-        addButtons();
+        addOptionsButtons();
+        addBackButton();
         addListeners();
 
         Gdx.input.setInputProcessor(stage);
@@ -65,7 +68,7 @@ public class MultiplayerMenuView extends ScreenAdapter {
         stage.addActor(titleTable);
     }
 
-    private void addButtons() {
+    private void addOptionsButtons() {
         buttonTable = new Table();
         buttonTable.bottom();
         buttonTable.setFillParent(true);
@@ -81,6 +84,21 @@ public class MultiplayerMenuView extends ScreenAdapter {
         buttonTable.add(checkGamesButton).center().padBottom(40);
 
         stage.addActor(buttonTable);
+    }
+
+    private void addBackButton(){
+        backButtonTable = new Table();
+        backButtonTable.top();
+        backButtonTable.setFillParent(true);
+
+        backButton = new TextButton("\n BACK \n", game.getSkin());
+        //backButton.setTransform(true);
+        //backButton.scaleBy(0.5f);
+        backButton.setColor(Reversi.SECONDARY_COLOR);
+
+        backButtonTable.add(backButton).right();
+
+        stage.addActor(backButtonTable);
     }
 
     private void addListeners() {
@@ -105,6 +123,14 @@ public class MultiplayerMenuView extends ScreenAdapter {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 game.getPlayServices().checkGames();
+                return true;
+            }
+        });
+
+        backButton.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(new MainMenuView(game));
                 return true;
             }
         });
