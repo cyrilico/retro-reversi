@@ -313,7 +313,37 @@ public class ReversiTest {
         player2.setMove(nextMove);
         game.updateGame();
 
-        assertTrue(game.getBlackPoints() == 0 && game.getWhitePoints() == 63); //TODO: After adjusting rules in game logic, make sure it is 64 due to wipeout
+        assertTrue(game.getBlackPoints() == 0 && game.getWhitePoints() == 64);
+        assertTrue(game.isOver());
+    }
+
+    @Test
+    public void assertSpecialCaseGameOver(){
+        UserModel player1 = new UserModel('B');
+        UserModel player2 = new UserModel('W');
+        GameModel game = new GameModel(player1, player2);
+        MoveModel nextMove;
+
+        assertTrue(game.getBlackPoints() == 2 && game.getWhitePoints() == 2); //In the starting position
+
+        char[][] specialSituation = {
+                {'B','B','B','B','B','B','B','B'},
+                {'B','B','B','B','B','B','B','B'},
+                {'B','B','B','B','B','B','B','B'},
+                {'B','B','B','B','B','B','B','-'},
+                {'B','B','B','B','B','B','-','-'},
+                {'B','B','B','B','W','-','-','W'},
+                {'B','B','B','B','B','B','B','-'},
+                {'B','B','B','B','B','B','B','B'},
+        };
+
+        game.getGameBoard().setBoard(specialSituation);
+
+        nextMove = game.getGameBoard().getValidMove(5, 5, 'B');
+        player1.setMove(nextMove);
+        game.updateGame();
+
+        assertTrue(game.getBlackPoints() == 64 && game.getWhitePoints() == 0);
         assertTrue(game.isOver());
     }
 

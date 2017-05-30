@@ -89,16 +89,18 @@ public class GameModel implements Serializable{
         updateGameState();
         currentMoves = getValidMoves(getCurrentPlayer());
         gameBoard.setSuggestions(currentMoves);
+        verifyWipeout();
+
         caretaker.add(saveState());
         return true;
     }
 
     public void updatePoints() {
-        int p1 = gameBoard.getCurrentPoints(blackPlayer.getPiece());
-        int p2 = gameBoard.getCurrentPoints(whitePlayer.getPiece());
+        int black = gameBoard.getCurrentPoints(blackPlayer.getPiece());
+        int white = gameBoard.getCurrentPoints(whitePlayer.getPiece());
 
-        blackPlayer.setPoints(p1);
-        whitePlayer.setPoints(p2);
+        blackPlayer.setPoints(black);
+        whitePlayer.setPoints(white);
     }
 
     public void updateGameState() {
@@ -113,6 +115,7 @@ public class GameModel implements Serializable{
             state = GameState.BLACK_WON;
         else //Useful for cases when game is over and user makes an undo
             state = GameState.RUNNING;
+
     }
 
     public void updateTurn() {
@@ -122,11 +125,31 @@ public class GameModel implements Serializable{
             turn = (turn == TurnState.BLACK ? TurnState.WHITE : TurnState.BLACK);
     }
 
+    private void verifyWipeout() {
+        if(currentMoves.size() == 0) {
+            int black = gameBoard.getCurrentPoints(blackPlayer.getPiece());
+            int white = gameBoard.getCurrentPoints(whitePlayer.getPiece());
+
+            if (black > white) {
+                black = 64;
+                white = 0;
+                state = GameState.BLACK_WON;
+            } else {
+                black = 0;
+                white = 64;
+                state = GameState.WHITE_WON;
+            }
+
+            blackPlayer.setPoints(black);
+            whitePlayer.setPoints(white);
+        }
+    }
+
     //Returns piece at given position, considering both gameBoard's matrices
     public char getPieceAt(int x, int y) {
         char temp = gameBoard.getPieceAt(x,y);
 
-        if(temp == GameModel.EMPTY_PIECE)
+        if(temp == GameModel.EMPTY_PIECE && getCurrentPlayer() instanceof UserModel)
             return gameBoard.getSuggestionAt(x,y);
 
         return temp;
