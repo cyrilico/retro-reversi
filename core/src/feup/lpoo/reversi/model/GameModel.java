@@ -149,7 +149,7 @@ public class GameModel implements Serializable{
     public char getPieceAt(int x, int y) {
         char temp = gameBoard.getPieceAt(x,y);
 
-        if(temp == GameModel.EMPTY_PIECE && getCurrentPlayer() instanceof UserModel)
+        if(temp == GameModel.EMPTY_PIECE && getCurrentPlayer() instanceof UserModel && getCurrentPlayer().isActive())
             return gameBoard.getSuggestionAt(x,y);
 
         return temp;
@@ -238,45 +238,5 @@ public class GameModel implements Serializable{
         }
     }
 
-    public byte[] convertToByteArray(){
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ObjectOutputStream os = null;
-        try{
-            os = new ObjectOutputStream(out);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        try {
-            os.writeObject(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return out.toByteArray();
-    }
 
-    public static GameModel convertFromByteArray(byte[] data){
-        ByteArrayInputStream in = new ByteArrayInputStream(data);
-        ObjectInputStream is;
-        try{
-            is = new ObjectInputStream(in);
-        }
-        catch (IOException e){
-            e.printStackTrace();
-            return null;
-        }
-        GameModel result;
-        try{
-            result = (GameModel)is.readObject();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        return result;
-    }
 }

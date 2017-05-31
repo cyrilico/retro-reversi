@@ -417,6 +417,7 @@ public class ReversiTest {
         assertTrue(game.getCurrentPlayer() == player1);
     }
 
+    /*
     @Test
     public void assertByteArrayConversionSuccess(){
         UserModel player1 = new UserModel('B');
@@ -439,6 +440,7 @@ public class ReversiTest {
         assertTrue(game.getCurrentBoard().equals(gameV2.getCurrentBoard()));
         assertTrue(game.getCurrentPlayer().getPiece() == gameV2.getCurrentPlayer().getPiece());
     }
+    */
 
     @Test(timeout=5000)
     public void assertCorrectEasyAIMoveChoice(){

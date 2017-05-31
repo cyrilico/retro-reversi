@@ -59,7 +59,7 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 	// This is the current match data after being unpersisted.
 	// Do not retain references to match data once you have
 	// taken an action on the match, such as takeTurn()
-	public GameModel mTurnData;
+	public GameModelWrapper mTurnData;
 
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
@@ -99,10 +99,8 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 			TurnBasedMatch match = data
 					.getParcelableExtra(Multiplayer.EXTRA_TURN_BASED_MATCH);
 
-			if (match != null) {
+			if (match != null)
 				updateMatch(match);
-				reversi.setOnlineMatchScreen();
-			}
 
 			Log.d(TAG, "Match = " + match);
 		}
@@ -247,8 +245,10 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 
 	@Override
 	public GameModel getMatchData() {
-        if(mTurnData != null)
-        	return mTurnData;
+        if(mTurnData != null) {
+			mTurnData.switchPlayers();
+			return mTurnData.getGame();
+		}
 
 		return null;
 	}
@@ -259,7 +259,7 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 
 		String nextParticipantId = getNextParticipantId();
 		// Create the next turn
-		mTurnData = data;
+        mTurnData = new GameModelWrapper(data);
 
 		showSpinner();
 
@@ -277,7 +277,8 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 
 	public void startMatch(TurnBasedMatch match) {
 		System.out.println("Started match");
-		mTurnData = new GameModel(new UserModel('B'), new UserModel('W'));
+
+		mTurnData = new GameModelWrapper();
 
 		mMatch = match;
 
@@ -332,7 +333,7 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 		// OK, it's active. Check on turn status.
 		switch (turnStatus) {
 			case TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN:
-				mTurnData = GameModel.convertFromByteArray(mMatch.getData());
+				mTurnData = GameModelWrapper.convertFromByteArray(mMatch.getData());
 				showWarning("Alas...", "It's your turn.");
 				reversi.setOnlineMatchScreen();
 				//setGameplayUI();
@@ -351,7 +352,6 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 	}
 
 	public String getNextParticipantId() {
-
 		String playerId = Games.Players.getCurrentPlayerId(gameHelper.getApiClient());
 		String myParticipantId = mMatch.getParticipantId(playerId);
 

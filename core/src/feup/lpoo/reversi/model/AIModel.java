@@ -15,6 +15,7 @@ public class AIModel extends PlayerModel{
         super(piece);
         this.presenter = presenter;
         calculating = false;
+        active = true;
         scheduler = Executors.newScheduledThreadPool(1);
     }
 

@@ -132,6 +132,5 @@ public class CellView extends Actor {
 
         if(currentFrame != null)
             batch.draw(currentFrame, actorX, actorY);
-
     }
 }

@@ -7,11 +7,13 @@ public abstract class PlayerModel implements Serializable{
     protected MoveModel move;
     protected char piece;
     protected boolean ready;
+    protected boolean active;
 
     public PlayerModel(char piece) {
         setPoints(2);
         this.piece = piece;
         ready = false;
+        active = true;
     }
 
     public void setMove(MoveModel move) {
@@ -43,7 +45,15 @@ public abstract class PlayerModel implements Serializable{
     }
 
     public boolean isReady() {
-        return ready;
+        return active && ready;
+    }
+
+    public void setActive(boolean val) {
+        active = val;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 
 }

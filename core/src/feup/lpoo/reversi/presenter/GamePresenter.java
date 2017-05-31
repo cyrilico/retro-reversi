@@ -45,8 +45,12 @@ public abstract class GamePresenter {
         MoveModel move = game.getValidMove(x, y);
 
         if(move != null) {
-            game.getCurrentPlayer().setMove(move);
-            game.getCurrentPlayer().setReady();
+            PlayerModel currentPlayer = game.getCurrentPlayer();
+
+            if(currentPlayer.isActive()) {
+                currentPlayer.setMove(move);
+                currentPlayer.setReady();
+            }
         }
     }
 
