@@ -126,17 +126,15 @@ public class GameModel implements Serializable{
     }
 
     private void verifyWipeout() {
-        if(!isOver() && currentMoves.size() == 0) {
-            int black = gameBoard.getCurrentPoints(blackPlayer.getPiece());
-            int white = gameBoard.getCurrentPoints(whitePlayer.getPiece());
+        int black = gameBoard.getCurrentPoints(blackPlayer.getPiece());
+        int white = gameBoard.getCurrentPoints(whitePlayer.getPiece());
 
+        if(currentMoves.size() == 0 && black + white < 64) {
             if (black > white) {
-                black = 64;
-                white = 0;
+                black = 64 - white;
                 state = GameState.BLACK_WON;
-            } else {
-                black = 0;
-                white = 64;
+            } else if (white > black){
+                white = 64 - black;
                 state = GameState.WHITE_WON;
             }
 
@@ -157,20 +155,6 @@ public class GameModel implements Serializable{
 
     public ArrayList<MoveModel> getCurrentMoves() {
         return currentMoves;
-    }
-
-    public String getCurrentBoard() {
-        String result = "";
-
-        char[][] matrix = gameBoard.getCurrentBoard();
-
-        for(char[] line : matrix) {
-            for(char element : line)
-                result += element;
-            result += '\n';
-        }
-
-        return result;
     }
 
     public BoardModel getGameBoard() {

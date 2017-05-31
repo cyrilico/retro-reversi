@@ -30,11 +30,11 @@ public class HardMoveStrategy implements CalculatedAIMoveStrategy {
         return score;
     }
 
-    class MoveScore implements Comparable<MoveScore>{
+    class ScoredMove{
         private MoveModel move;
         private int score;
 
-        public MoveScore(MoveModel move, int score){
+        public ScoredMove(MoveModel move, int score){
             this.move = move;
             this.score = score;
         }
@@ -46,31 +46,21 @@ public class HardMoveStrategy implements CalculatedAIMoveStrategy {
         public MoveModel getMove(){
             return move;
         }
-
-        @Override
-        public int compareTo(MoveScore o) {
-            if(o.score > this.score)
-                return 1;
-            else if (o.score < this.score)
-                return -1;
-            else
-                return 0;
-        }
     }
 
-    private MoveScore negamax(BoardModel board, int depth, char piece){
+    private ScoredMove negamax(BoardModel board, int depth, char piece){
         char oppPiece = (piece == 'B' ? 'W' : 'B');
         ArrayList<MoveModel> currentValidModes = board.getValidMoves(piece);
 
         if (depth == 0)
-            return new MoveScore(null, evaluateBoard(board.getCurrentBoard(), piece));
+            return new ScoredMove(null, evaluateBoard(board.getCurrentBoard(), piece));
 
         int currentScore;
         int bestScore = Integer.MIN_VALUE;
         MoveModel bestMove = null;
 
         if (currentValidModes.isEmpty())
-            return new MoveScore(null, bestScore);
+            return new ScoredMove(null, bestScore);
 
         for(MoveModel move : currentValidModes){
             BoardModel newBoard = null;
@@ -84,7 +74,7 @@ public class HardMoveStrategy implements CalculatedAIMoveStrategy {
 
             //Recursive call
             newBoard.setPieceAt(move.getX(), move.getY(), move.getPiece());
-            MoveScore current = negamax(newBoard, depth - 1, oppPiece);
+            ScoredMove current = negamax(newBoard, depth - 1, oppPiece);
 
             //Negamax principle: max(a,b) = -min(-a,-b)
             currentScore = -current.getScore();
@@ -95,6 +85,6 @@ public class HardMoveStrategy implements CalculatedAIMoveStrategy {
                     bestMove = move;
             }
         }
-        return new MoveScore(bestMove,bestScore);
+        return new ScoredMove(bestMove,bestScore);
     }
 }
