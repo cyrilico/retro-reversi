@@ -120,6 +120,11 @@ public abstract class PlayerModel implements Serializable{
         return active;
     }
 
+    /**
+     * Compares two players by their piece color
+     * @param o other player to be compared
+     * @return true if both players have the same piece color, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         PlayerModel p2 = (PlayerModel)o;
