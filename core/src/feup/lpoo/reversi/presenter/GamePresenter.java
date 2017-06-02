@@ -70,7 +70,7 @@ public abstract class GamePresenter {
         return game.isOver();
     }
 
-    public abstract void updateAchievements();
+    public abstract void playServicesCalls();
 
     public char getCurrentPiece(int x, int y) {
         return game.getPieceAt(x,y);

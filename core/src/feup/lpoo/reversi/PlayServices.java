@@ -16,4 +16,7 @@ public interface PlayServices {
         public void quickMatch();
         public GameModel getMatchData();
         public void takeTurn(GameModel data);
+        public void takeLastTurn(GameModel data);
+        public void finishMatch();
+        public void rematch();
 }

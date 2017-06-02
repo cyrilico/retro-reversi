@@ -118,7 +118,7 @@ public abstract class GameStage extends Stage {
 
     protected void gameOver() {
         if(!gameOver) {
-            presenter.updateAchievements();
+            presenter.playServicesCalls();
             gameOverTable.setVisible(true);
             winnerTable.setVisible(true);
             showResult();

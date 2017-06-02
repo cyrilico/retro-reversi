@@ -21,7 +21,7 @@ public class LocalMultiplayerGamePresenter extends GamePresenter {
     }
 
     @Override
-    public void updateAchievements() {
+    public void playServicesCalls() {
 
     }
 

@@ -9,24 +9,26 @@ import feup.lpoo.reversi.model.UserModel;
  */
 
 public class OnlineMultiplayerGamePresenter extends GamePresenter {
-    String data;
 
     public OnlineMultiplayerGamePresenter(Reversi reversi) {
         super(reversi);
-        GameModel temp = reversi.getPlayServices().getMatchData();
-
-        game = temp;
+        game = reversi.getPlayServices().getMatchData();
     }
 
     @Override
     public void restartGame() {
-        initPlayers();
+        blackPlayer = new UserModel('B');
+        blackPlayer.setActive(true);
+        whitePlayer = new UserModel('W');
+        whitePlayer.setActive(false);
         game = new GameModel(blackPlayer, whitePlayer);
+        reversi.getPlayServices().rematch();
     }
 
     @Override
-    public void updateAchievements() {
-
+    public void playServicesCalls() {
+        reversi.getPlayServices().takeLastTurn(game);
+        reversi.getPlayServices().finishMatch();
     }
 
     @Override

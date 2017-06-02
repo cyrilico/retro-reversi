@@ -55,7 +55,7 @@ public class SinglePlayerGamePresenter extends GamePresenter {
     }
 
     @Override
-    public void updateAchievements() {
+    public void playServicesCalls() {
         boolean victory = userWon();
         reversi.getPlayServices().matchCompleted(victory);
     }

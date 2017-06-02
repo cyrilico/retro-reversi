@@ -46,9 +46,8 @@ public class OnlineGameStage extends GameStage {
     @Override
     public void gameOver() {
         super.gameOver();
-        if(!gameOver) {
+        if(!gameOver)
             submit.setVisible(false);
-        }
     }
 
     @Override

@@ -96,10 +96,11 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 				return;
 			}
 
-			TurnBasedMatch match = data
-					.getParcelableExtra(Multiplayer.EXTRA_TURN_BASED_MATCH);
+			TurnBasedMatch match = data.getParcelableExtra(Multiplayer.EXTRA_TURN_BASED_MATCH);
 
-			if (match != null)
+			if (match.getData() == null)
+			    startMatch(match);
+			else
 				updateMatch(match);
 
 			Log.d(TAG, "Match = " + match);
@@ -273,6 +274,52 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 				});
 
 		mTurnData = null;
+	}
+
+	@Override
+	public void takeLastTurn(GameModel data) {
+		showSpinner();
+		mTurnData = new GameModelWrapper(data);
+
+		Games.TurnBasedMultiplayer.finishMatch(gameHelper.getApiClient(), mMatch.getMatchId(), mTurnData.convertToByteArray())
+				.setResultCallback(new ResultCallback<TurnBasedMultiplayer.UpdateMatchResult>() {
+					@Override
+					public void onResult(TurnBasedMultiplayer.UpdateMatchResult result) {
+						processResult(result);
+					}
+				});
+
+		isDoingTurn = false;
+	}
+
+
+	@Override
+	public void finishMatch() {
+		showSpinner();
+
+		Games.TurnBasedMultiplayer.finishMatch(gameHelper.getApiClient(), mMatch.getMatchId())
+				.setResultCallback(new ResultCallback<TurnBasedMultiplayer.UpdateMatchResult>() {
+					@Override
+					public void onResult(TurnBasedMultiplayer.UpdateMatchResult result) {
+						processResult(result);
+					}
+				});
+
+		isDoingTurn = false;
+	}
+
+	@Override
+	public void rematch() {
+		showSpinner();
+		Games.TurnBasedMultiplayer.rematch(gameHelper.getApiClient(), mMatch.getMatchId()).setResultCallback(
+				new ResultCallback<TurnBasedMultiplayer.InitiateMatchResult>() {
+					@Override
+					public void onResult(TurnBasedMultiplayer.InitiateMatchResult result) {
+						processResult(result);
+					}
+				});
+		mMatch = null;
+		isDoingTurn = false;
 	}
 
 	public void startMatch(TurnBasedMatch match) {
