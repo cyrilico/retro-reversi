@@ -120,4 +120,9 @@ public abstract class PlayerModel implements Serializable{
         return active;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        PlayerModel p2 = (PlayerModel)o;
+        return piece == p2.getPiece();
+    }
 }

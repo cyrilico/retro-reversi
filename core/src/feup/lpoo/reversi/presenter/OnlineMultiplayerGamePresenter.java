@@ -13,6 +13,7 @@ public class OnlineMultiplayerGamePresenter extends GamePresenter {
     public OnlineMultiplayerGamePresenter(Reversi reversi) {
         super(reversi);
         game = reversi.getPlayServices().getMatchData();
+        initPlayers();
     }
 
     @Override

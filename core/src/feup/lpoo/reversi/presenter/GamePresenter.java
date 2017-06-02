@@ -79,11 +79,11 @@ public abstract class GamePresenter {
     public abstract void initPlayers();
 
     public boolean isBlackTurn() {
-        return game.getCurrentPlayer() == blackPlayer;
+        return game.getCurrentPlayer().equals(blackPlayer);
     }
 
     public boolean isWhiteTurn() {
-        return game.getCurrentPlayer() == whitePlayer;
+        return game.getCurrentPlayer().equals(whitePlayer);
     }
 
     public abstract void undoMove();
