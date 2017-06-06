@@ -1,4 +1,4 @@
-package feup.lpoo.reversi.view;
+package feup.lpoo.reversi.view.menus;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -8,16 +8,16 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
 
 import feup.lpoo.reversi.Reversi;
 import feup.lpoo.reversi.presenter.ai.EasyMoveStrategy;
 import feup.lpoo.reversi.presenter.ai.HardMoveStrategy;
 import feup.lpoo.reversi.presenter.ai.MediumMoveStrategy;
+import feup.lpoo.reversi.view.GameInfo;
+import feup.lpoo.reversi.view.GameView;
 
 public class DifficultyMenuView extends ScreenAdapter {
     private Reversi game;

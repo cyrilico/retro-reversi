@@ -97,7 +97,7 @@ public class SinglePlayerGamePresenter extends GamePresenter {
      * Calls the game model to undo the last 2 moves
      */
     @Override
-    public void undoMove() {
+    public void screenAction() {
         game.undoMove(2);
     }
 

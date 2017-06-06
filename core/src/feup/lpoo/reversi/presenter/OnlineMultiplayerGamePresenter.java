@@ -54,7 +54,7 @@ public class OnlineMultiplayerGamePresenter extends GamePresenter {
      * Submits a game turn to the server
      */
     @Override
-    public void undoMove() {
+    public void screenAction() {
         reversi.getPlayServices().takeTurn(game);
     }
 }

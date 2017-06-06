@@ -2,7 +2,6 @@ package feup.lpoo.reversi;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,7 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import feup.lpoo.reversi.view.GameInfo;
 import feup.lpoo.reversi.view.GameView;
-import feup.lpoo.reversi.view.MainMenuView;
+import feup.lpoo.reversi.view.menus.MainMenuView;
 
 public class Reversi extends Game {
 	private PlayServices playServices;

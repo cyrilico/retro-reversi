@@ -51,7 +51,7 @@ public class LocalMultiplayerGamePresenter extends GamePresenter {
      * Calls the game model to undo the last move played
      */
     @Override
-    public void undoMove() {
+    public void screenAction() {
         game.undoMove(1);
     }
 }

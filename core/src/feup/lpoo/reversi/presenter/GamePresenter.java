@@ -156,6 +156,5 @@ public abstract class GamePresenter {
     /**
      * Performs an action according to the on-screen visible button
      */
-    public abstract void undoMove();
-    //TODO: Change method name
+    public abstract void screenAction();
 }

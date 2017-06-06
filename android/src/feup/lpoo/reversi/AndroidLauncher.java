@@ -150,12 +150,6 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 	}
 
 	@Override
-	public void rateGame() {
-		String str = "Your PlayStore Link";
-		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(str)));
-	}
-
-	@Override
 	public void matchCompleted(boolean victory) {
 		if(!isSignedIn())
 			return;
@@ -180,31 +174,9 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 	}
 
 	@Override
-	public void unlockAchievement() {
-		Games.Achievements.unlock(gameHelper.getApiClient(),
-				getString(R.string.achievement_your_first_match));
-	}
-
-	@Override
-	public void submitScore(int highScore) {
-		if (isSignedIn())
-			Games.Leaderboards.submitScore(gameHelper.getApiClient(),
-					getString(R.string.leaderboard_easy), highScore);
-	}
-
-	@Override
 	public void showAchievements() {
 		if (isSignedIn())
 			startActivityForResult(Games.Achievements.getAchievementsIntent(gameHelper.getApiClient()), 5001);
-		else
-			signIn();
-	}
-
-	@Override
-	public void showScore() {
-		if(isSignedIn())
-			startActivityForResult(Games.Leaderboards.getLeaderboardIntent(gameHelper.getApiClient(),
-					getString(R.string.leaderboard_easy)), requestCode);
 		else
 			signIn();
 	}
@@ -256,8 +228,6 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 
 	@Override
 	public void takeTurn(GameModel data) {
-		
-
 		String nextParticipantId = getNextParticipantId();
 		// Create the next turn
         mTurnData = new GameModelWrapper(data);
@@ -292,11 +262,8 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 		isDoingTurn = false;
 	}
 
-
 	@Override
 	public void finishMatch() {
-		
-
 		Games.TurnBasedMultiplayer.finishMatch(gameHelper.getApiClient(), mMatch.getMatchId())
 				.setResultCallback(new ResultCallback<TurnBasedMultiplayer.UpdateMatchResult>() {
 					@Override
@@ -310,7 +277,6 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 
 	@Override
 	public void rematch() {
-		
 		Games.TurnBasedMultiplayer.rematch(gameHelper.getApiClient(), mMatch.getMatchId()).setResultCallback(
 				new ResultCallback<TurnBasedMultiplayer.InitiateMatchResult>() {
 					@Override
@@ -331,8 +297,6 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 
 		String playerId = Games.Players.getCurrentPlayerId(gameHelper.getApiClient());
 		String myParticipantId = mMatch.getParticipantId(playerId);
-
-		
 
 		Games.TurnBasedMultiplayer.takeTurn(gameHelper.getApiClient(), match.getMatchId(),
 				mTurnData.convertToByteArray(), myParticipantId).setResultCallback(
@@ -367,23 +331,21 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 				if (turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_COMPLETE) {
 					showWarning(
 							"Complete!",
-							"This game is over; someone finished it, and so did you!  There is nothing to be done.");
+							"This game is over!");
 					break;
 				}
 
 				// Note that in this state, you must still call "Finish" yourself,
 				// so we allow this to continue.
 				showWarning("Complete!",
-						"This game is over; someone finished it!  You can only finish it now.");
+						"This game is over! You can only finish it now.");
 		}
 
 		// OK, it's active. Check on turn status.
 		switch (turnStatus) {
 			case TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN:
 				mTurnData = GameModelWrapper.convertFromByteArray(mMatch.getData());
-				showWarning("Alas...", "It's your turn.");
 				reversi.setOnlineMatchScreen();
-				//setGameplayUI();
 				return;
 			case TurnBasedMatch.MATCH_TURN_STATUS_THEIR_TURN:
 				// Should return results.
@@ -427,8 +389,6 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 	}
 
 	private void processResult(TurnBasedMultiplayer.CancelMatchResult result) {
-		
-
 		if (!checkStatusCode(null, result.getStatus().getStatusCode())) {
 			return;
 		}
@@ -439,12 +399,10 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 				"This match is canceled.  All other players will have their game ended.");
 	}
 	private void processResult(TurnBasedMultiplayer.InitiateMatchResult result) {
-		
 		TurnBasedMatch match = result.getMatch();
 
-		if (!checkStatusCode(match, result.getStatus().getStatusCode())) {
+		if (!checkStatusCode(match, result.getStatus().getStatusCode()))
 			return;
-		}
 
 		if (match.getData() != null) {
 			// This is a game that has already started, so I'll just start
@@ -470,12 +428,8 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 	public void processResult(TurnBasedMultiplayer.UpdateMatchResult result) {
 		TurnBasedMatch match = result.getMatch();
 		
-		if (!checkStatusCode(match, result.getStatus().getStatusCode())) {
+		if (!checkStatusCode(match, result.getStatus().getStatusCode()))
 			return;
-		}
-		if (match.canRematch()) {
-			//askForRematch();
-		}
 
 		isDoingTurn = (match.getTurnStatus() == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN);
 
@@ -483,7 +437,6 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 			updateMatch(match);
 			return;
 		}
-
 	}
 
 	private boolean checkStatusCode(TurnBasedMatch match, int statusCode) {
@@ -612,7 +565,6 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 	@Override
 	public void onTurnBasedMatchRemoved(String matchId) {
 		Toast.makeText(this, "A match was removed.", Toast.LENGTH_SHORT).show();
-
 	}
 
 	// Handle notification events.

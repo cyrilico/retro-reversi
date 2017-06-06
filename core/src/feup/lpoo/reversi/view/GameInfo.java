@@ -2,6 +2,9 @@ package feup.lpoo.reversi.view;
 
 import feup.lpoo.reversi.presenter.ai.AIMoveStrategy;
 
+/**
+ * Class to encapsulate a match's information
+ */
 public class GameInfo {
     private boolean isSinglePlayer;
     private boolean isBlack;

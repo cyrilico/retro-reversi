@@ -17,8 +17,8 @@ public class HardMoveStrategy implements CalculatedAIMoveStrategy {
     /**
      * Default constructor, initializes maxDepth field to a default value
      */
-    public HardMoveStrategy() { //TODO: Add depth as constructor argument? (Allows for an extra difficulty with (much) more move depth analysis)
-        maxDepth = 5;
+    public HardMoveStrategy() {
+        maxDepth = 4;
     }
 
     /**

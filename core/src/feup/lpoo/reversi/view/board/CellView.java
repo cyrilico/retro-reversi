@@ -1,4 +1,4 @@
-package feup.lpoo.reversi.view.entities;
+package feup.lpoo.reversi.view.board;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -28,10 +28,11 @@ public class CellView extends Actor {
     private Animation<TextureRegion> whiteAnimation;
 
     private final Texture tile = Reversi.assetManager.get("tile.png");
-
     private final Texture black = Reversi.assetManager.get("black.png");
     private final Texture white = Reversi.assetManager.get("white.png");
     private final Texture suggestion = Reversi.assetManager.get("hint.png");
+
+    private TextureRegion currentFrame = null;
 
     private Map<Character, Texture> ICONS = new HashMap<Character, Texture>();
 
@@ -40,14 +41,13 @@ public class CellView extends Actor {
     private char previousPiece;
     private int animation;
 
-    private Texture getIcon(char piece) {
-        Texture result = ICONS.get(piece);
-        return result;
-    }
+    private final int NO_ANIMATION = 0;
+    private final int BLACK_ANIMATION = 1;
+    private final int WHITE_ANIMATION = 2;
+    private final float ANIMATION_TIME = 0.63f;
 
     private Texture icon;
 
-    //The coordinates relative to the cell's parent
     private int actorX;
     private int actorY;
 
@@ -77,6 +77,11 @@ public class CellView extends Actor {
         whiteAnimation = new Animation<TextureRegion>(0.09f, whiteFrames);
     }
 
+    private Texture getIcon(char piece) {
+        Texture result = ICONS.get(piece);
+        return result;
+    }
+
     public void addListeners() {
         addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -94,15 +99,13 @@ public class CellView extends Actor {
     public void act(float dt) {
         char currentPiece = presenter.getCurrentPiece(boardX, boardY);
 
-        if(animation != 0)
+        if(animation != NO_ANIMATION)
             stateTime += dt;
 
-        if(previousPiece == 'B' && currentPiece == 'W') {
-            animation = 1;
-        }
-        else if(previousPiece == 'W' && currentPiece == 'B') {
-            animation = 2;
-        }
+        if(previousPiece == 'B' && currentPiece == 'W')
+            animation = BLACK_ANIMATION;
+        else if(previousPiece == 'W' && currentPiece == 'B')
+            animation = WHITE_ANIMATION;
 
         icon = getIcon(currentPiece);
         previousPiece = currentPiece;
@@ -112,19 +115,15 @@ public class CellView extends Actor {
     public void draw(Batch batch, float alpha) {
         batch.draw(tile,actorX,actorY);
 
-        // Get current frame of animation for the current stateTime
-       // TextureRegion currentFrame = blackAnimation.getKeyFrame(stateTime, true);
-        TextureRegion currentFrame = null;
-
-        if(icon != null && animation == 0)
+        if(icon != null && animation == NO_ANIMATION)
             batch.draw(icon, actorX, actorY);
 
-        if(animation == 1)
+        if(animation == BLACK_ANIMATION)
             currentFrame = blackAnimation.getKeyFrame(stateTime, true);
-        else if(animation == 2)
+        else if(animation == WHITE_ANIMATION)
             currentFrame = whiteAnimation.getKeyFrame(stateTime, true);
 
-        if(stateTime > 0.63) {
+        if(stateTime > ANIMATION_TIME) {
             stateTime = 0;
             animation = 0;
             currentFrame = null;

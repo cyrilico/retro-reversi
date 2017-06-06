@@ -1,16 +1,11 @@
 package feup.lpoo.reversi.view;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import feup.lpoo.reversi.Reversi;
 import feup.lpoo.reversi.presenter.GamePresenter;
-
-/**
- * Created by antonioalmeida on 29/05/2017.
- */
 
 public class OnlineGameStage extends GameStage {
     private TextButton submit;
@@ -55,7 +50,7 @@ public class OnlineGameStage extends GameStage {
         submit.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                presenter.undoMove();
+                presenter.screenAction();
                 return true;
             }
         });

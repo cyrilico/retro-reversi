@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.Align;
 
 import feup.lpoo.reversi.Reversi;
 import feup.lpoo.reversi.presenter.GamePresenter;
-import feup.lpoo.reversi.view.entities.BoardView;
+import feup.lpoo.reversi.view.board.BoardView;
 
 public abstract class GameStage extends Stage {
     protected Reversi game;
@@ -88,7 +88,7 @@ public abstract class GameStage extends Stage {
             @Override
             protected void result(Object object) {
                 if ((Boolean) object) {
-                    game.setScreen(new MainMenuView(game));
+                    game.setScreen(new feup.lpoo.reversi.view.menus.MainMenuView(game));
                 }else
                     hide(null); //Do NOT remove null argument
             }
@@ -214,7 +214,7 @@ public abstract class GameStage extends Stage {
         mainMenu.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new MainMenuView(game));
+                game.setScreen(new feup.lpoo.reversi.view.menus.MainMenuView(game));
                 return true;
             }
         });
