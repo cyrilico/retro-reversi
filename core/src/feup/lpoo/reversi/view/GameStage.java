@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -22,6 +23,7 @@ public abstract class GameStage extends Stage {
     protected Table hud;
     protected Table paddleTable;
     protected Table boardTable;
+    protected Table buttonTable;
     protected Table gameOverTable;
     protected Table winnerTable;
 
@@ -35,10 +37,13 @@ public abstract class GameStage extends Stage {
 
     protected BoardView board;
 
-    protected TextButton restart;
     protected TextButton back;
+    protected TextButton restart;
+    protected TextButton mainMenu;
 
     protected Label winner;
+
+    private Dialog exitDialog;
 
     protected boolean gameOver; //To ensure that gameOver() only runs once per game
 
@@ -48,6 +53,7 @@ public abstract class GameStage extends Stage {
         this.game = game;
         this.presenter = presenter;
         initElements();
+        initExitDialog();
         initTables();
         addToStage();
         addListeners();
@@ -61,8 +67,10 @@ public abstract class GameStage extends Stage {
         score1 = new Label("02", game.getSkin());
         score2 = new Label("02", game.getSkin());
         board = new BoardView(presenter);
+        back = new TextButton("Back", game.getSkin());
+        back.setColor(Reversi.SECONDARY_COLOR);
         restart = new TextButton(" Restart ", game.getSkin());
-        back = new TextButton(" Main Menu", game.getSkin());
+        mainMenu = new TextButton(" Main Menu", game.getSkin());
         winner = new Label("", game.getSkin());
     }
 
@@ -70,8 +78,23 @@ public abstract class GameStage extends Stage {
         paddleTable = new Table(); addPaddles();
         hud = new Table(); addHud();
         boardTable = new Table(); addBoard();
+        buttonTable = new Table(); addBackButton();
         gameOverTable = new Table();
         winnerTable = new Table(); addGameOverHud();
+    }
+
+    private void initExitDialog(){
+        exitDialog = new Dialog("Exit game confirmation", game.getSkin()) {
+            @Override
+            protected void result(Object object) {
+                if ((Boolean) object) {
+                    game.setScreen(new MainMenuView(game));
+                }else
+                    hide(null); //Do NOT remove null argument
+            }
+        };
+        //exitDialog.text("Are you sure you want to quit? You will lose current game progress");
+        exitDialog.button("Yes", true).button("No", false);
     }
 
     private void addPaddles() {
@@ -96,12 +119,18 @@ public abstract class GameStage extends Stage {
         boardTable.add(board).center().expandY();
     }
 
+    private void addBackButton() {
+        buttonTable.setFillParent(true);
+        buttonTable.bottom();
+        buttonTable.add(back).expandX().padBottom(20);
+    }
+
     private void addGameOverHud() {
         gameOverTable.setVisible(false);
         gameOverTable.setFillParent(true);
         gameOverTable.bottom();
         gameOverTable.add(restart).expandX().padBottom(50);
-        gameOverTable.add(back).expandX().padBottom(50);
+        gameOverTable.add(mainMenu).expandX().padBottom(50);
 
         winnerTable.setFillParent(true);
         winnerTable.setVisible(false);
@@ -112,6 +141,7 @@ public abstract class GameStage extends Stage {
         addActor(paddleTable);
         addActor(hud);
         addActor(boardTable);
+        addActor(buttonTable);
         addActor(gameOverTable);
         addActor(winnerTable);
     }
@@ -159,7 +189,20 @@ public abstract class GameStage extends Stage {
         paddle2.setVisible(presenter.isWhiteTurn());
     }
 
+    private void showExitDialog(){
+        exitDialog.show(this);
+    }
+
     protected void addListeners() {
+
+        back.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                showExitDialog();
+                return true;
+            }
+        });
+
         restart.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -168,7 +211,7 @@ public abstract class GameStage extends Stage {
             }
         });
 
-        back.addListener(new ClickListener(){
+        mainMenu.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 game.setScreen(new MainMenuView(game));

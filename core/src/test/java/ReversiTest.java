@@ -429,21 +429,21 @@ public class ReversiTest {
 
         assertTrue(game.getCurrentPlayer() == player2); //Assure it's white's turn
 
-        //Go back 1 play
+        //Go mainMenu 1 play
         game.undoMove(1);
         currBoard = game.getGameBoard().getCurrentBoard();
         for(int i = 0; i < 8; i++)
             assertArrayEquals(currBoard[i], boardAfterSecondMove[i]);
         assertTrue(game.getCurrentPlayer() == player1);
 
-        //Make another play to compensate the one we just went back from
+        //Make another play to compensate the one we just went mainMenu from
         nextMove = game.getGameBoard().getValidMove(5, 5, 'B');
         player1.setMove(nextMove);
         game.updateGame();
 
         assertTrue(game.getCurrentPlayer() == player2);
 
-        //Go back even further
+        //Go mainMenu even further
         game.undoMove(2);
         currBoard = game.getGameBoard().getCurrentBoard();
         for(int i = 0; i < 8; i++)

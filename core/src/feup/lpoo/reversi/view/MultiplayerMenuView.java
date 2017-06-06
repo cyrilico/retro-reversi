@@ -25,7 +25,6 @@ public class MultiplayerMenuView extends ScreenAdapter {
     private Stage stage;
     private Table buttonTable;
     private Table titleTable;
-    private Table backButtonTable;
 
     private TextButton localGameButton;
     private TextButton onlineGameButton;
@@ -41,7 +40,6 @@ public class MultiplayerMenuView extends ScreenAdapter {
 
         addTitle();
         addOptionsButtons();
-        addBackButton();
         addListeners();
 
         Gdx.input.setInputProcessor(stage);
@@ -76,29 +74,18 @@ public class MultiplayerMenuView extends ScreenAdapter {
         localGameButton = new TextButton("\n  Same Screen  \n", game.getSkin());
         onlineGameButton = new TextButton("\n  Online  \n", game.getSkin());
         checkGamesButton = new TextButton("\n  Check Games  \n", game.getSkin());
+        backButton = new TextButton("Back", game.getSkin());
 
         buttonTable.add(localGameButton).center().padBottom(40);
         buttonTable.row();
         buttonTable.add(onlineGameButton).center().padBottom(40);
         buttonTable.row();
         buttonTable.add(checkGamesButton).center().padBottom(40);
-
-        stage.addActor(buttonTable);
-    }
-
-    private void addBackButton(){
-        backButtonTable = new Table();
-        backButtonTable.top();
-        backButtonTable.setFillParent(true);
-
-        backButton = new TextButton("\n BACK \n", game.getSkin());
-        //backButton.setTransform(true);
-        //backButton.scaleBy(0.5f);
+        buttonTable.row();
+        buttonTable.add(backButton).center().padBottom(40);
         backButton.setColor(Reversi.SECONDARY_COLOR);
 
-        backButtonTable.add(backButton).right();
-
-        stage.addActor(backButtonTable);
+        stage.addActor(buttonTable);
     }
 
     private void addListeners() {

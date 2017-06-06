@@ -95,9 +95,7 @@ public class GameModel implements Serializable{
      * @return set of valid moves for the player
      */
     private ArrayList<MoveModel> getValidMoves(PlayerModel player) {
-        ArrayList<MoveModel> result = gameBoard.getValidMoves(player.getPiece());
-
-        return result;
+        return gameBoard.getValidMoves(player.getPiece());
     }
 
     /**
@@ -140,7 +138,7 @@ public class GameModel implements Serializable{
         updateGameState();
         currentMoves = getValidMoves(getCurrentPlayer());
         gameBoard.setSuggestions(currentMoves);
-        verifyWipeout();
+        verifySpecialEnding();
 
         caretaker.add(saveState());
     }
@@ -187,7 +185,7 @@ public class GameModel implements Serializable{
     /**
      * Verifies a special ending situation and adjusts score accordingly if so so they always add up to 64
      */
-    private void verifyWipeout() {
+    private void verifySpecialEnding() {
         int black = gameBoard.getCurrentPoints(blackPlayer.getPiece());
         int white = gameBoard.getCurrentPoints(whitePlayer.getPiece());
 

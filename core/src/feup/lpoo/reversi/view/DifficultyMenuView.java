@@ -48,7 +48,6 @@ public class DifficultyMenuView extends ScreenAdapter {
         addTitle();
         addPieceChoice();
         addChoiceButtons();
-        addBackButton();
         addListeners();
 
         Gdx.input.setInputProcessor(stage);
@@ -64,61 +63,44 @@ public class DifficultyMenuView extends ScreenAdapter {
     }
 
     private void addTitle() {
-        mainTitle = new Label("    Choose \nDifficulty", game.getSkin());
+        mainTitle = new Label("Difficulty", game.getSkin());
         mainTitle.setFontScale(2);
 
         titleTable = new Table();
         titleTable.setFillParent(true);
         titleTable.top();
-        titleTable.add(mainTitle).center().padTop(120);
+        titleTable.add(mainTitle).center().padTop(70);
 
         stage.addActor(titleTable);
     }
 
     private void addChoiceButtons() {
-        buttonTable = new Table();
-        buttonTable.bottom();
-        buttonTable.setFillParent(true);
-
         randomAIButton = new TextButton("\n  Easy  \n", game.getSkin());
         immediateAIButton = new TextButton("\n  Medium  \n", game.getSkin());
         calculatedAIButton = new TextButton("\n  Hard  \n", game.getSkin());
+        backButton = new TextButton(" Back ", game.getSkin());
+        backButton.setTransform(true);
+        backButton.setColor(Reversi.SECONDARY_COLOR);
 
         buttonTable.add(randomAIButton).center().padBottom(40);
         buttonTable.row();
         buttonTable.add(immediateAIButton).center().padBottom(40);
         buttonTable.row();
         buttonTable.add(calculatedAIButton).center().padBottom(40);
+        buttonTable.row();
+        buttonTable.add(backButton).center().padBottom(40);
 
         stage.addActor(buttonTable);
     }
 
-    private void addBackButton(){
-        backButtonTable = new Table();
-        backButtonTable.top();
-        backButtonTable.setFillParent(true);
-
-        backButton = new TextButton("\n BACK \n", game.getSkin());
-        backButton.setTransform(true);
-        backButton.setColor(Reversi.SECONDARY_COLOR);
-
-        backButtonTable.add(backButton).right();
-
-        stage.addActor(backButtonTable);
-    }
-
     private void addPieceChoice(){
-        pieceTable = new Table();
-        pieceTable.top();
-        pieceTable.setFillParent(true);
+        buttonTable = new Table();
+        buttonTable.bottom();
+        buttonTable.setFillParent(true);
 
         pieceChoiceGroup = new ButtonGroup<CheckBox>();
-        whiteCheckBox = new CheckBox("White", game.getSkin());
-        whiteCheckBox.setTransform(true);
-        whiteCheckBox.scaleBy(1);
-        blackCheckBox = new CheckBox("Black", game.getSkin());
-        blackCheckBox.setTransform(true);
-        blackCheckBox.scaleBy(1);
+        whiteCheckBox = new CheckBox(" White", game.getSkin());
+        blackCheckBox = new CheckBox(" Black", game.getSkin());
         pieceChoiceGroup.add(whiteCheckBox);
         pieceChoiceGroup.add(blackCheckBox);
         pieceChoiceGroup.setMaxCheckCount(1);
@@ -126,11 +108,8 @@ public class DifficultyMenuView extends ScreenAdapter {
         pieceChoiceGroup.setUncheckLast(true);
         pieceChoiceGroup.setChecked("Black");
 
-        pieceTable.add(whiteCheckBox).center().padTop(325).row();
-        pieceTable.add(blackCheckBox).center().padTop(50);
-
-        stage.addActor(pieceTable);
-
+        buttonTable.add(whiteCheckBox).center().padTop(15).row();
+        buttonTable.add(blackCheckBox).center().padTop(40).row();
     }
 
     private void addListeners() {

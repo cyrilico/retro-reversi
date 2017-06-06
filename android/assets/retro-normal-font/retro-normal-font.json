@@ -6,6 +6,9 @@ com.badlogic.gdx.graphics.g2d.BitmapFont: {
 	font: {
 		file: font-export.fnt
 	}
+	retro-16: {
+		file: retro-16.fnt
+	}
 	retro-32: {
 		file: retro-32.fnt
 	}
@@ -263,12 +266,22 @@ com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 		name: radio-pressed
 		color: pressed
 	}
+	button_unactive: {
+		name: blue_button00
+		color: {
+			r: 0.46333322
+			g: 0.46333322
+			b: 0.46333322
+			a: 1
+		}
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 	default: {
 		up: blue_button00
 		down: blue_button01
 		over: blue_button00
+		disabled: button_unactive
 	}
 	close: {
 		up: button-close-c
@@ -278,11 +291,11 @@ com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 	default: {
-		checkboxOn: checkbox-pressed-c
-		checkboxOff: checkbox-c
-		font: roboto-16
-		fontColor: color
-		downFontColor: pressed
+		checkboxOn: blue_boxTick
+		checkboxOff: grey_circle
+		font: retro-16
+		fontColor: white
+		downFontColor: white
 		overFontColor: highlight
 	}
 	radio: {
@@ -430,6 +443,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		up: blue_button00
 		down: blue_button01
 		over: blue_button00
+		disabled: button_unactive
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
@@ -462,7 +476,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Tree$TreeStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {
 		background: window-w
-		titleFont: roboto-16
+		titleFont: retro-16
 		titleFontColor: white
 	}
 }

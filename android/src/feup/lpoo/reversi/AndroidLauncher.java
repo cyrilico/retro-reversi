@@ -106,7 +106,7 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 			Log.d(TAG, "Match = " + match);
 		}
 
-		showSpinner();
+		
 	}
 
 	@Override
@@ -232,7 +232,7 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 		TurnBasedMatchConfig tbmc = TurnBasedMatchConfig.builder()
 				.setAutoMatchCriteria(autoMatchCriteria).build();
 
-		showSpinner();
+		
 
 		// Start the match
 		ResultCallback<TurnBasedMultiplayer.InitiateMatchResult> cb = new ResultCallback<TurnBasedMultiplayer.InitiateMatchResult>() {
@@ -256,13 +256,13 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 
 	@Override
 	public void takeTurn(GameModel data) {
-		showSpinner();
+		
 
 		String nextParticipantId = getNextParticipantId();
 		// Create the next turn
         mTurnData = new GameModelWrapper(data);
 
-		showSpinner();
+		
 
 		Games.TurnBasedMultiplayer.takeTurn(gameHelper.getApiClient(), mMatch.getMatchId(),
 				mTurnData.convertToByteArray(), nextParticipantId).setResultCallback(
@@ -278,7 +278,7 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 
 	@Override
 	public void takeLastTurn(GameModel data) {
-		showSpinner();
+		
 		mTurnData = new GameModelWrapper(data);
 
 		Games.TurnBasedMultiplayer.finishMatch(gameHelper.getApiClient(), mMatch.getMatchId(), mTurnData.convertToByteArray())
@@ -295,7 +295,7 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 
 	@Override
 	public void finishMatch() {
-		showSpinner();
+		
 
 		Games.TurnBasedMultiplayer.finishMatch(gameHelper.getApiClient(), mMatch.getMatchId())
 				.setResultCallback(new ResultCallback<TurnBasedMultiplayer.UpdateMatchResult>() {
@@ -310,7 +310,7 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 
 	@Override
 	public void rematch() {
-		showSpinner();
+		
 		Games.TurnBasedMultiplayer.rematch(gameHelper.getApiClient(), mMatch.getMatchId()).setResultCallback(
 				new ResultCallback<TurnBasedMultiplayer.InitiateMatchResult>() {
 					@Override
@@ -332,7 +332,7 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 		String playerId = Games.Players.getCurrentPlayerId(gameHelper.getApiClient());
 		String myParticipantId = mMatch.getParticipantId(playerId);
 
-		showSpinner();
+		
 
 		Games.TurnBasedMultiplayer.takeTurn(gameHelper.getApiClient(), match.getMatchId(),
 				mTurnData.convertToByteArray(), myParticipantId).setResultCallback(
@@ -427,7 +427,7 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 	}
 
 	private void processResult(TurnBasedMultiplayer.CancelMatchResult result) {
-		dismissSpinner();
+		
 
 		if (!checkStatusCode(null, result.getStatus().getStatusCode())) {
 			return;
@@ -439,7 +439,7 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 				"This match is canceled.  All other players will have their game ended.");
 	}
 	private void processResult(TurnBasedMultiplayer.InitiateMatchResult result) {
-		dismissSpinner();
+		
 		TurnBasedMatch match = result.getMatch();
 
 		if (!checkStatusCode(match, result.getStatus().getStatusCode())) {
@@ -458,7 +458,7 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 
 	private void processResult(TurnBasedMultiplayer.LeaveMatchResult result) {
 		TurnBasedMatch match = result.getMatch();
-		dismissSpinner();
+		
 		if (!checkStatusCode(match, result.getStatus().getStatusCode())) {
 			return;
 		}
@@ -469,7 +469,7 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 
 	public void processResult(TurnBasedMultiplayer.UpdateMatchResult result) {
 		TurnBasedMatch match = result.getMatch();
-		dismissSpinner();
+		
 		if (!checkStatusCode(match, result.getStatus().getStatusCode())) {
 			return;
 		}
@@ -534,14 +534,6 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 		}
 
 		return false;
-	}
-
-	public void showSpinner() {
-		//findViewById(R.id.progressLayout).setVisibility(View.VISIBLE);
-	}
-
-	public void dismissSpinner() {
-		//findViewById(R.id.progressLayout).setVisibility(View.GONE);
 	}
 
 	public void showErrorMessage(TurnBasedMatch match, int statusCode,

@@ -14,7 +14,6 @@ import feup.lpoo.reversi.presenter.GamePresenter;
 
 public class OnlineGameStage extends GameStage {
     private TextButton submit;
-    private Table submitTable;
 
     public OnlineGameStage(Reversi game, GamePresenter presenter) {
         super(game, presenter);
@@ -29,18 +28,12 @@ public class OnlineGameStage extends GameStage {
     @Override
     public void initTables() {
         super.initTables();
-        submitTable = new Table(); addUndo();
+        addUndo();
     }
 
     private void addUndo() {
-        submitTable.setFillParent(true);
-        submitTable.bottom().add(submit).expandX().padBottom(50);
-    }
-
-    @Override
-    public void addToStage() {
-        super.addToStage();
-        addActor(submitTable);
+        buttonTable.row();
+        buttonTable.bottom().add(submit).expandX().padBottom(40);
     }
 
     @Override

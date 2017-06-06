@@ -27,10 +27,7 @@ public class Reversi extends Game {
 	private TextureAtlas atlas;
 
 	public static Color BACKGROUND_COLOR = new Color(0.38f, 0.50f, 0.56f, 1);
-	public static Color PRIMARY_COLOR = new Color(88, 164, 176, 255);
-	public static Color SECONDARY_COLOR = new Color(255, 164, 0, 255);
-
-	private Screen previousScreen;
+	public static Color SECONDARY_COLOR = new Color(0f, 0.8f, 0.6f, 1);
 
 	public Reversi(PlayServices ps) {
 		this.playServices = ps;
@@ -42,11 +39,8 @@ public class Reversi extends Game {
         assetManager = new AssetManager();
 		viewport = new ExtendViewport(512, 854);
 
-		//atlas = new TextureAtlas("reversi-cyan/reversi-cyan.atlas");
-		//skin = new Skin(Gdx.files.internal("reversi-cyan/reversi-cyan.json"), atlas);
-
-		atlas = new TextureAtlas("retro-test/retro-test.atlas");
-		skin = new Skin(Gdx.files.internal("retro-test/retro-test.json"), atlas);
+        atlas = new TextureAtlas("retro-normal-font/retro-normal-font.atlas");
+        skin = new Skin(Gdx.files.internal("retro-normal-font/retro-normal-font.json"), atlas);
 		loadAssets();
 
 		setScreen(new MainMenuView(this));

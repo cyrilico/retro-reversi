@@ -24,7 +24,6 @@ public class MainMenuView extends ScreenAdapter {
     private TextButton achievements;
     private TextButton sign;
 
-    //Labels
     private Label mainTitle;
 
     public MainMenuView(Reversi game) {
