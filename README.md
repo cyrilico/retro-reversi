@@ -1,47 +1,32 @@
 # Reversi
-### Architecture Design
-##### Structural Diagrams
+### Game setup
+To install the game, simply open the .apk file and accept the permissions it requests you (used for multiplayer through Google Play Services API purposes). To run the game, open the app "Retro Reversi"
 
-**Note:** to simplify how connections between classes work and to better organize the overall diagram structure, the main classes displayed in the diagram (GameLogic, Board, Player) are a representation of multiple classes. They'll each be divided to work according to the Model-View-Controller design pattern.
-- Packages
+### Project setup
+To open the project, one must install Android Studio. The application was developed using gradle version 2.3.2 and SDK build tools version 25.0.3. If you wish to use different versions (maybe a future update), be sure the necessary build.gradle files are updated
 
- [![Packages](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/structure-diagrams/packages.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/structure-diagrams/packages.png?raw=true)
-- Classes
+### Game manual
+
+### UML Diagrams
+
+##### Class Diagram
  [![Classes](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/structure-diagrams/classes.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/structure-diagrams/classes.png?raw=true)
-##### Behavioural Diagrams
-- Application State Machine:
- [![AppStateMachine](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/behavioural-diagrams/app-state-machine.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/behavioural-diagrams/app-state-machine.png?raw=true)
+
+##### State Diagram
+[![AppStateMachine](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/behavioural-diagrams/app-state-machine.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/behavioural-diagrams/app-state-machine.png?raw=true)
 - Game Logic State Machine
  [![GameStateMachine](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/behavioural-diagrams/game-state-machine.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/behavioural-diagrams/game-state-machine.png?raw=true)
-##### Design Patterns
-- Singleton - To guarantee main MVC components are instantiated exactly once so always the same object is acessed
-- Strategy - An AI's moves are chosen through an algorithm. Different AI difficulties have different algorithms for the way it chooses a move
-- Model-View-Controller - To separate the components' representation from its logic and relations. Also to facilitate unit testing further on
-- Memento - Implement 'Undo last turn' functionality (only on singleplayer mode)
-- Flyweight - A lot of pieces will be represented but they will all have similar representation
-### GUI Design
-##### Features:
-- Single Player (play against AI)
-- Two Players 
--- Same Device
--- Different Devices (over network)
-- Possibility to change some visual aspects of the game and program
-#### Mockups:
-[![MainMenu](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/gui-mockups/Main%20Menu.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/gui-mockups/Main%20Menu.png?raw=true)
-[![GameScreen](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/gui-mockups/Game%20Screen.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/gui-mockups/Game%20Screen.png?raw=true)
-[![TwoPlayersMenu](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/gui-mockups/Two%20Players%20Menu.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/gui-mockups/Two%20Players%20Menu.png?raw=true)
-[![DifferentDevices](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/gui-mockups/Different%20Devices%20Screen.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/gui-mockups/Different%20Devices%20Screen.png?raw=true)
 
-### Test Design
-##### Expected Unit Tests
-- Test proper game initialization - starting pieces on correct locations
-- Test turn attribution - turns aren't necessarily rotative
-- Test legal moves on the current turn - to verify move when player is human, and later to test decision when AI is implemented
-- Test a move's effect on the board - verify if pieces that should rotate after a move are actually rotated
-- Test score update and display - a player's score is the number of pieces they have on currently on the board
-- Test AI move choice 
-- Test game sate change when player uses undo functionality
-- Test case where game finishes because the board is full
-- Test case where game finishes because there are no more valid moves for either players
-- Test victory attribution upon game completion
-- Test network connection (?)
+
+### Design Patterns
+- Strategy - An AI's moves are chosen through an algorithm. Different AI difficulties have different algorithms for the way it chooses a move
+- Model-View-Presenter - To separate the components' representation from its logic and relations and facilitate unit testing
+- Memento - Implement 'Undo last play' functionality (only on local gameplay)
+
+#### Other notes
+- "Other relevant design decisions"
+- Relatively to the initial thought application structure, some changes were made throughout the development process but no big refactoring processes were thought to be necessary
+- The Google Play Services API integration and online multiplayer, during the final part of development, were considered the hardest parts to implement due to the lack of previous knowledge in working with servers and application/data synchronization through multiple devices
+- With this project we mainly learned the importance of a well thought architecture since the beginning of the development
+- Overall, we spent roughly "cenas" hours developing the application
+
