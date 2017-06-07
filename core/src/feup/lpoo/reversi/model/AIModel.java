@@ -51,7 +51,7 @@ public class AIModel extends PlayerModel{
 
         if(!calculating) {
             calculating = true;
-            scheduler.schedule(calculateMove, 500, TimeUnit.MILLISECONDS);
+            scheduler.schedule(calculateMove, 100, TimeUnit.MILLISECONDS);
         }
 
         return false;

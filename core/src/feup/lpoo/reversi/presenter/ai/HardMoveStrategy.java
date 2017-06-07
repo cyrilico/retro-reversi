@@ -45,7 +45,7 @@ public class HardMoveStrategy implements CalculatedAIMoveStrategy {
             for (int j = 0; j < 8; ++j) {
                 if (board[i][j] == piece)
                     score += BOARD_VALUE[i][j];
-                else if (board[i][j] != '-') //TODO: Replace macro
+                else if (board[i][j] != '-')
                     score -= BOARD_VALUE[i][j];
             }
         }
@@ -108,10 +108,10 @@ public class HardMoveStrategy implements CalculatedAIMoveStrategy {
 
         int currentScore;
         int bestScore = Integer.MIN_VALUE;
-        MoveModel bestMove = null;
 
         if (currentValidModes.isEmpty())
             return new ScoredMove(null, bestScore);
+        MoveModel bestMove = currentValidModes.get(0);
 
         for(MoveModel move : currentValidModes){
             BoardModel newBoard = null;

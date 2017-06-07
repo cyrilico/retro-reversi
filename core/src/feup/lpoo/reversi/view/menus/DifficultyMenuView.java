@@ -101,22 +101,22 @@ public class DifficultyMenuView extends ScreenAdapter {
         pieceChoiceGroup = new ButtonGroup<CheckBox>();
         whiteCheckBox = new CheckBox(" White", game.getSkin());
         blackCheckBox = new CheckBox(" Black", game.getSkin());
-        pieceChoiceGroup.add(whiteCheckBox);
         pieceChoiceGroup.add(blackCheckBox);
+        pieceChoiceGroup.add(whiteCheckBox);
         pieceChoiceGroup.setMaxCheckCount(1);
         pieceChoiceGroup.setMinCheckCount(1);
         pieceChoiceGroup.setUncheckLast(true);
         pieceChoiceGroup.setChecked("Black");
 
-        buttonTable.add(whiteCheckBox).center().padTop(15).row();
-        buttonTable.add(blackCheckBox).center().padTop(40).row();
+        buttonTable.add(whiteCheckBox).center().padBottom(15).row();
+        buttonTable.add(blackCheckBox).center().padBottom(40).row();
     }
 
     private void addListeners() {
         randomAIButton.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                GameInfo info = new GameInfo(true, pieceChoiceGroup.getCheckedIndex() == 1, new EasyMoveStrategy());
+                GameInfo info = new GameInfo(true, pieceChoiceGroup.getCheckedIndex() == 0, new EasyMoveStrategy());
                 game.setScreen(new GameView(game, info));
                 return true;
             }
@@ -125,7 +125,7 @@ public class DifficultyMenuView extends ScreenAdapter {
         immediateAIButton.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                GameInfo info = new GameInfo(true, pieceChoiceGroup.getCheckedIndex() == 1, new MediumMoveStrategy());
+                GameInfo info = new GameInfo(true, pieceChoiceGroup.getCheckedIndex() == 0, new MediumMoveStrategy());
                 game.setScreen(new GameView(game, info));
                 return true;
             }
@@ -134,7 +134,7 @@ public class DifficultyMenuView extends ScreenAdapter {
         calculatedAIButton.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                GameInfo info = new GameInfo(true, pieceChoiceGroup.getCheckedIndex() == 1, new HardMoveStrategy());
+                GameInfo info = new GameInfo(true, pieceChoiceGroup.getCheckedIndex() == 0, new HardMoveStrategy());
                 game.setScreen(new GameView(game, info));
                 return true;
             }

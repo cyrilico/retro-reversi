@@ -34,8 +34,6 @@ public class MainMenuView extends ScreenAdapter {
         addButtons();
         addListeners();
 
-        game.getPlayServices().signIn();
-
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -67,7 +65,8 @@ public class MainMenuView extends ScreenAdapter {
         singlePlayer = new TextButton("\n  Single Player  \n", game.getSkin());
         multiPlayer = new TextButton("\n  Multi Player  \n", game.getSkin());
         achievements = new TextButton("\n  Achievements  \n", game.getSkin());
-        sign = new TextButton("\n  Sign Out  \n", game.getSkin());
+        sign = new TextButton(game.getPlayServices().isSignedIn() ?  "  Sign Out  " : "  Sign In  ", game.getSkin());
+        sign.setColor(game.SECONDARY_COLOR);
 
         buttonTable.add(singlePlayer).center().padBottom(40);
         buttonTable.row();
@@ -114,11 +113,11 @@ public class MainMenuView extends ScreenAdapter {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if(game.getPlayServices().isSignedIn()) {
                     game.getPlayServices().signOut();
-                    sign.setText("\n  Sign In  \n");
+                    sign.setText("  Sign In  ");
                 }
                 else {
                     game.getPlayServices().signIn();
-                    sign.setText("\n  Sign Out  \n");
+                    sign.setText("  Sign Out  ");
                 }
                 return true;
             }

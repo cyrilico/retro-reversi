@@ -70,8 +70,8 @@ public class MultiplayerMenuView extends ScreenAdapter {
         buttonTable.bottom();
         buttonTable.setFillParent(true);
 
-        localGameButton = new TextButton("\n  Same Screen  \n", game.getSkin());
-        onlineGameButton = new TextButton("\n  Online  \n", game.getSkin());
+        localGameButton = new TextButton("\n  Local  \n", game.getSkin());
+        onlineGameButton = new TextButton("\n    Online    \n", game.getSkin());
         checkGamesButton = new TextButton("\n  Check Games  \n", game.getSkin());
         backButton = new TextButton("Back", game.getSkin());
 

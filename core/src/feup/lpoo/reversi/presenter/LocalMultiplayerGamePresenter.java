@@ -44,7 +44,7 @@ public class LocalMultiplayerGamePresenter extends GamePresenter {
     @Override
     public void initPlayers() {
             blackPlayer = new UserModel('B');
-            whitePlayer = new UserModel('W'); //TODO: Replace with macros
+            whitePlayer = new UserModel('W');
     }
 
     /**

@@ -49,7 +49,7 @@ public class SinglePlayerGamePresenter extends GamePresenter {
     public void initPlayers() {
         if(userIsBlack) {
             blackPlayer = new UserModel('B');
-            whitePlayer = new AIModel('W', AI); //TODO: Replace with macros
+            whitePlayer = new AIModel('W', AI);
         }
         else {
             blackPlayer = new AIModel('B', AI);

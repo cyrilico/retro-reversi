@@ -596,4 +596,36 @@ public class ReversiTest {
 
         assertTrue(player2.getMove().equals(new MoveModel(6, 2, 'W')));
     }
+
+    @Test
+    public void assertCorrectHardAIMoveChoiceFinal(){
+        AIPresenter player1Presenter = new AIPresenter(new HardMoveStrategy());
+        AIModel player1 = new AIModel('B', player1Presenter);
+        UserModel player2 = new UserModel('W');
+        GameModel game = new GameModel(player1, player2);
+        player1Presenter.setGame(game);
+
+        char[][] startingSituation = {
+                {'B','B','B','B','B','B','B','B'},
+                {'B','B','B','B','B','B','B','B'},
+                {'B','B','B','B','B','B','B','B'},
+                {'B','B','B','B','B','B','B','B'},
+                {'B','W','B','B','B','B','B','B'},
+                {'B','B','W','B','B','B','B','B'},
+                {'B','B','B','-','B','B','B','B'},
+                {'B','B','B','B','-','B','B','B'},
+        };
+
+        game.getGameBoard().setBoard(startingSituation);
+
+        while(!player1.isReady()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        assertTrue(player1.getMove().equals(new MoveModel(3, 6, 'B')));
+    }
 }

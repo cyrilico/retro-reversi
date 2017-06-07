@@ -55,6 +55,7 @@ public abstract class GameStage extends Stage {
         initElements();
         initExitDialog();
         initTables();
+        addElements();
         addToStage();
         addListeners();
     }
@@ -75,21 +76,29 @@ public abstract class GameStage extends Stage {
     }
 
     protected void initTables() {
-        paddleTable = new Table(); addPaddles();
-        hud = new Table(); addHud();
-        boardTable = new Table(); addBoard();
-        buttonTable = new Table(); addBackButton();
+        paddleTable = new Table();
+        hud = new Table();
+        boardTable = new Table();
+        buttonTable = new Table();
         gameOverTable = new Table();
-        winnerTable = new Table(); addGameOverHud();
+        winnerTable = new Table();
+    }
+
+    protected void addElements() {
+        addPaddles();
+        addHud();
+        addBoard();
+        addBackButton();
+        addGameOverHud();
     }
 
     private void initExitDialog(){
         exitDialog = new Dialog("Exit game confirmation", game.getSkin()) {
             @Override
             protected void result(Object object) {
-                if ((Boolean) object) {
+                if ((Boolean) object)
                     game.setScreen(new feup.lpoo.reversi.view.menus.MainMenuView(game));
-                }else
+                else
                     hide(null); //Do NOT remove null argument
             }
         };
@@ -122,7 +131,8 @@ public abstract class GameStage extends Stage {
     private void addBackButton() {
         buttonTable.setFillParent(true);
         buttonTable.bottom();
-        buttonTable.add(back).expandX().padBottom(20);
+        buttonTable.row();
+        buttonTable.add(back).center().padBottom(20);
     }
 
     private void addGameOverHud() {

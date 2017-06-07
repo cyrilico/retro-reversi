@@ -25,8 +25,8 @@ public class Reversi extends Game {
 	private Skin skin;
 	private TextureAtlas atlas;
 
-	public static Color BACKGROUND_COLOR = new Color(0.38f, 0.50f, 0.56f, 1);
-	public static Color SECONDARY_COLOR = new Color(0f, 0.8f, 0.6f, 1);
+    public static Color BACKGROUND_COLOR = new Color(0.21f, 0.28f, 0.47f, 1);
+    public static Color SECONDARY_COLOR = new Color(0.5f, 0.8f, -0.5f, 1);
 
 	public Reversi(PlayServices ps) {
 		this.playServices = ps;
@@ -42,6 +42,7 @@ public class Reversi extends Game {
         skin = new Skin(Gdx.files.internal("retro-normal-font/retro-normal-font.json"), atlas);
 		loadAssets();
 
+        playServices.signIn();
 		setScreen(new MainMenuView(this));
 	}
 

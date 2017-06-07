@@ -25,16 +25,14 @@ public class LocalGameStage extends GameStage {
         undo = new TextButton("Undo", game.getSkin());
     }
 
-
     @Override
-    public void initTables() {
-        super.initTables();
+    public void addElements() {
         addUndo();
+        super.addElements();
     }
 
     private void addUndo() {
-        buttonTable.row();
-        buttonTable.bottom().add(undo).expandX().padBottom(20);
+        buttonTable.add(undo).center().padBottom(40);
     }
 
     @Override

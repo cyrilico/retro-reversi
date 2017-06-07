@@ -10,7 +10,7 @@ public class BoardView extends Group {
 
     private final int IMAGE_SIZE = 64;
     private final int BOARD_SIZE = 8;
-    private final int BOARD_WIDTH = IMAGE_SIZE * BOARD_SIZE;
+    private final int BOARD_WIDTH = (IMAGE_SIZE * BOARD_SIZE) / 2;
 
     public BoardView(GamePresenter presenter) {
 

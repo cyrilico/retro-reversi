@@ -1,6 +1,7 @@
 package feup.lpoo.reversi.view;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
@@ -21,14 +22,14 @@ public class OnlineGameStage extends GameStage {
     }
 
     @Override
-    public void initTables() {
-        super.initTables();
-        addUndo();
+    public void addElements() {
+        addSubmit();
+        super.addElements();
     }
 
-    private void addUndo() {
+    private void addSubmit() {
         buttonTable.row();
-        buttonTable.bottom().add(submit).expandX().padBottom(40);
+        buttonTable.bottom().add(submit).expandX().padBottom(30);
     }
 
     @Override
@@ -47,10 +48,13 @@ public class OnlineGameStage extends GameStage {
     @Override
     public void addListeners() {
         super.addListeners();
+
         submit.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 presenter.screenAction();
+                submit.setDisabled(true);
+                submit.setTouchable(Touchable.disabled);
                 return true;
             }
         });
