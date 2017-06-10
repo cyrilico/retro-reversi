@@ -1,6 +1,6 @@
 # Reversi
 ### Game setup
-To install the game, simply open the .apk file and accept the permissions it requests you (used for multiplayer through Google Play Services API purposes). To run the game, open the app "Retro Reversi"
+To install the game, simply open the .apk file found [here](https://github.com/cyrilico/LPOO1617_T1G7/releases) and accept the permissions it requests you (used for multiplayer through Google Play Services API purposes). To run the game, open the app "Retro Reversi"
 
 ### Project setup
  ##### Android SDK Requirements
