@@ -22,32 +22,32 @@ To open the project, one must install Android Studio, available
 
 When the app is opened, you'll face the main menu, where you'll be prompted to sign in to Google Play Games. Here you can select the type of match you're playing, Sign In/Out, or check your achievements:
 
-<img width="250px" alt='Main Menu' src='https://github.com/cyrilico/LPOO1617_T1G7/blob/master/screenshots/main-menu.png?raw=true'/> <img width="250px" alt='Achievements' src='https://github.com/cyrilico/LPOO1617_T1G7/blob/master/screenshots/achievements.png?raw=true'/>
+<img width="250px" alt='Main Menu' src='https://github.com/cyrilico/LPOO1617_T1G7/blob/finalRelease/screenshots/main-menu.png?raw=true'/> <img width="250px" alt='Achievements' src='https://github.com/cyrilico/LPOO1617_T1G7/blob/finalRelease/screenshots/achievements.png?raw=true'/>
 
 ##### Singleplayer / Multiplayer Menus
 
 In singleplayer mode, you can choose the AI's difficulty, aswell as the color you're playing with (don't forget black plays first!). In multiplayer mode, you can choose to play either locally or online. On the multiplayer screen, you can either play locally or online against a randomly selected opponent. The match is turn based (meaning you can leave the game after each turn), and you can check your matches on the 'Check Games' option.
 
-<img width="250px" alt='Single Player' src='https://github.com/cyrilico/LPOO1617_T1G7/blob/master/screenshots/single-player.png?raw=true'/> <img width="250px" alt='Multiplayer' src='https://github.com/cyrilico/LPOO1617_T1G7/blob/master/screenshots/multiplayer.png?raw=true'/> <img width="250px" alt='Check Games' src='https://github.com/cyrilico/LPOO1617_T1G7/blob/master/screenshots/online-matches.png?raw=true'/>
+<img width="250px" alt='Single Player' src='https://github.com/cyrilico/LPOO1617_T1G7/blob/finalRelease/screenshots/single-player.png?raw=true'/> <img width="250px" alt='Multiplayer' src='https://github.com/cyrilico/LPOO1617_T1G7/blob/finalRelease/screenshots/multiplayer.png?raw=true'/> <img width="250px" alt='Check Games' src='https://github.com/cyrilico/LPOO1617_T1G7/blob/finalRelease/screenshots/online-matches.png?raw=true'/>
 
 ##### Match Screen
 
 Here is where all the magic happens. On singleplayer or local multiplayer there's a button whre you can undo the board moves all the way to the initial position.
 
-<img width="250px" alt='Game Screen' src='https://github.com/cyrilico/LPOO1617_T1G7/blob/master/screenshots/in-game.png?raw=true'/>
+<img width="250px" alt='Game Screen' src='https://github.com/cyrilico/LPOO1617_T1G7/blob/finalRelease/screenshots/in-game.png?raw=true'/>
 
 ### UML Diagrams
 ##### Model Diagram
- [![Model](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/uml/model.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/uml/model.png?raw=true)
+ [![Model](https://github.com/cyrilico/LPOO1617_T1G7/blob/finalRelease/uml/model.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/finalRelease/uml/model.png?raw=true)
  
 ##### View & Presenter Diagram
- [![Model](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/uml/view%20&%20presenter.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/uml/view%20&%20presenter.png?raw=true)
+ [![Model](https://github.com/cyrilico/LPOO1617_T1G7/blob/finalRelease/uml/view%20&%20presenter.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/finalRelease/uml/view%20&%20presenter.png?raw=true)
 
 ##### State Diagrams
 - App State Machine
-[![AppStateMachine](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/uml/app%20state.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/uml/app%20state.png?raw=true)
+[![AppStateMachine](https://github.com/cyrilico/LPOO1617_T1G7/blob/finalRelease/uml/app%20state.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/finalRelease/uml/app%20state.png?raw=true)
 - Game Logic State Machine
- [![GameStateMachine](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/uml/game%20logic.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/uml/game%20logic.png?raw=true)
+ [![GameStateMachine](https://github.com/cyrilico/LPOO1617_T1G7/blob/finalRelease/uml/game%20logic.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/finalRelease/uml/game%20logic.png?raw=true)
 
 
 ### Design Patterns
