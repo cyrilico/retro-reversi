@@ -11,7 +11,8 @@ To install the game, simply open the .apk file found below on Google Play and ac
  - Google Play Services
  - Google Repository
 
-To open the project, one must install Android Studio. The application was developed using gradle version 2.3.2 and SDK build tools version 25.0.3. If you wish to use different versions (maybe a future update), be sure the necessary build.gradle files are updated.
+To open the project, one must install Android Studio, available 
+[here](https://developer.android.com/studio/index.html "Android Studio download page"). To open the project, in the starting screen import directly from version control, Github. It'll clone the repository and open the project immediately. Note that the application was developed using gradle version 2.3.2 and SDK build tools version 25.0.3 (at least for the SDK build tools, further updates have been released in the last few days). If you wish to use different versions, be sure the necessary build.gradle files are updated.
 
 **Note -** Play Games Services won't work when running from Android Studio because of authentication requisites.
 
