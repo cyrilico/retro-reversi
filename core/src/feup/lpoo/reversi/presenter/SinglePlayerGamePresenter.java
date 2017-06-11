@@ -94,10 +94,14 @@ public class SinglePlayerGamePresenter extends GamePresenter {
     }
 
     /**
-     * Calls the game model to undo the last 2 moves
+     * Calls the game model to undo the last 1 or 2 moves depending on whose turn it is
      */
     @Override
     public void screenAction() {
+        if(game.getCurrentPlayer() instanceof AIModel) {
+            game.undoMove(1);
+            return;
+        }
         game.undoMove(2);
     }
 

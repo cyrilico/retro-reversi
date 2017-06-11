@@ -555,19 +555,19 @@ public class ReversiTest {
         MoveModel nextMove;
 
         char[][] startingSituation = {
+                {'-','-','-','-','W','-','-','-'},
+                {'-','-','-','-','W','-','-','-'},
+                {'-','-','W','B','W','-','-','-'},
+                {'-','-','B','B','W','-','-','-'},
+                {'-','-','-','B','W','-','-','-'},
                 {'-','-','-','-','-','-','-','-'},
-                {'-','-','-','-','-','-','-','-'},
-                {'-','-','B','B','-','-','-','-'},
-                {'W','W','W','B','W','W','-','-'},
-                {'-','-','-','B','B','-','-','-'},
-                {'-','-','W','W','W','W','-','-'},
                 {'-','-','-','-','-','-','-','-'},
                 {'-','-','-','-','-','-','-','-'},
         };
 
         game.getGameBoard().setBoard(startingSituation);
 
-        nextMove = game.getGameBoard().getValidMove(6, 3, 'B');
+        nextMove = game.getGameBoard().getValidMove(5, 3, 'B');
         player1.setMove(nextMove);
         game.updateGame();
 
@@ -579,9 +579,9 @@ public class ReversiTest {
             }
         }
 
-        assertTrue(player2.getMove().equals(new MoveModel(4, 2, 'W')));
+        assertTrue(player2.getMove().equals(new MoveModel(6, 2, 'W')));
 
-        nextMove = game.getGameBoard().getValidMove(6, 6, 'B');
+        nextMove = game.getGameBoard().getValidMove(5, 0, 'B');
         if(player1.isReady())
             player1.setMove(nextMove);
         game.updateGame();
@@ -594,38 +594,6 @@ public class ReversiTest {
             }
         }
 
-        assertTrue(player2.getMove().equals(new MoveModel(6, 2, 'W')));
-    }
-
-    @Test
-    public void assertCorrectHardAIMoveChoiceFinal(){
-        AIPresenter player1Presenter = new AIPresenter(new HardMoveStrategy());
-        AIModel player1 = new AIModel('B', player1Presenter);
-        UserModel player2 = new UserModel('W');
-        GameModel game = new GameModel(player1, player2);
-        player1Presenter.setGame(game);
-
-        char[][] startingSituation = {
-                {'B','B','B','B','B','B','B','B'},
-                {'B','B','B','B','B','B','B','B'},
-                {'B','B','B','B','B','B','B','B'},
-                {'B','B','B','B','B','B','B','B'},
-                {'B','W','B','B','B','B','B','B'},
-                {'B','B','W','B','B','B','B','B'},
-                {'B','B','B','-','B','B','B','B'},
-                {'B','B','B','B','-','B','B','B'},
-        };
-
-        game.getGameBoard().setBoard(startingSituation);
-
-        while(!player1.isReady()) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        assertTrue(player1.getMove().equals(new MoveModel(3, 6, 'B')));
+        assertTrue(player2.getMove().equals(new MoveModel(1, 3, 'W')));
     }
 }
