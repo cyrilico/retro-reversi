@@ -6,14 +6,14 @@
 
 - Packages
 
- [![Packages](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/structure-diagrams/packages.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/structure-diagrams/packages.png?raw=true)
+ [![Packages](https://github.com/cyrilico/LPOO1617_T1G7/blob/second-project/check-point/structure-diagrams/packages.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/second-project/check-point/structure-diagrams/packages.png?raw=true)
 - Classes
- [![Classes](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/structure-diagrams/classes.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/structure-diagrams/classes.png?raw=true)
+ [![Classes](https://github.com/cyrilico/LPOO1617_T1G7/blob/second-project/check-point/structure-diagrams/classes.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/second-project/check-point/structure-diagrams/classes.png?raw=true)
 ##### Behavioural Diagrams
 - Application State Machine:
- [![AppStateMachine](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/behavioural-diagrams/app-state-machine.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/behavioural-diagrams/app-state-machine.png?raw=true)
+ [![AppStateMachine](https://github.com/cyrilico/LPOO1617_T1G7/blob/second-project/check-point/behavioural-diagrams/app-state-machine.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/second-project/check-point/behavioural-diagrams/app-state-machine.png?raw=true)
 - Game Logic State Machine
- [![GameStateMachine](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/behavioural-diagrams/game-state-machine.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/behavioural-diagrams/game-state-machine.png?raw=true)
+ [![GameStateMachine](https://github.com/cyrilico/LPOO1617_T1G7/blob/second-project/check-point/behavioural-diagrams/game-state-machine.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/second-project/check-point/behavioural-diagrams/game-state-machine.png?raw=true)
 ##### Design Patterns
 - Singleton - To guarantee main MVC components are instantiated exactly once so always the same object is acessed
 - Strategy - An AI's moves are chosen through an algorithm. Different AI difficulties have different algorithms for the way it chooses a move
@@ -28,10 +28,10 @@
 -- Different Devices (over network)
 - Possibility to change some visual aspects of the game and program
 #### Mockups:
-[![MainMenu](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/gui-mockups/Main%20Menu.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/gui-mockups/Main%20Menu.png?raw=true)
-[![GameScreen](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/gui-mockups/Game%20Screen.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/gui-mockups/Game%20Screen.png?raw=true)
-[![TwoPlayersMenu](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/gui-mockups/Two%20Players%20Menu.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/gui-mockups/Two%20Players%20Menu.png?raw=true)
-[![DifferentDevices](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/gui-mockups/Different%20Devices%20Screen.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/master/check-point/gui-mockups/Different%20Devices%20Screen.png?raw=true)
+[![MainMenu](https://github.com/cyrilico/LPOO1617_T1G7/blob/second-project/check-point/gui-mockups/Main%20Menu.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/second-project/check-point/gui-mockups/Main%20Menu.png?raw=true)
+[![GameScreen](https://github.com/cyrilico/LPOO1617_T1G7/blob/second-project/check-point/gui-mockups/Game%20Screen.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/second-project/check-point/gui-mockups/Game%20Screen.png?raw=true)
+[![TwoPlayersMenu](https://github.com/cyrilico/LPOO1617_T1G7/blob/second-project/check-point/gui-mockups/Two%20Players%20Menu.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/second-project/check-point/gui-mockups/Two%20Players%20Menu.png?raw=true)
+[![DifferentDevices](https://github.com/cyrilico/LPOO1617_T1G7/blob/second-project/check-point/gui-mockups/Different%20Devices%20Screen.png?raw=true)](https://github.com/cyrilico/LPOO1617_T1G7/blob/second-project/check-point/gui-mockups/Different%20Devices%20Screen.png?raw=true)
 
 ### Test Design
 ##### Expected Unit Tests
