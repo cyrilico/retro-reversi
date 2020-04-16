@@ -1,5 +1,5 @@
-# feup-lpoo
+# Retro Reversi
 
-Code developed for LPOO, a subject in MIEIC (FEUP). Check other branches to find the source code for both projects
+Repository that holds code developed for an Object Oriented Programming Lab class (LPOO) @ MIEIC, FEUP. Done in collaboration with [@antonioalmeida](https://github.com/antonioalmeida).
 
-
+Check the branch ``finalRelease`` for a more comprehensive documentation of the project, its functionalities and implementation details.
